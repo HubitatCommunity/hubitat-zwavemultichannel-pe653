@@ -1704,9 +1704,9 @@ def setMode(int mode) {
 private List getRefreshCmds() {
 //	log.debug "+++++ getRefreshCmds"
 	def cmds =[
-		new hubitat.device.HubAction("910005400102870301"),
-		new hubitat.device.HubAction("910005400101830101"),
-//		new hubitat.device.HubAction("91000541010100"),
+		"910005400102870301",
+		"910005400101830101",
+//		"91000541010100",
 	]
 	cmds
 }
