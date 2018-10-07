@@ -628,6 +628,7 @@ def parse(String description) {
     def cmd = null
     def payloadStr = ""
     byte[] payload = []
+	log.trace "+-+-+ Raw message: $description"
 	if (description.startsWith("Err")) {
         log.warn "Error in Parse"
 	    result = createEvent(descriptionText:description, isStateChange:true)
@@ -1135,28 +1136,24 @@ def zwaveEventMultiCmdEncap(cmd) {
 private List createMultipleEvents (Integer endpoint, Integer externalParm, String myParm) {
 	def rslt = []
     def swName  = getSWITCH_NAME(endpoint)
-	if (debugLevel > "5") {
-        log.debug "..... createMultipleEvents( endpoint:$endpoint, name:$swName, externalParm:$externalParm, myParm:$myParm)"
-    }
+	log.debug "+++++ createMultipleEvents( endpoint:$endpoint, name:$swName, externalParm:$externalParm, myParm:$myParm)"
 
 	def children = getChildDevices()
-//	log.debug("children.size = ${children.size}")
-//	children.each {ch ->
-//    	log.debug("ch ${ch}")
-//	}
+	// log.trace("children.size = ${children.size}")
+	// children.each {ch ->
+	//     	log.trace("child ${ch}")
+	// }
 
     def dni = "${device.deviceNetworkId}-ep${endpoint}"
 	def devObj = getChildDevices()?.find { it.deviceNetworkId == dni }
-//	log.debug("CME: devObj = ${devObj}")
+	log.debug("createMultipleEvents: devObj = ${devObj}")
 	if (devObj) {
+		log.debug("createMultipleEvents: devObj.currentValue = ${devObj.currentValue("switch")}")
+		log.debug("createMultipleEvents: target value: ${myParm}")
     	if (devObj.currentValue("switch") == "$myParm") {
-	    	if (debugLevel > "5") {
-	         	log.debug "<<<<< Child Event unnecessary. name:$dni:$swName evt: \"${myParm}\" ==> dev (${devObj.currentValue("switch")})"
-            }
+         	log.trace "<<<<< Child Event unnecessary. name:$dni:$swName evt: \"${myParm}\" ==> dev (${devObj.currentValue("switch")})"
         } else {
-		    if (debugLevel > "5") {
-	        	log.debug "<<<<< Child Event NECESSARY: name:$dni:$swName evt: \"${myParm}\" ==> dev (${devObj.currentValue("switch")})"
-            }
+        	log.trace "<<<<< Child Event NECESSARY: name:$dni:$swName evt: \"${myParm}\" ==> dev (${devObj.currentValue("switch")})"
 			devObj.sendEvent(name: "switch", value: "$myParm", isStateChange: true, displayed: true, descriptionText: "$myParm event sent from parent device")
 	        rslt << "Note:Event: \"${myParm}\" to child: ${dni}:${devObj}"
         }
@@ -1306,9 +1303,7 @@ private List internalConfigure() {
 
 private void createChildDevices() {
 	def oldChildren = getChildDevices()
-    if (debugLevel > "0") {
-		log.debug("Existing children: ${oldChildren}")
-    }
+	log.debug("Existing children: ${oldChildren}")
 
 	for (childNo in 1..5) {
 		addOrReuseChildDevice(childNo, "${device.displayName} - Switch ${childNo}", oldChildren)
@@ -1328,13 +1323,13 @@ private void createChildDevices() {
 private Object addOrReuseChildDevice(childNo, name, List oldChildren){
 	def Object devObj = null
     def dni = "${device.deviceNetworkId}-ep${childNo}"
-//	log.trace("addOrReuseChildDevice dni=${dni} oldChildren.size=${oldChildren.size} oldChildren: ${oldChildren}")
+	log.trace("addOrReuseChildDevice dni=${dni} oldChildren.size=${oldChildren.size} oldChildren: ${oldChildren}")
 
 	devObj = oldChildren.find {it.deviceNetworkId == dni}
     if ( devObj ) {
-//		log.trace("found existing device=${devObj.name} dni=${devObj.deviceNetworkId}")
+		log.trace("found existing device=${devObj.name} dni=${devObj.deviceNetworkId}")
     	oldChildren.remove(devObj)
-//		log.trace(" after remove dni=${dni} oldChildren.size=${oldChildren.size}")
+		log.trace(" after remove dni=${dni} oldChildren.size=${oldChildren.size}")
     } else {
         try {
 		    if (debugLevel > "0") {
@@ -1381,12 +1376,10 @@ private List getClock() {
 // Set the PE653 clock from the mobile client clock
 def List setClock() {
 	def cmds = []
-    if (debugLevel > "0") {
-		log.debug "+++++ setClock()"
-    }
+	log.debug "+++++ setClock()"
     def nowCal = Calendar.getInstance(location.timeZone)
 	def time2 = "${String.format("%02d",nowCal.get(Calendar.HOUR_OF_DAY))}:${String.format("%02d",nowCal.get(Calendar.MINUTE))}"
-//	log.debug "Time:${time2}"
+	log.debug "Time:${time2}"
 	cmds << zwave.clockV1.clockSet(hour: "${nowCal.get(Calendar.HOUR_OF_DAY)}".toInteger(), minute: "${nowCal.get(Calendar.MINUTE)}".toInteger())
 //	cmds << createEvent(name: "clock", value: "${time2}", displayed: false, descriptionText: "PE653 Clock: ${time2}")
 	delayBetweenLog(addRefreshCmds(cmds))
@@ -1547,18 +1540,14 @@ private List setPoolSpaMode(Integer val) {
 }
 
 private List setSpaModeInternal() {
-    if (debugLevel > "0") {
-		log.debug "+++++ setSpaModeInternal"
-    }
+	log.debug "+++++ setSpaModeInternal"
 	def cmds = []
 	cmds.addAll(setPoolSpaMode(0xFF))
 	cmds
 }
 
 private List setPoolModeInternal() {
-    if (debugLevel > "0") {
-		log.debug "+++++ setPoolMode"
-    }
+	log.debug "+++++ setPoolMode"
 	def cmds = []
 	cmds.addAll(setPoolSpaMode(0))
 	cmds
@@ -1751,21 +1740,24 @@ def off() {
 
 //Request Switch State
 private List getChanState(ch) {
-    if (debugLevel > "0") {
-		log.debug "+++++ getChanState($ch)"
-    }
+	log.debug "+++++ getChanState($ch)"
+	def getCmd = zwave.multiInstanceV1.multiInstanceCmdEncap(instance:ch).encapsulate(zwave.switchBinaryV1.switchBinaryGet())
+	log.trace "----- getChanState command: $getCmd"
 	def cmds =[
-	    zwave.multiInstanceV1.multiInstanceCmdEncap(instance:ch).encapsulate(zwave.switchBinaryV1.switchBinaryGet())
+	    getCmd
 	]
 }
 
 // Set switch instance on/off
 private List setChanState(ch, on) {
-	if (debugLevel > "5") {
-		log.debug "+++++ setChanState($ch, $on)"
-    }
+	log.trace "+++++ setChanState($ch, $on)"
+	def onOrOff = on ? 0xFF : 0x00
+	def setCmd = zwave.multiInstanceV1.multiInstanceCmdEncap(instance: ch).encapsulate(zwave.basicV1.basicSet(value: $onOrOff))
+	log.trace "----- setChanState command: $setCmd"
+	
 	def cmds =[
-		zwave.multiInstanceV1.multiInstanceCmdEncap(instance: ch).encapsulate(zwave.switchBinaryV1.switchBinarySet(switchValue: (on ? 0xFF : 0))),
+		//zwave.multiInstanceV1.multiInstanceCmdEncap(instance: ch).encapsulate(zwave.switchBinaryV1.switchBinarySet(switchValue: $onOrOff)),
+		setCmd
 	]
 }
 
@@ -1776,27 +1768,22 @@ private List setChanStateAndGet(ch, on) {
 	def cmds = []
 	cmds = setChanState(ch, on)
     cmds.addAll(getChanState(ch))
+	log.debug "----- cmds: $cmds"
 	cmds
 }
 
 def List childOn(dni)  {
-    if (debugLevel > "0") {
-		log.debug "childOn called in parent: dni=${dni} channelNumber(dni)=${channelNumber(dni)}"
-    }
+	log.debug "childOn called in parent: dni=${dni} channelNumber(dni)=${channelNumber(dni)}"
 	delayBetweenLog(addRefreshCmds(cmdFromChild(channelNumber(dni), 0xFF)))
 }
 
 def List childOff(dni)  {
-    if (debugLevel > "0") {
-		log.debug "childOff called in parent: dni=${dni} channelNumber(dni)=${channelNumber(dni)}"
-    }
+	log.debug "childOff called in parent: dni=${dni} channelNumber(dni)=${channelNumber(dni)}"
 	delayBetweenLog(addRefreshCmds(cmdFromChild(channelNumber(dni), 0)))
 }
 
 def List childRefresh(dni)  {
-    if (debugLevel > "0") {
-		log.debug "refresh called in parent: dni=${dni} channelNumber(dni)=${channelNumber(dni)}"
-    }
+	log.debug "refresh called in parent: dni=${dni} channelNumber(dni)=${channelNumber(dni)}"
 	delayBetweenLog(addRefreshCmds([]))
 }
 
@@ -1808,9 +1795,7 @@ private channelNumber(String dni) {
 // On or Off from a child device. Take action depending on which type of child device
 private List cmdFromChild(int childNo, int val) {
 	def rslt = []
-	if (debugLevel > "0") {
-	    log.debug "+++++ cmdFromChild: childNo:$childNo  val:$val"
-    }
+    log.debug "+++++ cmdFromChild: childNo:$childNo  val:$val"
 
     switch (childNo) {
         case 1:
