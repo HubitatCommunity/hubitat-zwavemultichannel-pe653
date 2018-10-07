@@ -642,7 +642,7 @@ def parse(String description) {
             command = command1.split(',')[0]
             payloadStr = description.split('payload:')[1]
             } catch (e) {
-                log.warn("..... Exception in Parse() ${cmd} - description:${description} exceptioon ${e}")
+                log.warn("..... Exception in Parse() ${cmd} - description:${description} exception ${e}")
             }
         //			log.debug "command: ${command}   payloadStr: ${payloadStr}"
         if (command.contains("9100")) {
