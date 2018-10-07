@@ -63,11 +63,14 @@
  *									Fix Light Color slider
  *	3.06	08/30/2018	KeithR26	Make temperature events visible
  *									Suppress redundant events
+ *  3.07	10/xx/2018  Tooluser    Standardize on strings rather than HubActions
+ *                                  Standardize logging
+ *.                                 Add event for forcing deletion and recreation of child devices
 */
-def getVERSION () {"Ver 3.07"}		// Keep track of handler version
+def getVERSION () {"Ver 3.07a"}
 
 metadata {
-	definition (name: "Intermatic Pool Control System", author: "KeithR26", namespace:  "KeithR26") {
+	definition (name: "Intermatic Pool Control System", author: "tooluser", namespace:  "KeithR26") {
         capability "Actuator"
 		capability "Switch"
 		capability "Polling"
