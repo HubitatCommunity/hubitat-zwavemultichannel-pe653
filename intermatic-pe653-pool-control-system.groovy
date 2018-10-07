@@ -147,6 +147,7 @@ metadata {
         command "resetSchedule", ["number","number"]
         command "setVSPSpeeds"
         command "updated"
+		command "recreateChildren"
         
 		fingerprint deviceId: "0x1001", inClusters: "0x91,0x73,0x72,0x86,0x81,0x60,0x70,0x85,0x25,0x27,0x43,0x31", outClusters: "0x82"
 	}
@@ -1272,6 +1273,14 @@ def List updated() {
 	sendHubCommand(cmds,0)
 //	log.debug devStr
     return []
+}
+
+def recreateChildren() {
+	log.trace("+++++ recreateChildren")
+	def children = getChildDevices()
+	log.trace("----- recreateChildren - deleting ${children}")
+	removeChildDevices(children)
+	createChildDevices()
 }
 
 def List configure() {
