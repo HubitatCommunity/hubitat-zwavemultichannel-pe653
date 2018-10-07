@@ -1834,15 +1834,15 @@ def List addRefreshCmds(List cmds)  {
 
 // Called by switch presses on the circuit buttons.
 def List on1()  { delayBetweenLog(addRefreshCmds(setChanState(1, 0xFF))) }
-def List on2()  { delayBetweenLog(addRefreshCmds(setChanState(2, 0xFF))) }
+def List on2()  { delayBetweenLog(addRefreshCmds(setChanStateAndGet(2, 0xFF))) }
 def List on3()  { delayBetweenLog(addRefreshCmds(setChanState(3, 0xFF))) }
 def List on4()  { delayBetweenLog(addRefreshCmds(setChanState(4, 0xFF))) }
-def List on5()  { delayBetweenLog(addRefreshCmds(setChanState(5, 0xFF))) }
+def List on5()  { delayBetweenLog(addRefreshCmds(setChanStateAndGet(5, 0xFF))) }
 def List off1() { delayBetweenLog(addRefreshCmds(setChanState(1, 0))) }
-def List off2() { delayBetweenLog(addRefreshCmds(setChanState(2, 0))) }
+def List off2() { delayBetweenLog(addRefreshCmds(setChanStateAndGet(2, 0))) }
 def List off3() { delayBetweenLog(addRefreshCmds(setChanState(3, 0))) }
 def List off4() { delayBetweenLog(addRefreshCmds(setChanState(4, 0))) }
-def List off5() { delayBetweenLog(addRefreshCmds(setChanState(5, 0))) }
+def List off5() { delayBetweenLog(addRefreshCmds(setChanStateAndGet(5, 0))) }
 
 // May be called by CoRE
 def List setVSPSpeed(sp)       {delayBetweenLog(addRefreshCmds(setVSPSpeedInternal(sp))) }
