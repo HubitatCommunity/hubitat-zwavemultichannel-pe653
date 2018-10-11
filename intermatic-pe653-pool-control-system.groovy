@@ -1824,7 +1824,7 @@ def delayResponseLog(parm, dly=DELAY, responseFlg=true) {
 
 // Called from all commands
 def delayBetweenLog(parm, dly=DELAY, responseFlg=false) {
-//	log("DEBUG", "delayBetweenLog parm[${parm.size}] dly=$dly responseFlg=${responseFlg}")
+	log("DEBUG", "+++++ delayBetweenLog parm[${parm.size}] dly=$dly responseFlg=${responseFlg}")
 	def lst = parm
 	def cmds =[]
 	def evts =[]
@@ -1834,15 +1834,17 @@ def delayBetweenLog(parm, dly=DELAY, responseFlg=false) {
     if (!(parm in List)) {
     	lst = [parm]
     }
-    lst.each {l ->
+    lst.eachWithIndex {l, index ->
 	    if (l instanceof List) {
-			log("WARN", "UNEXPECTED instanceOf List: l -> ${l}")
+			log("WARN", "  - UNEXPECTED instanceOf List: l -> ${l}")
         } else if (l in List) {
-			log("WARN", "UNEXPECTED in LIST: l -> ${l}")
+			log("WARN", "  - UNEXPECTED in LIST: l -> ${l}")
         } else {
-			log("TRACE", "l -> ${l}")
+			log("TRACE", "  - l -> ${l}")
         }
+
 		if (l instanceof hubitat.device.HubAction) {
+			log("TRACE", "  - ${index}: instanceof hubitat.device.HubAction")
             if (cmds) {
 				def c = cmds.last()			//check if there is already a delay prior to this
 	            if (!(c instanceof String || c instanceof GString) || c.take(6) != "delay ") {
@@ -1852,19 +1854,19 @@ def delayBetweenLog(parm, dly=DELAY, responseFlg=false) {
             }
             cmds << l
             devStr = devStr.concat("\n\t\t\t<<<<< HubAction: $l")
-//        	log("TRACE", "instanceof hubitat.device.HubAction")
         } else if (l instanceof String || l instanceof GString) {
-        	if (l.take(5) == "Note:") {
+			log("TRACE", "  - ${index}: String: $l")
+			if (l.take(5) == "Note:") {
                 evtStr = evtStr.concat("\n<<<<< ${l.drop(5)}")
             } else {
                 cmds << l
                 devStr = devStr.concat(", ${l}")
             }
-//            log("TRACE", "## String: $l")
         } else if (l instanceof List) {
-            cmds << l
-//            log("TRACE", "#### LIST: $l")
+			log("TRACE", "  - ${index}: LIST: $l, adding commands")
+			cmds << l
         } else if (l instanceof Map) {
+			log("TRACE", "  - ${index}: Map: $l")
 			// example:	createEvent(name: "$sw", value: "$myParm", isStateChange: true, displayed: true, descriptionText: "($sw set to $myParm)")
 			if ("${device.currentValue(l.name)}".equals("${l.value}")) {
 				log("DEBUG", 2, "<<<<< Event unnecessary. name:${l.name}  evt: \"${l.value}\" ==> dev:(${device.currentValue(l.name)})")
@@ -1873,9 +1875,9 @@ def delayBetweenLog(parm, dly=DELAY, responseFlg=false) {
                 evts << l
                 evtStr = evtStr.concat("\n<<<<< Event: $l")
             }
-//            log("TRACE", "## Map: $l")
         } else {
-        	if (responseFlg) {
+			log("TRACE", "  - ${index}: else: HubAction: $l, format()=$fmt")
+			if (responseFlg) {
 	            fmt = response(l)
             } else {
 	            fmt = l.format()
@@ -1889,12 +1891,17 @@ def delayBetweenLog(parm, dly=DELAY, responseFlg=false) {
             }
             devStr = devStr.concat("\n\t\t\t Dev cmd: $l  --> $fmt")
             cmds << fmt
-//			log("TRACE", "## HubAction: $l,   format()=$fmt")
         }
     }
     evts.addAll(cmds)
+
 	if (evts) {
 		log("DEBUG", "<<<<< rspFlg=${responseFlg} dly:$dly/${DELAY}${evtStr}${devStr}")
+		def eventsList = ""
+		evts.eachWithIndex { event, index ->
+			eventsList = eventsList.concat("\t\t\t\t${index}: ${event}\n")
+		}
+		log("DEBUG", 2, "  - Events as sent: \n${eventsList}")
 		evts
     } else {
 		log("DEBUG", 2, "<<<<< rspFlg=${responseFlg} dly:$dly/${DELAY} No Commands or Events")
