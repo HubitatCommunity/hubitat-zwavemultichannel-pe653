@@ -1977,3 +1977,12 @@ def delayBetweenLog(parm, dly=DELAY, responseFlg=false) {
     	null
     }
 }
+
+private log(String type, Integer level = 1, String message) {
+	if (level == 0) { return }
+	if ( ! (debugLevel.any { element -> (element as int) >= (level as int)})) { return }
+	if ( ! ["ERROR", "WARN", "INFO", "DEBUG", "TRACE"].contains(type.toUpperCase())) { return }
+
+	def logType = type.toLowerCase()
+	log."$logType"(message)
+}
