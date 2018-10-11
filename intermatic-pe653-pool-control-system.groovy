@@ -143,7 +143,8 @@ metadata {
         command "setSchedule", ["number","number","number","number","number","number"]
         command "resetSchedule", ["number","number"]
         command "setVSPSpeeds"
-//        command "updated"
+		command "insertLogTrace"
+//		command "updated"
         
 		fingerprint deviceId: "0x1001", inClusters: "0x91,0x73,0x72,0x86,0x81,0x60,0x70,0x85,0x25,0x27,0x43,0x31", outClusters: "0x82"
 	}
@@ -526,6 +527,9 @@ metadata {
 		}
         standardTile("refresh", "device.switch", width: 1, height: 1, inactiveLabel: false, decoration: "flat") {
 			state "default", label:'', action:"refresh.refresh", icon:"st.secondary.refresh"
+		}
+		standardTile("insertLogTrace", "something", width: 6, height: 1, inactiveLabel: false, decoration: "flat") {
+			state "default", label:"Insert Trace in Log", action: "insertLogTrace"
 		}
 		valueTile("clock", "device.clock", width: 2, height: 1, inactiveLabel: false, decoration: "flat") {
 			state "clockName", label:'${currentValue}', backgroundColor:"#ffffff", action: "setClock"
@@ -1766,6 +1770,15 @@ private List cmdFromChild(int childNo, int val) {
 def List addRefreshCmds(List cmds)  {
 	cmds.addAll(getRefreshCmds())
     cmds
+}
+
+private List insertLogTrace() {
+	cal = Calendar.getInstance(location.timeZone)
+	def time = "${String.format("%02d", cal.get(Calendar.HOUR_OF_DAY))}" + ":" +
+			"${String.format("%02d", cal.get(Calendar.MINUTE))}" + ":" +
+			"${String.format("%02d", cal.get(Calendar.SECOND))}"
+	log.info("----------------------- ${time} -----------------------")
+	null
 }
 
 // Called by switch presses on the circuit buttons.
