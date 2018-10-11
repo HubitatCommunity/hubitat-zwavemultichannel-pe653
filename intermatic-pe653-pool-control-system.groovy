@@ -19,7 +19,7 @@
  *
  *  Don't use SamrtThings Multi-channel (deprecated) or Cooper Lee's code (vTile_ms, ms_w_vts). These are incompatible
  *  with the Composite DTH architecture.
- * 
+ *
  *  To convert to Hubitat:
  *  1. Replace All: "physicalgraph." with "hubitat."
  *  2. around line 1330, Comment out ST lines, comment in HE lines
@@ -156,7 +156,7 @@ metadata {
                      [4:"Variable Speed pump Speed-2"],
                      [5:"Variable Speed pump Speed-3"],
                      [6:"Variable Speed pump Speed-4"]]
-        input "operationMode2", "enum", title: "Pump Type", 
+        input "operationMode2", "enum", title: "Pump Type",
             options:[[0:"1 Speed Pump without Booster/Cleaner"],
                      [1:"1 Speed Pump with Booster/Cleaner"],
                      [2:"2 Speed Pump without Booster/Cleaner"],
@@ -359,7 +359,7 @@ metadata {
 
 	// tile definitions
 	tiles(scale: 2) {
-    
+
 		valueTile("mainTile", "device.temperature", width: 2, height: 2, inactiveLabel: true ) {
 			state "temperature", label:'${currentValue}°', action: "quickGetWaterTemp",icon: "st.Health & Wellness.health2",
 					backgroundColors:[
@@ -543,7 +543,7 @@ metadata {
         standardTile("blank3", "device.blank3", width: 1, height: 1, decoration: "flat") {
 			state "on",     label: "", icon: "st.Health & Wellness.health2",  backgroundColor: "#ffffff"
 		}
-        
+
 	main "mainTile"
         details([
             "blank3",
@@ -553,7 +553,7 @@ metadata {
             "swVSP1","swVSP2","swVSP3","swVSP4",
 			"poolSetpoint", "poolSliderControl",
             "swM1", "M1Name",
-            "spaSetpoint", "spaSliderControl", 
+            "spaSetpoint", "spaSliderControl",
             "swM2", "M2Name",
             "lightColor","lightColorSliderControl",
             "swM3", "M3Name",
@@ -602,7 +602,7 @@ def getEP_FROM_SCHED_PARM (int paramNum) {
     return 0
 }
 // Return the list supported command classes by PE653. The following are the versions for firmware v3.4
-// ccVersions: {"20":1,"25":1,"27":1,"31":1,"43":1,"60":2,"70":1,"72":1,"73":1,"81":1,"85":1,"86":1,"91":1} 
+// ccVersions: {"20":1,"25":1,"27":1,"31":1,"43":1,"60":2,"70":1,"72":1,"73":1,"81":1,"85":1,"86":1,"91":1}
 def getSupportedCmdClasses () {[
 	0x20,	//	Basic
 	0x25,	//	Switch Binary
@@ -652,7 +652,7 @@ def parse(String description) {
 				log("WARN", "..... Exception in zwave.parse() ${cmd} - description:${description} exceptioon ${e}")
             }
             if (cmd) {
-				log("DEBUG", 2, ">>>>> ${cmd} - description:$description ")
+				log("DEBUG", 2, "----- ${cmd} - description:$description ")
                 result = zwaveEvent(cmd)
             } else {
 				log("WARN", "----- Parse() parsed to NULL:  description:$description")
@@ -754,7 +754,7 @@ def zwaveEvent(hubitat.zwave.commands.clockv1.ClockReport cmd) {
 
 def zwaveEvent(hubitat.zwave.commands.thermostatsetpointv1.ThermostatSetpointSupportedReport cmd) {
 	log("DEBUG", "thermostatSetpointSupportedReport !!!")
-	def cmds = []   
+	def cmds = []
 	cmds
 }
 
@@ -898,7 +898,7 @@ def process87Event(byte [] payload) {
 	rslt
 }
 
-// ManufacturerSpecificReport(manufacturerId: 5, manufacturerName: Intermatic, productId: 1619, productTypeId: 20549) 
+// ManufacturerSpecificReport(manufacturerId: 5, manufacturerName: Intermatic, productId: 1619, productTypeId: 20549)
 def zwaveEvent(hubitat.zwave.commands.manufacturerspecificv1.ManufacturerSpecificReport cmd) {
 	state.ManufacturerInfo = "ManufacturerInfo:  manufacturerId: $cmd.manufacturerId, manufacturerName: $cmd.manufacturerName, productId: $cmd.productId, productTypeId: $cmd.productTypeId"
     log("DEBUG", "ManufacturerSpecificReport:  ${state.ManufacturerInfo}")
@@ -950,7 +950,7 @@ def zwaveEvent(hubitat.zwave.commands.configurationv2.ConfigurationReport cmd) {
         } else {
 	        lst = [ep, sch]
             for (def i=0;i<=2;i+=2) {
-                int tim = cmd.configurationValue[i+1] * 256 + cmd.configurationValue[i]           
+                int tim = cmd.configurationValue[i+1] * 256 + cmd.configurationValue[i]
                 lst << tim.intdiv(60)
                 lst << tim % 60
             }
@@ -968,7 +968,7 @@ def zwaveEvent(hubitat.zwave.commands.configurationv2.ConfigurationReport cmd) {
 	}
 	cmds
 }
-	
+
 def zwaveEvent(hubitat.zwave.commands.sensormultilevelv1.SensorMultilevelReport cmd) {
     def map = [:]
     map.value = cmd.scaledSensorValue.toString()
@@ -1094,7 +1094,7 @@ def zwaveEventMultiCmdEncap(cmd) {
             case POOL_SPA_CHAN:
                 sw = POOL_SPA_EP
                 break;
-                
+
             case getVSP_CHAN_NO(1):
             case getVSP_CHAN_NO(2):
             case getVSP_CHAN_NO(3):
@@ -1161,7 +1161,7 @@ private initUILabels() {
 	sendEvent(name: "M2Name", value: (M2Label ? "${M2Label}" : ""), isStateChange: true, displayed: false, descriptionText: "init M2 Label to ${M2Label}")
 	sendEvent(name: "M3Name", value: (M3Label ? "${M3Label}" : ""), isStateChange: true, displayed: false, descriptionText: "init M3 Label to ${M3Label}")
 	sendEvent(name: "M4Name", value: (M4Label ? "${M4Label}" : ""), isStateChange: true, displayed: false, descriptionText: "init M4 Label to ${M4Label}")
-    
+
 	val = VSP_ENABLED ? "off" : "disabled"
    	sendEvent(name: "swVSP1", value: val, displayed: false, descriptionText:"")
    	sendEvent(name: "swVSP2", value: val, displayed: false, descriptionText:"")
@@ -1176,7 +1176,7 @@ private initUILabels() {
 def List refresh() {
 	log("DEBUG", "+++++ refresh()  DTH:${VERSION}  state.Versioninfo=${state.VersionInfo}")
     def cmds = []
-    
+
 //	cmds << zwave.thermostatSetpointV1.thermostatSetpointGet(setpointType: 1)
 //	cmds << zwave.thermostatSetpointV1.thermostatSetpointGet(setpointType: 7)
 
@@ -1315,7 +1315,7 @@ private Object addOrReuseChildDevice(childNo, name, List oldChildren){
 //			addChildDevice("erocm123", "Switch Child Device", dni, null,
 //            				[completedSetup: true, label: name,
 //                            isComponent: false, componentName: "ep${childNo}", componentLabel: "Switch ${childNo}"])
-//Hubitat                            
+//Hubitat
 			addChildDevice("erocm123", "Switch Child Device", dni,
 							[isComponent: false, name: "ep${childNo}", label: "Switch ${childNo}"])
         } catch (e) {
@@ -1468,7 +1468,7 @@ List setVSPSpeeds(Integer rpm1, Integer rpm2, Integer rpm3, Integer rpm4, Intege
         } else {
     		cmds.addAll(setConfiguration(getVSP_RPMMAX_SCHED_PARAM(), 2, spd.intdiv(256), (spd % 256), 0, 0))
         }
-	}    
+	}
 	delayBetweenLog(cmds)
 }
 
@@ -1852,7 +1852,7 @@ def delayBetweenLog(parm, dly=DELAY, responseFlg=false) {
             cmds << l
 //            log("TRACE", "#### LIST: $l")
         } else if (l instanceof Map) {
-// example:	createEvent(name: "$sw", value: "$myParm", isStateChange: true, displayed: true, descriptionText: "($sw set to $myParm)")
+			// example:	createEvent(name: "$sw", value: "$myParm", isStateChange: true, displayed: true, descriptionText: "($sw set to $myParm)")
 			if ("${device.currentValue(l.name)}".equals("${l.value}")) {
 				log("DEBUG", 2, "<<<<< Event unnecessary. name:${l.name}  evt: \"${l.value}\" ==> dev:(${device.currentValue(l.name)})")
             } else {
