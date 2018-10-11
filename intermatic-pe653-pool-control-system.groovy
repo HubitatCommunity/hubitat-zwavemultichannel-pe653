@@ -1838,7 +1838,7 @@ def delayBetweenLog(parm, dly=DELAY, responseFlg=false) {
                 }
             }
             cmds << l
-            devStr = devStr.concat("\n<<<<< HubAction: $l")
+            devStr = devStr.concat("\n\t\t\t<<<<< HubAction: $l")
 //        	log("TRACE", "instanceof hubitat.device.HubAction")
         } else if (l instanceof String || l instanceof GString) {
         	if (l.take(5) == "Note:") {
@@ -1874,7 +1874,7 @@ def delayBetweenLog(parm, dly=DELAY, responseFlg=false) {
     	            devStr = devStr.concat(", delay $dly")
                 }
             }
-            devStr = devStr.concat("\n<<<<< Dev cmd: $l  --> $fmt")
+            devStr = devStr.concat("\n\t\t\t Dev cmd: $l  --> $fmt")
             cmds << fmt
 //			log("TRACE", "## HubAction: $l,   format()=$fmt")
         }
