@@ -840,6 +840,7 @@ def process84Event(byte [] payload) {
     Integer temp
 
 	def swMap = ['1':1, '2':2, '3':4, '4':8, '5':16]
+	log("DEBUG", "payload for switches is ${payload[SWITCHES_84]}")
 	for (sw in swMap) {
     	if (payload[SWITCHES_84] & sw.value) {
             val = 0xFF
@@ -896,7 +897,7 @@ def getCLOCK_HOUR_87 () { 24 }				// Clock Hour
 // Received a ManufacturerProprietary message. Pull the important details and update the UI controls
 
 def process87Event(byte [] payload) {
-//	log("DEBUG", "process87Event payload: ${payload}")
+	log("DEBUG", "+++++ process87Event payload: ${payload}")
     def rslt = []
     def val = ((payload[HEATER_87] & 0x04) == 0) ? "off" : "on"
     rslt << createEvent(name: "heater", value: "$val", isStateChange: true, displayed: true, descriptionText: "Heater is ${val}")
@@ -1035,6 +1036,7 @@ def zwaveEvent(hubitat.zwave.commands.basicv1.BasicReport cmd) {
 }
 
 def zwaveEvent(hubitat.zwave.commands.basicv1.BasicSet cmd) {
+	log("DEBUG", "+++++ BasicSet cmd=${cmd}")
     def result = []
     if (cmd.value == 0) {
 		result = createEvent(name: "switch", value: "off")
@@ -1045,6 +1047,7 @@ def zwaveEvent(hubitat.zwave.commands.basicv1.BasicSet cmd) {
 }
 
 def zwaveEvent(hubitat.zwave.commands.basicv1.BasicGet cmd) {
+	log("DEBUG", "+++++ BasicGet cmd=${cmd}")
     def cmds = []
 	int val = device.currentValue("switch1").equals("on") ? 0xFF : 0
     cmds << zwave.basicV1.basicReport(value: val)
@@ -1070,7 +1073,7 @@ def zwaveEvent(hubitat.zwave.commands.associationv2.AssociationGroupingsReport c
 
 // Multi-channel event from the device. Version 1 of Command Class
 def zwaveEvent(hubitat.zwave.commands.multiinstancev1.MultiInstanceCmdEncap cmd) {
-	log("DEBUG", "multiinstancev1.MultiInstanceCmdEncap cmd=${cmd}")
+	log("DEBUG", "+++++ multiinstancev1.MultiInstanceCmdEncap cmd=${cmd}")
 	zwaveEventMultiCmdEncap(cmd)
 }
 /*
@@ -1080,9 +1083,10 @@ def zwaveEvent(hubitat.zwave.commands.multichannelv3.MultiInstanceCmdEncap cmd) 
 	zwaveEventMultiCmdEncap(cmd)
 }
 */
+
 // Multi-channel event from the device, common method.
 def zwaveEventMultiCmdEncap(cmd) {
-	log("DEBUG", "zwaveEventCmdEncap cmd=${cmd}")
+	log("DEBUG", "+++++ zwaveEventMultiCmdEncap cmd=${cmd}")
 	def rslt = []
     def String myStr = (cmd.parameter[0] == 0) ? "off": "on"
     def sw = 0
@@ -1130,7 +1134,7 @@ private List createMultipleEvents (Integer endpoint, Integer externalParm, Strin
 
     def dni = "${device.deviceNetworkId}-ep${endpoint}"
 	def devObj = getChildDevices()?.find { it.deviceNetworkId == dni }
-	//	log("DEBUG", "CME: devObj = ${devObj}")
+	log("DEBUG", "----- createMultipleEvents: devObj = ${devObj}")
 	if (devObj) {
     	if (devObj.currentValue("switch") == "$myParm") {
 	    	log("DEBUG", 2, "<<<<< Child Event unnecessary. name:$dni:$swName evt: \"${myParm}\" ==> dev (${devObj.currentValue("switch")})")
