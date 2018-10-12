@@ -1720,15 +1720,6 @@ private List multichannelSwitchEvent(ch, on) {
 	"6006" + channelString + "2501" + onOff
 }
 
-// Set switch state and request report back
-private List setChanStateAndGet(ch, on) {
-	log("DEBUG", "+++++ setChanStateAndGet($ch, $on)")
-	def cmds = []
-	cmds = setChanState(ch, on)
-    cmds.addAll(getChanState(ch))
-	cmds
-}
-
 def List childOn(dni)  {
 	log("DEBUG", "childOn called in parent: dni=${dni} channelNumber(dni)=${channelNumber(dni)}")
 	delayBetweenLog(addRefreshCmds(cmdFromChild(channelNumber(dni), 0xFF)))
