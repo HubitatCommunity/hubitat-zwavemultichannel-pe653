@@ -145,7 +145,7 @@ metadata {
         command "setVSPSpeeds"
 		command "insertLogTrace"
 //		command "updated"
-        
+
 		fingerprint deviceId: "0x1001", inClusters: "0x91,0x73,0x72,0x86,0x81,0x60,0x70,0x85,0x25,0x27,0x43,0x31", outClusters: "0x82"
 	}
 
@@ -819,18 +819,19 @@ def zwaveEventManufacturerProprietary(byte [] payload, payloadStr) {
 	rslt
 }
 
-	def getCLOCK_MINUTE_84 () { 16 }			// Clock Minute
-	def getCLOCK_HOUR_84 () { 15 }				// Clock Hour
-	def getWATER_TEMP_84 () { 12 }				// Water Temperature
-	def getAIR_TEMP_FREEZE_84 () { 13 }			// Air Temperature for Freeze sensing
-	def getAIR_TEMP_SOLAR_84 () { 14 }			// Air Temperature for Solar control
-	def getSWITCHES_84 () { 8 }					// Bit mask of 5 switches. SW1 = 01X, SW5 = 10X
-	def getPOOL_SPA_MODE_84 () { 11 }			// Pool/Spa mode. 01x Pool mode, 00x Spa mode
-	def getVSP_SPEED_84 () { 20 }				// VSP Speed bit mask. 01x = VSP1, 08x = VSP4
+def getCLOCK_MINUTE_84 () { 16 }			// Clock Minute
+def getCLOCK_HOUR_84 () { 15 }				// Clock Hour
+def getWATER_TEMP_84 () { 12 }				// Water Temperature
+def getAIR_TEMP_FREEZE_84 () { 13 }			// Air Temperature for Freeze sensing
+def getAIR_TEMP_SOLAR_84 () { 14 }			// Air Temperature for Solar control
+def getSWITCHES_84 () { 8 }					// Bit mask of 5 switches. SW1 = 01X, SW5 = 10X
+def getPOOL_SPA_MODE_84 () { 11 }			// Pool/Spa mode. 01x Pool mode, 00x Spa mode
+def getVSP_SPEED_84 () { 20 }				// VSP Speed bit mask. 01x = VSP1, 08x = VSP4
 
 // Received a ManufacturerProprietary message. Pull the important details and update the UI controls
+
 def process84Event(byte [] payload) {
-//	log("DEBUG", "process84Event payload: ${payload}")
+	log("DEBUG", "+++++ process84Event payload: ${payload}")
     def rslt = []
     def map = [:]
 	def str = ""
@@ -888,11 +889,12 @@ def process84Event(byte [] payload) {
 	rslt
 }
 
-	def getHEATER_87 () { 15 }					// Heater. 04x = on, 00x = off
-	def getCLOCK_MINUTE_87 () { 25 }			// Clock Minute
-	def getCLOCK_HOUR_87 () { 24 }				// Clock Hour
+def getHEATER_87 () { 15 }					// Heater. 04x = on, 00x = off
+def getCLOCK_MINUTE_87 () { 25 }			// Clock Minute
+def getCLOCK_HOUR_87 () { 24 }				// Clock Hour
 
 // Received a ManufacturerProprietary message. Pull the important details and update the UI controls
+
 def process87Event(byte [] payload) {
 //	log("DEBUG", "process87Event payload: ${payload}")
     def rslt = []
@@ -1320,8 +1322,10 @@ private Object addOrReuseChildDevice(childNo, name, List oldChildren){
 //            				[completedSetup: true, label: name,
 //                            isComponent: false, componentName: "ep${childNo}", componentLabel: "Switch ${childNo}"])
 //Hubitat
-			addChildDevice("erocm123", "Switch Child Device", dni,
-							[isComponent: false, name: "ep${childNo}", label: "Switch ${childNo}"])
+			addChildDevice("erocm123",
+					"Switch Child Device",
+					dni,
+					[isComponent: false, name: "ep${childNo}", label: "Switch ${childNo}"])
         } catch (e) {
 			log("DEBUG", "addChildDevice failed: ${e}")
         }
