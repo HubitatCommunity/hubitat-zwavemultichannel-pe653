@@ -1714,7 +1714,7 @@ private List setChanState(ch, on) {
 // Temporarily provide encoded MultiInstanceCommandEncapsulation manually while v1.1.5 of HE firmware has it broken.
 // MultiInstanceCmdEncap command class is 6006
 // switchBinarySet command is 2501
-private List multichannelSwitchEvent(ch, on) {
+private String multichannelSwitchEvent(ch, on) {
 	def onOff = (on ? "FF" : "00")
 	def channelString = ch.toString().padLeft(2, "0")
 	"6006" + channelString + "2501" + onOff
@@ -1828,6 +1828,30 @@ def List setColor()				{addRefreshCmds(delayBetweenLog(cmds)) }
 // Called from Parse for responses from the device
 def delayResponseLog(parm, dly=DELAY, responseFlg=true) {
 	delayBetweenLog(parm, dly, responseFlg)
+}
+
+private logCommandList(commands) {
+	def eventsList = ""
+	commands.eachWithIndex { cmd, index ->
+		eventsList = eventsList.concat("\t\t\t\t${index}: ${cmd}\n")
+	}
+	log("DEBUG", 2, "  - Events as sent: \n${eventsList}")
+}
+
+private List refreshCommandStrings() { ["910005400102870301", "910005400101830101"] }
+private List refreshCommandHubitatActions() { refreshCommandStrings().collect { new hubitat.device.HubAction(it) } }
+
+private List executeCommands(commands, refreshControls = false) {
+	log("DEBUG", 2, "+++++ executeCommands")
+	logCommandList(commands)
+
+	if (refreshControls) {
+		commands += refreshCommandStrings()
+	}
+
+	log("DEBUG", 2, "----- executeCommands final set:")
+	logCommandList(commands)
+	delayBetween(commands)
 }
 
 // Called from all commands
