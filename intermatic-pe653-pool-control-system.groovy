@@ -1722,12 +1722,12 @@ private String multichannelSwitchEvent(ch, on) {
 
 def List childOn(dni)  {
 	log("DEBUG", "childOn called in parent: dni=${dni} channelNumber(dni)=${channelNumber(dni)}")
-	delayBetweenLog(addRefreshCmds(cmdFromChild(channelNumber(dni), 0xFF)))
+	this."on${channelNumber(dni)}"()
 }
 
 def List childOff(dni)  {
 	log("DEBUG", "childOff called in parent: dni=${dni} channelNumber(dni)=${channelNumber(dni)}")
-	delayBetweenLog(addRefreshCmds(cmdFromChild(channelNumber(dni), 0)))
+	this."off${channelNumber(dni)}"()
 }
 
 def List childRefresh(dni)  {
