@@ -1790,16 +1790,16 @@ private List insertLogTrace() {
 }
 
 // Called by switch presses on the circuit buttons.
-def List on1()  { delayBetweenLog(addRefreshCmds(setChanState(1, 0xFF))) }
-def List on2()  { delayBetweenLog(addRefreshCmds(setChanState(2, 0xFF))) }
-def List on3()  { delayBetweenLog(addRefreshCmds(setChanState(3, 0xFF))) }
-def List on4()  { delayBetweenLog(addRefreshCmds(setChanState(4, 0xFF))) }
-def List on5()  { delayBetweenLog(addRefreshCmds(setChanState(5, 0xFF))) }
-def List off1() { delayBetweenLog(addRefreshCmds(setChanState(1, 0))) }
-def List off2() { delayBetweenLog(addRefreshCmds(setChanState(2, 0))) }
-def List off3() { delayBetweenLog(addRefreshCmds(setChanState(3, 0))) }
-def List off4() { delayBetweenLog(addRefreshCmds(setChanState(4, 0))) }
-def List off5() { delayBetweenLog(addRefreshCmds(setChanState(5, 0))) }
+def List on1()  { executeCommands(setChanState(1, 0xFF), true) }
+def List on2()  { executeCommands(setChanState(2, 0xFF), true) }
+def List on3()  { executeCommands(setChanState(3, 0xFF), true) }
+def List on4()  { executeCommands(setChanState(4, 0xFF), true) }
+def List on5()  { executeCommands(setChanState(5, 0xFF), true) }
+def List off1() { executeCommands(setChanState(1, 0), true) }
+def List off2() { executeCommands(setChanState(2, 0), true) }
+def List off3() { executeCommands(setChanState(3, 0), true) }
+def List off4() { executeCommands(setChanState(4, 0), true) }
+def List off5() { executeCommands(setChanState(5, 0), true) }
 
 // May be called by CoRE
 def List setVSPSpeed(sp)       {delayBetweenLog(addRefreshCmds(setVSPSpeedInternal(sp))) }
