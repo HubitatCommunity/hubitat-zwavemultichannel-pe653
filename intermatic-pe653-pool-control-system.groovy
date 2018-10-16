@@ -593,14 +593,12 @@ def getSWITCH_NAME (int instance) {
 	def swNames = ["switch1","switch2","switch3","switch4","switch5","poolSpaMode","swVSP1","swVSP2","swVSP3","swVSP4"]
 	return swNames[instance - 1]
 }
-
 def getSCHED_PARAM (int ep, int sch) {
 	if (ep >= 1 && ep <= 5)  {return getSWITCH_SCHED_PARAM(ep, sch)}
 	if (ep == 6)             {return getPOOL_SPA_SCHED_PARAM(sch)}
 	if (ep >= 7 && ep <= 10) {return getVSP_SCHED_PARAM(ep-6, sch)}
 	return 0
 }
-
 def getEP_FROM_SCHED_PARM (int paramNum) {
 	if (paramNum >= getSCHED_PARAM (1, 1) && paramNum <= getSCHED_PARAM (5, 3))   {return ((paramNum - getSCHED_PARAM(1,1)).intdiv(3) + 1)}
 	if (paramNum >= getSCHED_PARAM (6, 1) && paramNum <= getSCHED_PARAM (6, 3))   {return 6}
@@ -646,7 +644,7 @@ def parse(String description) {
 			} catch (e) {
 				log("ERROR", "..... Exception in Parse() ${cmd} - description:${description} exception ${e}")
 			}
-		// log("DEBUG", "command: ${command}   payloadStr: ${payloadStr}")
+			// log("DEBUG", "command: ${command}   payloadStr: ${payloadStr}")
 		if (command.contains("9100")) {
 			payload = payloadStr.replace(" ","").decodeHex()
 			log("DEBUG", 0, ">>>>> unParsed cmd - description:$description ")
@@ -670,10 +668,10 @@ def parse(String description) {
 	delayResponseLog(result)
 }
 
-private List setPoolSetpointInternal(Double degrees) {
+private setPoolOrSpaSetpoint(Double degrees, Integer setpointType) {
 	//	Z-Wave standard values for thermostatSetpointSet
 	//	precision:		0=no decimal digits, 1=1 decimal digit, 2=2 decimal digits
-	//	scale:			0=Celsius, 1=Farhenheit
+	//	scale:			0=Celsius, 1=Farenheit
 	//	size:			1=8 bit, 2=16 bit, 4=32 bit
 	//	setpointType:	1=Heating (pool), 7=Furnace (spa)
 	def cmds = []
@@ -692,41 +690,26 @@ private List setPoolSetpointInternal(Double degrees) {
 	convertedDegrees = degrees
 	//    }
 	p = 0
-	state.poolSetpointTemp = degrees
-	//    log("DEBUG", "state = ${state}")
-	//    state.each {key, val ->
-	// 	   log("DEBUG", "state key: $key, value: $val")
-	//	}
+	if (setpointType == 1) {
+		state.poolSetpointTemp = degrees
+	} else if (setpointType == 7) {
+		state.spaSetpointTemp = degrees
+	}
 	//    deviceScale = 0			// Cannot send scale = 1 to v3.4 PE653 or it will ignore the request
 	//    deviceScale = deviceScale ? 0 : 1	// Invert deviceScale to be able to test v34.14 firmware
-	cmds << zwave.thermostatSetpointV1.thermostatSetpointSet(setpointType: 1, scale: deviceScale, precision: p, size: 1, scaledValue: convertedDegrees)
-	cmds << zwave.thermostatSetpointV1.thermostatSetpointGet(setpointType: 1)
+	cmds << zwave.thermostatSetpointV1.thermostatSetpointSet(setpointType: setpointType, scale: deviceScale, precision: p, size: 1, scaledValue: convertedDegrees)
+	cmds << zwave.thermostatSetpointV1.thermostatSetpointGet(setpointType: setpointType)
 	cmds
 }
 
-private List setSpaSetpointInternal(Double degrees) {
-	def cmds = []
-	def deviceScale = state.scale != null ? state.scale : 1
-	def deviceScaleString = deviceScale == 2 ? "C" : "F"
-	def locationScale = getTemperatureScale()
-	def p = (state.precision == null) ? 1 : state.precision
-	log("debug", "setSpaSetpointInternal degrees=${degrees} incoming state.scale=${state.scale}  deviceScale=${deviceScale}")
+private List setPoolSetpointInternal(Double degrees) {
+	log("debug", "+++++ setPoolSetpointInternal() ${degrees}")
+	setPoolOrSpaSetpoint(degrees, 1)
+}
 
-	def convertedDegrees
-	// if (locationScale == "C" && deviceScaleString == "F") {
-	// 	convertedDegrees = celsiusToFahrenheit(degrees)
-	// } else if (locationScale == "F" && deviceScaleString == "C") {
-	// 	convertedDegrees = fahrenheitToCelsius(degrees)
-	// } else {
-	convertedDegrees = degrees
-	// }
-	p = 0
-	state.spaSetpointTemp = degrees
-	// deviceScale = 0			// Cannot send scale = 1 to PE653 ver 3.4 or it will ignore the request
-	// deviceScale = deviceScale ? 0 : 1	// Invert deviceScale to be able to test v34.14 firmware
-	cmds << zwave.thermostatSetpointV1.thermostatSetpointSet(setpointType: 7, scale: deviceScale, precision: p, size: 1, scaledValue: convertedDegrees)
-	cmds << zwave.thermostatSetpointV1.thermostatSetpointGet(setpointType: 7)
-	cmds
+private List setSpaSetpointInternal(Double degrees) {
+	log("debug", "+++++ setSpaSetpointInternal() ${degrees}")
+	setPoolOrSpaSetpoint(degrees, 7)
 }
 
 // Ask the controller for the water temperature
