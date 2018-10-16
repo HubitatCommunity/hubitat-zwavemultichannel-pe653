@@ -1150,7 +1150,7 @@ def zwaveEvent(hubitat.zwave.Command cmd) {
 // Called occasionally although not consistently
 def List poll() {
 	log("DEBUG", "+++++ poll()")
-	delayBetweenLog(addRefreshCmds([]))
+	executeCommands([], true)
 }
 
 private initUILabels() {
@@ -1194,7 +1194,7 @@ def List refresh() {
 		}
 	}
 
-	delayBetweenLog(addRefreshCmds(cmds))
+	executeCommands(cmds, true)
 }
 
 def List updated() {
