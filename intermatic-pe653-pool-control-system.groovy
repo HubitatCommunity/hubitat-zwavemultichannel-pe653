@@ -1884,7 +1884,11 @@ def delayBetweenLog(parm, dly=DELAY, responseFlg=false) {
     	            devStr = devStr.concat(", delay $dly")
                 }
             }
-            cmds << l
+			if (responseFlg) { // Keith's suggestion to handle the various types
+				cmds << l
+			} else {
+				cmds << l.toString()
+			}
             devStr = devStr.concat("\n\t\t\t<<<<< HubAction: $l")
         } else if (l instanceof String || l instanceof GString) {
 			log("TRACE", "  - ${index}: String: $l")
