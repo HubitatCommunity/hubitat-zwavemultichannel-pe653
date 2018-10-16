@@ -64,7 +64,7 @@
  *	3.06	08/30/2018	KeithR26	Make temperature events visible
  *									Suppress redundant events
 */
-def getVERSION () {"Ver 3.06"}		// Keep track of handler version
+def getVERSION () {"Ver 3.08a"}		// Keep track of handler version
 
 metadata {
 	definition (name: "Intermatic Pool Control System", author: "KeithR26", namespace:  "KeithR26") {
