@@ -728,7 +728,7 @@ private List setSpaSetpointInternal(Double degrees) {
 
 // Ask the controller for the water temperature
 private List getWaterTemp() {
-    log("debug", "getWaterTemp()")
+    log("debug", "+++++ getWaterTemp()")
     [zwave.sensorMultilevelV1.sensorMultilevelGet()]
 }
 
@@ -1543,7 +1543,7 @@ private List setSched(int paramNum, Integer val) {
 }
 
 private List setLightColorInternal(int col) {
-    log("DEBUG", "+++++ setColor ${col}")
+    log("DEBUG", "+++++ setLightColorInternal ${col}")
 	def cmds = []
     sendEvent(name: "lightColor", value: "${col}", isStateChange: true, displayed: true, descriptionText: "Color set to ${col}")
 	getColorChgCmds()
