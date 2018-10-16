@@ -64,7 +64,7 @@
  *	3.06	08/30/2018	KeithR26	Make temperature events visible
  *									Suppress redundant events
 */
-def getVERSION () {"Ver 3.08a"}		// Keep track of handler version
+def getVERSION () {"Ver 3.08"}		// Keep track of handler version
 
 metadata {
 	definition (name: "Intermatic Pool Control System", author: "KeithR26", namespace:  "KeithR26") {
@@ -816,7 +816,7 @@ def getVSP_SPEED_84 ()        { 20 }				// VSP Speed bit mask. 01x = VSP1, 08x =
 
 // Received a ManufacturerProprietary message. Pull the important details and update the UI controls
 
-def process84Event(byte [] payload) {
+private process84Event(byte [] payload) {
 	log("DEBUG", "+++++ process84Event payload: ${payload}")
 	def rslt = []
 	def map = [:]
@@ -876,13 +876,13 @@ def process84Event(byte [] payload) {
 	rslt
 }
 
-def getHEATER_87 () { 15 }					// Heater. 04x = on, 00x = off
-def getCLOCK_MINUTE_87 () { 25 }			// Clock Minute
-def getCLOCK_HOUR_87 () { 24 }				// Clock Hour
+private getHEATER_87 () { 15 }					// Heater. 04x = on, 00x = off
+private getCLOCK_MINUTE_87 () { 25 }			// Clock Minute
+private getCLOCK_HOUR_87 () { 24 }				// Clock Hour
 
 // Received a ManufacturerProprietary message. Pull the important details and update the UI controls
 
-def process87Event(byte [] payload) {
+private process87Event(byte [] payload) {
 	log("DEBUG", "+++++ process87Event payload: ${payload}")
 	def rslt = []
 	def val = ((payload[HEATER_87] & 0x04) == 0) ? "off" : "on"
