@@ -1814,16 +1814,16 @@ def List setMode2()            {delayBetweenLog(addRefreshCmds(setMode(2))) }
 def List setMode3()            {delayBetweenLog(addRefreshCmds(setMode(3))) }
 def List setMode4()            {delayBetweenLog(addRefreshCmds(setMode(4))) }
 
-def List setSpaMode()          {delayBetweenLog(addRefreshCmds(setSpaModeInternal())) }
-def List setPoolMode()         {delayBetweenLog(addRefreshCmds(setPoolModeInternal())) }
-def List togglePoolSpaMode()   {delayBetweenLog(addRefreshCmds(togglePoolSpaModeInternal())) }
+def List setSpaMode()          { executeCommands(setSpaModeInternal()) }
+def List setPoolMode()         { executeCommands(setPoolModeInternal()) }
+def List togglePoolSpaMode()   { executeCommands(togglePoolSpaModeInternal()) }
 
-def List quickSetSpa(degrees)  {delayBetweenLog(addRefreshCmds(setSpaSetpointInternal("${degrees}".toDouble())))}
-def List quickSetPool(degrees) {delayBetweenLog(addRefreshCmds(setPoolSetpointInternal("${degrees}".toDouble())))}
-def List quickGetWaterTemp()   {delayBetweenLog(addRefreshCmds(getWaterTemp())) }
-def List quickGetTestCmds()    {delayBetweenLog(addRefreshCmds(getTestCmds())) }
-def List setLightColor(int col){delayBetweenLog(addRefreshCmds(setLightColorInternal(col))) }
-def List setColor()				{addRefreshCmds(delayBetweenLog(cmds)) }
+def List quickSetSpa(degrees)  { executeCommands(setSpaSetpointInternal("${degrees}".toDouble()), true) }
+def List quickSetPool(degrees) { executeCommands(setPoolSetpointInternal("${degrees}".toDouble()), true) }
+def List quickGetWaterTemp()   { executeCommands(getWaterTemp(), true) } // unsure the refresh commands are necessary; it may be faster to forego them
+def List quickGetTestCmds()    { executeCommands(getTestCmds(), true) }
+def List setLightColor(int col){ executeCommands(setLightColorInternal(col), true) }
+//def List setColor()			   {addRefreshCmds(delayBetweenLog(cmds)) } // This seems poorly defined currently
 
 // Called from Parse for responses from the device
 def delayResponseLog(parm, dly=DELAY, responseFlg=true) {
