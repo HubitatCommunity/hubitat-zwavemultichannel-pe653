@@ -110,6 +110,7 @@ metadata {
 		command "quickSetPool", ["number"]
 		command "quickSetSpa", ["number"]
 		command "quickGetWaterTemp"
+		command "quickGetWaterTempOld"
 		command "quickGetTestCmds"
 		command "setPoolMode"
 		command "setSpaMode"
@@ -1808,7 +1809,17 @@ def List togglePoolSpaMode()   { executeCommands(togglePoolSpaModeInternal()) }
 
 def List quickSetSpa(degrees)  { executeCommands(setSpaSetpointInternal("${degrees}".toDouble()), true) }
 def List quickSetPool(degrees) { executeCommands(setPoolSetpointInternal("${degrees}".toDouble()), true) }
-def List quickGetWaterTemp()   { executeCommands(getWaterTemp(), true) } // unsure the refresh commands are necessary; it may be faster to forego them
+
+def List quickGetWaterTemp()   {
+	log("DEBUG", "+++++ quickGetWaterTemp")
+	executeCommands(getWaterTemp(), true)
+}
+
+def List quickGetWaterTempOld() {
+	log("DEBUG", "+++++ quickGetwaterTempOld using delayBetweenLog")
+	delayBetweenLog( addRefreshCmds(getWaterTemp()))
+}
+
 def List quickGetTestCmds()    { executeCommands(getTestCmds(), true) }
 def List setLightColor(int col){ executeCommands(setLightColorInternal(col), true) }
 //def List setColor()			   {addRefreshCmds(delayBetweenLog(cmds)) } // This seems poorly defined currently
