@@ -1831,8 +1831,20 @@ def delayResponseLog(parm, dly=DELAY, responseFlg=true) {
 
 private logCommandList(commands) {
 	def eventsList = ""
+	def formattedCommand = ""
 	commands.eachWithIndex { cmd, index ->
-		eventsList = eventsList.concat("\t\t\t\t${index}: ${cmd}\n")
+		formattedCommand = "\t" +
+						index.toString().padRight(3) +
+						"[ " +
+						cmd.toString().padRight(20) +
+						"] - "
+
+		if (! (cmd instanceof String || cmd instanceof GString || cmd instanceof hubitat.device.HubAction || cmd instanceof java.util.LinkedHashMap)) {
+			formattedCommand += cmd.format().padRight(16)
+		} else {
+			formattedCommand += "String Command".padRight(16)
+		}
+		eventsList = eventsList.concat("\t${formattedCommand}\n")
 	}
 	log("DEBUG", 2, "  - Events as sent: \n${eventsList}")
 }
@@ -1911,12 +1923,13 @@ def delayBetweenLog(parm, dly=DELAY, responseFlg=false) {
 				evtStr = evtStr.concat("\n<<<<< Event: $l")
 			}
 		} else {
-			log("TRACE", "  - ${index}: else: HubAction: $l, format()=$fmt")
 			if (responseFlg) {
 				fmt = response(l)
 			} else {
 				fmt = l.format()
 			}
+			log("TRACE", "  - ${index}: else: HubAction: $l, format()=$fmt")
+
 			if (cmds) {
 				def c = cmds.last()			//check if there is already a delay prior to this
 				if (!(c instanceof String || c instanceof GString) || c.take(6) != "delay ") {
@@ -1936,7 +1949,8 @@ def delayBetweenLog(parm, dly=DELAY, responseFlg=false) {
 		evts.eachWithIndex { event, index ->
 			eventsList = eventsList.concat("\t\t\t\t${index}: ${event}\n")
 		}
-		log("DEBUG", 2, "  - Events as sent: \n${eventsList}")
+		// log("DEBUG", 2, "  - Events as sent: \n${eventsList}")
+		logCommandList(evts)
 		evts
 	} else {
 		log("DEBUG", 2, "<<<<< rspFlg=${responseFlg} dly:$dly/${DELAY} No Commands or Events")
