@@ -1852,6 +1852,18 @@ private logCommandList(commands) {
 private List refreshCommandStrings() { ["910005400102870301", "910005400101830101"] }
 private List refreshCommandHubitatActions() { refreshCommandStrings().collect { new hubitat.device.HubAction(it) } }
 
+private List formatUnformattedCommands(commands) {
+	formattedCommands = []
+	commands.each { command ->
+		if (command instanceof String || command instanceof GString) {
+			formattedCommands << command
+		} else {
+			formattedCommands << command.format()
+		}
+	}
+	formattedCommands
+}
+
 private List executeCommands(commands, refreshControls = false) {
 	log("DEBUG", 2, "+++++ executeCommands")
 	logCommandList(commands)
@@ -1860,9 +1872,12 @@ private List executeCommands(commands, refreshControls = false) {
 		commands += refreshCommandStrings()
 	}
 
+	commands = formatUnformattedCommands(commands)
+
 	log("DEBUG", 2, "----- executeCommands final set:")
-	logCommandList(commands)
-	delayBetween(commands)
+	def afterDelayBetween = delayBetween(commands, 1000)
+	logCommandList(afterDelayBetween)
+	afterDelayBetween
 }
 
 // Called from all commands
