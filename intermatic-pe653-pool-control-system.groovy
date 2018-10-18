@@ -1202,47 +1202,25 @@ def List updated() {
 	log("DEBUG", "+++++ updated()    DTH:${VERSION}  state.Versioninfo=${state.VersionInfo}  state.ManufacturerInfo=${state.ManufacturerInfo}")
 	def devStr = ""
 	initUILabels()
-	double degrees = 0
-	createChildDevices()
-	// Clean up old junk state variables
-	state.remove("groups")
-	state.remove("cnfData")
-	state.remove("cnfData2")
-	state.remove("cnfAttemptsLeft")
-	state.remove("cnfGetGoal")
-	state.remove("cnfParallelGets")
-	state.remove("cnfSendParmOne")
-	state.remove("endpoints")
-	state.remove("enabledEndpoints")
-	state.remove("endpointInfo")
-	state.remove("nextParm")
-	state.remove("manufacturer")
-	state.remove("pumpSpeed")
-	state.remove("oldLabel")
-	state.remove("children")
+	removeOldJunkStateVariables()
+
+	if (getChildDevices() == null) { createChildDevices() }
+
 	// Initialize persistent state variables
 	state.lightCircuitsList = getLightCircuits()
-	state.spaSetpointTemp = degrees
-	state.poolSetpointTemp = degrees
+	if (state.spaSetpointTemp == null) { state.spaSetpointTemp = 0 }
+	if (state.poolSetpointTemp == null) { state.poolSetpointTemp = 0 }
 	if (state.scale == null) {state.scale = 1}
 	if (state.precision == null) {state.precision = 1}
-	// state.each {key, val ->
-	// 	log("DEBUG", "state key: $key, value: $val")
-	// }
+	if (state.schedules == null) { state.schedules = [] }
 
-	state.schedules = []
-
-	def cmds = internalConfigure()
-	// cmds.addAll(setSchedule(9,1,12,0,12,02) )
-	// cmds.addAll(getSchedules(7) )
-	cmds = delayBetweenLog(addRefreshCmds(cmds))
-	// log("TRACE", "cmds=$cmds")
+	cmds = delayBetweenLog(addRefreshCmds(internalConfigure()))
 	cmds.each {key ->
 		devStr = devStr.concat("\n<<<<< updated: cmd=$key")
 		// sendHubCommand(key)
 	}
 	sendHubCommand(cmds,0)
-	// log("DEBUG", devStr)
+	log("DEBUG", "----- updated sent hub commands: " + devStr)
 	return []
 }
 
@@ -1980,4 +1958,23 @@ private log(String type, Integer level = 1, String message) {
 
 	def logType = type.toLowerCase()
 	log."$logType"(message)
+}
+
+private removeOldJunkStateVariables() {
+	// Clean up old junk state variables
+	state.remove("groups")
+	state.remove("cnfData")
+	state.remove("cnfData2")
+	state.remove("cnfAttemptsLeft")
+	state.remove("cnfGetGoal")
+	state.remove("cnfParallelGets")
+	state.remove("cnfSendParmOne")
+	state.remove("endpoints")
+	state.remove("enabledEndpoints")
+	state.remove("endpointInfo")
+	state.remove("nextParm")
+	state.remove("manufacturer")
+	state.remove("pumpSpeed")
+	state.remove("oldLabel")
+	state.remove("children")
 }
