@@ -1050,14 +1050,9 @@ def zwaveEvent(hubitat.zwave.commands.multichannelv3.MultiChannelEndPointReport 
 }
 */
 
-def zwaveEvent(hubitat.zwave.commands.associationv2.AssociationReport cmd) {
-	[]
-}
+def zwaveEvent(hubitat.zwave.commands.associationv2.AssociationReport cmd) { [] }
 
-def zwaveEvent(hubitat.zwave.commands.associationv2.AssociationGroupingsReport cmd) {
-	// state.groups = cmd.supportedGroupings
-	[]
-}
+def zwaveEvent(hubitat.zwave.commands.associationv2.AssociationGroupingsReport cmd) { [] }
 
 // Multi-channel event from the device. Version 1 of Command Class
 def zwaveEvent(hubitat.zwave.commands.multiinstancev1.MultiInstanceCmdEncap cmd) {
@@ -1181,8 +1176,6 @@ def List refresh() {
 
 	cmds << zwave.versionV1.versionGet()
 	cmds << zwave.manufacturerSpecificV1.manufacturerSpecificGet()
-	// cmds << zwave.associationV2.associationGroupingsGet()
-	// cmds << zwave.multiInstanceV1.multiInstanceGet(commandClass:37)
 
 	cmds << zwave.configurationV2.configurationGet(parameterNumber: 1)
 	cmds << zwave.configurationV2.configurationGet(parameterNumber: 2)
@@ -1248,9 +1241,6 @@ private List internalConfigure() {
 	cmds << zwave.configurationV2.configurationGet(parameterNumber: 3)
 	cmds << zwave.configurationV2.configurationGet(parameterNumber: POOL_SPA_CONFIG)
 
-	// cmds << zwave.associationV2.associationGroupingsGet()
-	// cmds << zwave.associationV2.associationSet(groupingIdentifier:1, nodeId:zwaveHubNodeId)
-	// cmds << zwave.associationV2.associationGet(groupingIdentifier:1)
 	cmds
 }
 
