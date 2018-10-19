@@ -152,7 +152,7 @@ metadata {
 	}
 
 	preferences {
-		input "operationMode1", "enum", title: "Boster/Cleaner Pump",
+		input "operationMode1", "enum", title: "Booster/Cleaner Pump",
 			options:[[1:"No"],
 					 [2:"Uses Circuit-1"],
 					 [3:"Variable Speed pump Speed-1"],
@@ -670,7 +670,7 @@ def parse(String description) {
 	delayResponseLog(result)
 }
 
-private setPoolOrSpaSetpoint(Double degrees, Integer setpointType) {
+private List setPoolOrSpaSetpoint(Double degrees, Integer setpointType) {
 	//	Z-Wave standard values for thermostatSetpointSet
 	//	precision:		0=no decimal digits, 1=1 decimal digit, 2=2 decimal digits
 	//	scale:			0=Celsius, 1=Farenheit
@@ -1113,16 +1113,14 @@ def zwaveEventMultiCmdEncap(cmd) {
 private List createMultipleEvents (Integer endpoint, Integer externalParm, String myParm) {
 	def rslt = []
 	def swName  = getSWITCH_NAME(endpoint)
-	log("DEBUG", 2, "..... createMultipleEvents( endpoint:$endpoint, name:$swName, externalParm:$externalParm, myParm:$myParm)")
-
-	def children = getChildDevices()
+	log("DEBUG", 2, "+++++ createMultipleEvents( endpoint:$endpoint, name:$swName, externalParm:$externalParm, myParm:$myParm)")
 
 	def dni = "${device.deviceNetworkId}-ep${endpoint}"
 	def devObj = getChildDevices()?.find { it.deviceNetworkId == dni }
 	log("DEBUG", "----- createMultipleEvents: devObj = ${devObj}")
 	if (devObj) {
 		if (devObj.currentValue("switch") == "$myParm") {
-			log("DEBUG", 2, "<<<<< Child Event unnecessary. name:$dni:$swName evt: \"${myParm}\" ==> dev (${devObj.currentValue("switch")})")
+			// log("DEBUG", 2, "<<<<< Child Event unnecessary. name:$dni:$swName evt: \"${myParm}\" ==> dev (${devObj.currentValue("switch")})")
 		} else {
 			log("DEBUG", 2, "<<<<< Child Event NECESSARY: name:$dni:$swName evt: \"${myParm}\" ==> dev (${devObj.currentValue("switch")})")
 			devObj.sendEvent(name: "switch", value: "$myParm", isStateChange: true, displayed: true, descriptionText: "$myParm event sent from parent device")
@@ -1242,6 +1240,7 @@ private List internalConfigure() {
 	cmds << zwave.configurationV2.configurationGet(parameterNumber: 3)
 	cmds << zwave.configurationV2.configurationGet(parameterNumber: POOL_SPA_CONFIG)
 
+	logCommandList(cmds)
 	cmds
 }
 
@@ -1816,7 +1815,7 @@ private logCommandList(commands) {
 		}
 		eventsList = eventsList.concat("\t${formattedCommand}\n")
 	}
-	log("DEBUG", 2, "  - Events as sent: \n${eventsList}")
+	log("DEBUG", 2, " Commands: \n${eventsList}")
 }
 
 private List refreshCommandStrings() { ["910005400102870301", "910005400101830101"] }
