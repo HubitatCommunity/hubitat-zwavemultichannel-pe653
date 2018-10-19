@@ -1305,23 +1305,19 @@ private removeChildDevices(List oldChildren){
 	}
 }
 
-// Request a report back from with the Clock time from the PE653
 private List getClock() {
 	log("DEBUG", "+++++ getClock")
-	def cmds =[zwave.clockV1.clockGet()]
-	cmds
+	executeCommands([zwave.clockV1.clockGet()])
 }
 
-// Set the PE653 clock from the mobile client clock
 def List setClock() {
-	def cmds = []
 	log("DEBUG",  "+++++ setClock()")
 	def nowCal = Calendar.getInstance(location.timeZone)
-	def time2 = "${String.format("%02d",nowCal.get(Calendar.HOUR_OF_DAY))}:${String.format("%02d",nowCal.get(Calendar.MINUTE))}"
-	// log("DEBUG", "Time:${time2}")
-	cmds << zwave.clockV1.clockSet(hour: "${nowCal.get(Calendar.HOUR_OF_DAY)}".toInteger(), minute: "${nowCal.get(Calendar.MINUTE)}".toInteger())
-	// cmds << createEvent(name: "clock", value: "${time2}", displayed: false, descriptionText: "PE653 Clock: ${time2}")
-	delayBetweenLog(addRefreshCmds(cmds))
+	timeSet = zwave.clockV1.clockSet(
+					hour: nowCal.get(Calendar.HOUR_OF_DAY),
+					minute: nowCal.get(Calendar.MINUTE),
+					weekday: nowCal.get(Calendar.DAY_OF_WEEK))
+	executeCommands([cmds])
 }
 
 // Query the four VSP scheduled to determine which speed is enabled. Not currently used
