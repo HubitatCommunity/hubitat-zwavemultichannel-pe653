@@ -145,6 +145,7 @@ metadata {
 		command "resetSchedule", ["number","number"]
 		command "setVSPSpeeds"
 		command "insertLogTrace"
+		command "executeArbitraryCommand", ["string"]
 		//command "updated"
 
 		fingerprint deviceId: "0x1001", inClusters: "0x91,0x73,0x72,0x86,0x81,0x60,0x70,0x85,0x25,0x27,0x43,0x31", outClusters: "0x82"
@@ -1740,6 +1741,11 @@ private List insertLogTrace() {
 			"${String.format("%02d", cal.get(Calendar.SECOND))}"
 	log.info("----------------------- ${time} -----------------------")
 	null
+}
+
+private List executeArbitraryCommand(String command) {
+	log("DEBUG", "+++++ executeArbitraryCommand + ${command}")
+	executeCommands([command], true)
 }
 
 // Called by switch presses on the circuit buttons.
