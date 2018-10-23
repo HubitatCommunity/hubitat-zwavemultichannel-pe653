@@ -1501,7 +1501,7 @@ def List executeArbitraryCommand(String command) {
 	executeCommands([command], true)
 }
 
-def List recreateChildren {
+def List recreateChildren() {
 	createChildDevices()
 	executeCommands([], true)
 }
@@ -1578,7 +1578,7 @@ def delayBetweenLog(parm, dly=DELAY, responseFlg=false) {
 
 		if (l instanceof hubitat.device.HubAction) {
 			log("TRACE", "  - ${index}: instanceof hubitat.device.HubAction")
-			log("ERROR", "I suspect this never occurs. - HubAction case")
+			log("ERROR", "I suspect this never occurs in responses. - HubAction case")
 			if (cmds) {
 				def c = cmds.last()			//check if there is already a delay prior to this
 				if (!(c instanceof String || c instanceof GString) || c.take(6) != "delay ") {
