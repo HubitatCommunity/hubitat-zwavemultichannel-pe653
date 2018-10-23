@@ -94,10 +94,6 @@ metadata {
 		command "setVSPSpeed2"
 		command "setVSPSpeed3"
 		command "setVSPSpeed4"
-		command "setMode1"
-		command "setMode2"
-		command "setMode3"
-		command "setMode4"
 		command "setLightColor", ["number"]
 		command "setColor"
 		command "setClock"
@@ -160,150 +156,6 @@ metadata {
 					 [2:"High"]], defaultvalue: 0
 		input "ZWdelay", "number",
 			title: "Delay between Z-Wave commands sent (milliseconds). Suggest 1000.", defaultValue: 1000, required: true
-		//Mode 1
-		input "M1Label", "text", title: "M1: Display Name:", defaultValue: ""
-		input "M1Sw1", "enum", title: "M1: Circuit 1 action:", defaultValue: 0,
-			options:[[0:"No Change"],
-					 [1:"On"],
-					 [2:"Off"]]
-		input "M1Sw2", "enum", title: "M1: Circuit 2 action:", defaultValue: 0,
-			options:[[0:"No Change"],
-					 [1:"On"],
-					 [2:"Off"]]
-		input "M1Sw3", "enum", title: "M1: Circuit 3 action:", defaultValue: 0,
-			options:[[0:"No Change"],
-					 [1:"On"],
-					 [2:"Off"]]
-		input "M1Sw4", "enum", title: "M1: Circuit 4 action:", defaultValue: 0,
-			options:[[0:"No Change"],
-					 [1:"On"],
-					 [2:"Off"]]
-		input "M1Sw5", "enum", title: "M1: Circuit 5 action:", defaultValue: 0,
-			options:[[0:"No Change"],
-					 [1:"On"],
-					 [2:"Off"]]
-		input "M1Mode", "enum", title: "M1: Mode to change to:", defaultValue: 0,
-			options:[[0:"No change"],
-					 [1:"Pool"],
-					 [2:"Pool & Set Temperature"],
-					 [3:"Spa"],
-					 [4:"Spa & Set Temperature"]]
-		input "M1Temp", "number", title: "M1: Set Temperature to:", range: "40..104", defaultValue: 40
-		input "M1VSP", "enum", title: "M1: Set VSP Speed to:", defaultValue: 0,
-			options:[[5:"No change"],
-					 [1:"Speed 1"],
-					 [2:"Speed 2"],
-					 [3:"Speed 3"],
-					 [4:"Speed 4"],
-					 [0:"Turn off"]]
-		//Mode 2
-		input "M2Label", "text", title: "M2: Display Name:", defaultValue: ""
-		input "M2Sw1", "enum", title: "M2: Circuit 1 action:", defaultValue: 0,
-			options:[[0:"No Change"],
-					 [1:"On"],
-					 [ 2:"Off"]]
-		input "M2Sw2", "enum", title: "M2: Circuit 2 action:", defaultValue: 0,
-			options:[[0:"No Change"],
-					 [1:"On"],
-					 [2:"Off"]]
-		input "M2Sw3", "enum", title: "M2: Circuit 3 action:", defaultValue: 0,
-			options:[[0:"No Change"],
-					 [1:"On"],
-					 [2:"Off"]]
-		input "M2Sw4", "enum", title: "M2: Circuit 4 action:", defaultValue: 0,
-			options:[[0:"No Change"],
-					 [1:"On"],
-					 [2:"Off"]]
-		input "M2Sw5", "enum", title: "M2: Circuit 5 action:", defaultValue: 0,
-			options:[[0:"No Change"],
-					 [1:"On"],
-					 [2:"Off"]]
-		input "M2Mode", "enum", title: "M2: Mode to change to:", defaultValue: 0,
-			options:[[0:"No change"],
-					 [1:"Pool"],
-					 [2:"Pool & Set Temperature"],
-					 [3:"Spa"],
-					 [4:"Spa & Set Temperature"]]
-		input "M2Temp", "number", title: "M2: Set Temperature to:", range: "40..104", defaultValue: 40
-		input "M2VSP", "enum", title: "M2: Set VSP Speed to:", defaultValue: 0,
-			options:[[5:"No change"],
-					 [1:"Speed 1"],
-					 [2:"Speed 2"],
-					 [3:"Speed 3"],
-					 [4:"Speed 4"],
-					 [0:"Turn off"]]
-		//Mode 3
-		input "M3Label", "text", title: "M3: Display Name:", defaultValue: ""
-		input "M3Sw1", "enum", title: "M3: Circuit 1 action:", defaultValue: 0,
-			options:[[0:"No Change"],
-					 [1:"On"],
-					 [2:"Off"]]
-		input "M3Sw2", "enum", title: "M3: Circuit 2 action:", defaultValue: 0,
-			options:[[0:"No Change"],
-					 [1:"On"],
-					 [2:"Off"]]
-		input "M3Sw3", "enum", title: "M3: Circuit 3 action:", defaultValue: 0,
-			options:[[0:"No Change"],
-					 [1:"On"],
-					 [2:"Off"]]
-		input "M3Sw4", "enum", title: "M3: Circuit 4 action:", defaultValue: 0,
-			options:[[0:"No Change"],
-					 [1:"On"],
-					 [2:"Off"]]
-		input "M3Sw5", "enum", title: "M3: Circuit 5 action:", defaultValue: 0,
-			options:[[0:"No Change"],
-					 [1:"On"],
-					 [2:"Off"]]
-		input "M3Mode", "enum", title: "M3: Mode to change to:", defaultValue: 0,
-			options:[[0:"No change"],
-					 [1:"Pool"],
-					 [2:"Pool & Set Temperature"],
-					 [3:"Spa"],
-					 [4:"Spa & Set Temperature"]]
-		input "M3Temp", "number", title: "M3: Set Temperature to:", range: "40..104", defaultValue: 40
-		input "M3VSP", "enum", title: "M3: Set VSP Speed to:", defaultValue: 0,
-			options:[[5:"No change"],
-					 [1:"Speed 1"],
-					 [2:"Speed 2"],
-					 [3:"Speed 3"],
-					 [4:"Speed 4"],
-					 [0:"Turn off"]]
-		//Mode 4
-		input "M4Label", "text", title: "M4: Display Name:", defaultValue: ""
-		input "M4Sw1", "enum", title: "M4: Circuit 1 action:", defaultValue: 0,
-			options:[[0:"No Change"],
-					 [1:"On"],
-					 [2:"Off"]]
-		input "M4Sw2", "enum", title: "M4: Circuit 2 action:", defaultValue: 0,
-			options:[[0:"No Change"],
-					 [1:"On"],
-					 [2:"Off"]]
-		input "M4Sw3", "enum", title: "M4: Circuit 3 action:", defaultValue: 0,
-			options:[[0:"No Change"],
-					 [1:"On"],
-					 [2:"Off"]]
-		input "M4Sw4", "enum", title: "M4: Circuit 4 action:", defaultValue: 0,
-			options:[[0:"No Change"],
-					 [1:"On"],
-					 [2:"Off"]]
-		input "M4Sw5", "enum", title: "M4: Circuit 5 action:", defaultValue: 0,
-			options:[[0:"No Change"],
-					 [1:"On"],
-					 [2:"Off"]]
-		input "M4Mode", "enum", title: "M4: Mode to change to:", defaultValue: 0,
-			options:[[0:"No change"],
-					 [1:"Pool"],
-					 [2:"Pool & Set Temperature"],
-					 [3:"Spa"],
-					 [4:"Spa & Set Temperature"]]
-		input "M4Temp", "number", title: "M4: Set Temperature to:", range: "40..104", defaultValue: 40
-		input "M4VSP", "enum", title: "M4: Set VSP Speed to:", defaultValue: 0,
-			options:[[5:"No change"],
-					 [1:"Speed 1"],
-					 [2:"Speed 2"],
-					 [3:"Speed 3"],
-					 [4:"Speed 4"],
-					 [0:"Turn off"]]
 		input "C1ColorEnabled", "enum", title: "Circuit 1 Color Light Enable:", defaultValue: 0,
 			options:[[0:"off"],
 					 [1:"On"]]
@@ -323,7 +175,6 @@ metadata {
 
 	// tile definitions
 	tiles(scale: 2) {
-
 		valueTile("mainTile", "device.temperature", width: 2, height: 2, inactiveLabel: true ) {
 			state "temperature", label:'${currentValue}°', action: "quickGetWaterTemp",icon: "st.Health & Wellness.health2",
 					backgroundColors:[
@@ -461,30 +312,6 @@ metadata {
 			state "turningOff", label:'Turning off', action: "setVSPSpeed4", icon: "https://raw.githubusercontent.com/KeithR26/Intermatic-PE653/master/vsp4-off.png", backgroundColor: "#ffffff", nextState: "turningOn"
 			state "disabled",   label:'',                                    icon: "https://raw.githubusercontent.com/KeithR26/Intermatic-PE653/master/all-white.png",backgroundColor: "#ffffff"
 		}
-		standardTile("swM1", "device.swM1", width: 1, height: 1, decoration: "flat") {
-			state "disabled",   label:'',            action: "setMode1",     icon: "https://raw.githubusercontent.com/KeithR26/Intermatic-PE653/master/M1-off.png",backgroundColor: "#ffffff", nextState: "disabled"
-		}
-		standardTile("swM2", "device.swM2", width: 1, height: 1, decoration: "flat") {
-			state "disabled",   label:'',            action: "setMode2",     icon: "https://raw.githubusercontent.com/KeithR26/Intermatic-PE653/master/M2-off.png",backgroundColor: "#ffffff", nextState: "disabled"
-		}
-		standardTile("swM3", "device.swM3", width: 1, height: 1, decoration: "flat") {
-			state "disabled",   label:'',            action: "setMode3",     icon: "https://raw.githubusercontent.com/KeithR26/Intermatic-PE653/master/M3-off.png",backgroundColor: "#ffffff", nextState: "disabled"
-		}
-		standardTile("swM4", "device.swM4", width: 1, height: 1, decoration: "flat") {
-			state "disabled",   label:'',            action: "setMode4",     icon: "https://raw.githubusercontent.com/KeithR26/Intermatic-PE653/master/M4-off.png", backgroundColor:"#ffffff", nextState: "disabled"
-		}
-		valueTile("M1Name", "device.M1Name", width: 2, height: 1, inactiveLabel: false, decoration: "flat") {
-			state "M1Name", label:'${currentValue}', backgroundColor:"#ffffff", action: "setMode1"
-		}
-		valueTile("M2Name", "device.M2Name", width: 2, height: 1, inactiveLabel: false, decoration: "flat") {
-			state "M2Name", label:'${currentValue}', backgroundColor:"#ffffff", action: "setMode2"
-		}
-		valueTile("M3Name", "device.M3Name", width: 2, height: 1, inactiveLabel: false, decoration: "flat") {
-			state "M3Name", label:'${currentValue}', backgroundColor:"#ffffff", action: "setMode3"
-		}
-		valueTile("M4Name", "device.M4Name", width: 2, height: 1, inactiveLabel: false, decoration: "flat") {
-			state "M4Name", label:'${currentValue}', backgroundColor:"#ffffff", action: "setMode4"
-		}
 		standardTile("blank1", "device.blank", width: 2, height: 1, decoration: "flat") {
 			state "on",         icon: "st.Health & Wellness.health2",  backgroundColor: "#ffffff"
 		}
@@ -519,13 +346,9 @@ metadata {
 			"temperatureTile",
 			"swVSP1","swVSP2","swVSP3","swVSP4",
 			"poolSetpoint", "poolSliderControl",
-			"swM1", "M1Name",
 			"spaSetpoint", "spaSliderControl",
-			"swM2", "M2Name",
 			"lightColor","lightColorSliderControl",
-			"swM3", "M3Name",
 			"heaterLabel", "heaterTile",
-			"swM4", "M4Name",
 			"airTempLabel", "airTempFTile", "airTempSTile",
 			"refresh",
 			"clock",
@@ -1328,7 +1151,6 @@ private List getConfiguration(Integer parmNo) {
 	cmds
 }
 
-
 // Send a configuration command with a variable number of bytes
 private List setConfiguration(Integer parmNo, Integer siz, Integer byte0, Integer byte1, Integer byte2, Integer byte3) {
 	log("DEBUG", "+++++ setConfiguration()  parmNo=${parmNo} size=${siz}  byte0=${byte0} byte1=${byte1}  byte2=${byte2} byte3=${byte3}")
@@ -1344,7 +1166,6 @@ private List setConfiguration(Integer parmNo, Integer siz, Integer byte0, Intege
 	cmds << zwave.configurationV2.configurationSet(configurationValue: parmList, size: siz, parameterNumber: parmNo)
 	cmds
 }
-
 
 // Set one schedule based on the schedule number and its start and end time
 List setSchedule(Integer endpoint, Integer schedNo, Integer startHour, Integer startMinute, Integer endHour, Integer endMinute) {
@@ -1511,51 +1332,6 @@ private def blink(List switches, int cnt) {
 		cmds.addAll(getChanState(sw))
 	}
 	//log("TRACE", "blink() cmds=${cmds}")
-	cmds
-}
-
-// Called by a button press for one of the "Mode" selections  (eg: M1, M2, M3, M4)
-def setMode(int mode) {
-	def cmds = []
-	List MxSw
-	String MxMode, MxTemp, MxVSP
-	// log("TRACE", "M1Sw1=${M1Sw1} M1Sw2=${M1Sw2} M1Sw3=${M1Sw3} M1Sw4=${M1Sw4} M1Sw5=${M1Sw5} M1Mode=${M1Mode} M1Temp=${M1Temp} M1VSP=${M1VSP}")
-	switch(mode) {
-	case 1:
-		MxSw = [M1Sw1, M1Sw2, M1Sw3, M1Sw4, M1Sw5]; MxMode = M1Mode; MxTemp = M1Temp; MxVSP = M1VSP; break
-	case 2:
-		MxSw = [M2Sw1, M2Sw2, M2Sw3, M2Sw4, M2Sw5]; MxMode = M2Mode; MxTemp = M2Temp; MxVSP = M2VSP; break
-	case 3:
-		MxSw = [M3Sw1, M3Sw2, M3Sw3, M3Sw4, M3Sw5]; MxMode = M3Mode; MxTemp = M3Temp; MxVSP = M3VSP; break
-	case 4:
-		MxSw = [M4Sw1, M4Sw2, M4Sw3, M4Sw4, M4Sw5]; MxMode = M4Mode; MxTemp = M4Temp; MxVSP = M4VSP; break
-	}
-	log("DEBUG", "+++++ setMode ${mode} MxSw=${MxSw} MxMode=${MxMode} MxTemp=${MxTemp} MxVSP=${MxVSP}")
-
-	if (MxMode == "1") {
-		cmds.addAll(setPoolModeInternal())
-	} else if (MxMode == "2") {
-		cmds.addAll(setPoolModeInternal())
-		cmds.addAll(setPoolSetpointInternal(MxTemp.toDouble()))
-	} else if (MxMode == "3") {
-		cmds.addAll(setSpaModeInternal())
-	} else if (MxMode == "4") {
-		cmds.addAll(setSpaModeInternal())
-		cmds.addAll(setSpaSetpointInternal(MxTemp.toDouble()))
-	}
-	MxSw.eachWithIndex {action, idx ->
-		// log("DEBUG", " action=${action} idx=${idx}")
-		if (action == "1") {
-			cmds.addAll(setChanState(idx.toInteger()+1,1))
-		} else if (action == "2") {
-			cmds.addAll(setChanState(idx.toInteger()+1,0))
-		}
-	}
-	if (VSP_ENABLED && MxVSP != "5") {
-		cmds.addAll(setVSPSpeedInternal(MxVSP.toInteger()))
-	}
-	// cmds.addAll(getRefreshCmds())
-	// log("TRACE", "setMode: cmds(before)=${cmds}")
 	cmds
 }
 
@@ -1728,10 +1504,6 @@ def List setVSPSpeed1()        {delayBetweenLog(addRefreshCmds(setVSPSpeedIntern
 def List setVSPSpeed2()        {delayBetweenLog(addRefreshCmds(setVSPSpeedInternal(2))) }
 def List setVSPSpeed3()        {delayBetweenLog(addRefreshCmds(setVSPSpeedInternal(3))) }
 def List setVSPSpeed4()        {delayBetweenLog(addRefreshCmds(setVSPSpeedInternal(4))) }
-def List setMode1()            {delayBetweenLog(addRefreshCmds(setMode(1))) }
-def List setMode2()            {delayBetweenLog(addRefreshCmds(setMode(2))) }
-def List setMode3()            {delayBetweenLog(addRefreshCmds(setMode(3))) }
-def List setMode4()            {delayBetweenLog(addRefreshCmds(setMode(4))) }
 
 def List setSpaMode()          { executeCommands(setSpaModeInternal()) }
 def List setPoolMode()         { executeCommands(setPoolModeInternal()) }
