@@ -1122,7 +1122,7 @@ private List createMultipleEvents (Integer endpoint, Integer externalParm, Strin
 		if (devObj.currentValue("switch") == "$myParm") {
 			// log("DEBUG", 2, "<<<<< Child Event unnecessary. name:$dni:$swName evt: \"${myParm}\" ==> dev (${devObj.currentValue("switch")})")
 		} else {
-			log("DEBUG", 2, "<<<<< Child Event NECESSARY: name:$dni:$swName evt: \"${myParm}\" ==> dev (${devObj.currentValue("switch")})")
+			log("DEBUG", 2, "<<<<< Child Event necessary: name:$dni:$swName evt: \"${myParm}\" ==> dev (${devObj.currentValue("switch")})")
 			devObj.sendEvent(name: "switch", value: "$myParm", isStateChange: true, displayed: true, descriptionText: "$myParm event sent from parent device")
 			rslt << "Note:Event: \"${myParm}\" to child: ${dni}:${devObj}"
 		}
@@ -1864,14 +1864,17 @@ def delayBetweenLog(parm, dly=DELAY, responseFlg=false) {
 	lst.eachWithIndex {l, index ->
 		if (l instanceof List) {
 			log("WARN", "  - UNEXPECTED instanceOf List: l -> ${l}")
+			log("ERROR", "I suspect this never occurs - l instanceof List case.")
 		} else if (l in List) {
 			log("WARN", "  - UNEXPECTED in LIST: l -> ${l}")
+			log("ERROR", "I suspect this never occurs - l in List case.")
 		} else {
-			log("TRACE", "  - l -> ${l}")
+			log("TRACE", "  - l -> ${l}") // maps come through here
 		}
 
 		if (l instanceof hubitat.device.HubAction) {
 			log("TRACE", "  - ${index}: instanceof hubitat.device.HubAction")
+			log("ERROR", "I suspect this never occurs. - HubAction case")
 			if (cmds) {
 				def c = cmds.last()			//check if there is already a delay prior to this
 				if (!(c instanceof String || c instanceof GString) || c.take(6) != "delay ") {
@@ -1895,16 +1898,17 @@ def delayBetweenLog(parm, dly=DELAY, responseFlg=false) {
 			}
 		} else if (l instanceof List) {
 			log("TRACE", "  - ${index}: LIST: $l, adding commands")
+			log("ERROR", "Encountered list within list. I suspect this never occurs.")
 			cmds << l
-		} else if (l instanceof Map) {
+		} else if (l instanceof Map) { // All responses from device come in as maps.
 			log("TRACE", "  - ${index}: Map: $l")
 			// example:	createEvent(name: "$sw", value: "$myParm", isStateChange: true, displayed: true, descriptionText: "($sw set to $myParm)")
 			if ("${device.currentValue(l.name)}".equals("${l.value}")) {
-				log("DEBUG", 2, "<<<<< Event unnecessary. name:${l.name}  evt: \"${l.value}\" ==> dev:(${device.currentValue(l.name)})")
+				log("DEBUG", 2, "\t\t Event unnecessary. name:${l.name}  evt: \"${l.value}\" ==> dev:(${device.currentValue(l.name)})")
 			} else {
-				log("DEBUG", "<<<<< Event NECESSARY. name:${l.name} evt: \"${l.value}\" ==> dev:(${device.currentValue(l.name)})")
+				log("DEBUG", "\t\t Event necessary. name:${l.name} evt: \"${l.value}\" ==> dev:(${device.currentValue(l.name)})")
 				evts << l
-				evtStr = evtStr.concat("\n<<<<< Event: $l")
+				evtStr = evtStr.concat("\n\t\t\t<<<<< Event: $l")
 			}
 		} else {
 			if (responseFlg) {
@@ -1937,7 +1941,7 @@ def delayBetweenLog(parm, dly=DELAY, responseFlg=false) {
 		logCommandList(evts)
 		evts
 	} else {
-		log("DEBUG", 2, "<<<<< rspFlg=${responseFlg} dly:$dly/${DELAY} No Commands or Events")
+		log("WARN", 2, "<<<<< rspFlg=${responseFlg} dly:$dly/${DELAY} No Commands or Events")
 		null
 	}
 }
