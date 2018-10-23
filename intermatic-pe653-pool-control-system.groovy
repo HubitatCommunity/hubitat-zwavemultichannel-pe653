@@ -13,61 +13,22 @@
  *  on an "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied. See the License
  *  for the specific language governing permissions and limitations under the License.
  *
- *  This DTH is now a "Composite Device Type Handler" which supports multiple "Child" devices that appear in
+ *  This DTH is a "Composite Device Type Handler" which supports multiple "Child" devices that appear in
  *	the "Things" list and can be used by SmartApps to control the 5 switches, Pool/Spa mode and 4 VSP speeds.
  *	This requires a second DTH be installed: erocm123 / Switch Child Device
  *
  *  Don't use SamrtThings Multi-channel (deprecated) or Cooper Lee's code (vTile_ms, ms_w_vts). These are incompatible
  *  with the Composite DTH architecture.
  *
- *  To convert to Hubitat:
- *  1. Replace All: "physicalgraph." with "hubitat."
- *  2. around line 1330, Comment out ST lines, comment in HE lines
+ *  This code was primarily written by bigpunk6 and KeithR26.
+ *  Semantic versioning and further adaptation to the Hubitat system by Tooluser
+ *  See https://github.com/HubitatCommunity/hubitat-zwavemultichannel-pe653 for version information.
  *
- *	Version History
- *	Ver		Date		Author		Changes
- *	1.00	06/15/2016	bigpunk6	Latest version from the original author
- *	2.00	07/14/2016	KeithR26	Updates to make this work with Intermatic firmware v3.4
- *									Added Pool/Spa mode and initial VSP support
- *	2.01	08/10/2016	KeithR26	Major UI redesign
- *									Added 4 switches to set VSP speeds and off
- *									Added 4 "Multi-channel" endpoints for ST VSP control
- *									Added configurable Z-Wave delay
- *									Added PE653 configuration diagnostics in Debug level = High
- *									Added Version Info in IDE and logs
- *									Allow changing icon
- *	2.02	04/26/2017	KeithR26	Fix Thermostat set for v3.4 firmware (force scale = 0)
- *  								Prototype Pool Light Color Control
- *									Implement simple "Macros"
- *	2.03	05/01/2017	KeithR26	Refresh water temp when UI temp is tapped
- *	2.04	05/07/2017	KeithR26	Allow negative temperature offsets. Limit offets to +/- 5 (max supported by PE653)
- *	2.05	05/13/2017	KeithR26	Debug version for Android. Never committed to master
- *	2.06	05/13/2017	KeithR26	Update to fix Temperature display on Android
- *	3.00	07/05/2018	KeithR26	Change to "Composite" DTH since ST deprecated the Multi-channel SmartApp
- *									Improves VSP integration. No more schedules.
- *									Reorganized UI. Display Air temp, Heater on/off and Clock.
- *									Minor adjustments for Hubitat compatibility.
- *									Remove defaults to fix Android config issues.
- *	3.01	07/06/2018	KeithR26	Added second Air Temperature. Now displays both Freeze and Solar temps.
- *	3.02	07/07/2018	KeithR26	Avoid sending events and warnings if no VSP
- *	3.03	07/15/2018	KeithR26	More minor adjustments to improve Hubitat compatibility
- *	3.04	07/15/2018	KeithR26	Added setSchedule, resetSchedule, getSchedules, and setVSPSpeeds commands
- *									Added Schedule events
- *			07/22/2018	KeithR26	Due to different Intermatic firmware sub-versions of v3.4, alternate Setpoint "scale" if SetPointSet is ignored ("learn")
- *									Fix negative air and solar temperature display
- *			08/09/2018	KeithR26	Fixes to getSchedules.
- *									Fix QuickGetWaterTemp
- *									Fix update of "Set Mode" labels on the UI
- *	3.05	08/19/2018	KeithR26	Finish off Schedule functions
- *									POssible fix to set Clock
- *									Fix Light Color slider
- *	3.06	08/30/2018	KeithR26	Make temperature events visible
- *									Suppress redundant events
 */
-def getVERSION () {"Ver 3.08"}		// Keep track of handler version
+def getVERSION () {"Ver 3.1.0a"}		// Keep track of handler version
 
 metadata {
-	definition (name: "Intermatic Pool Control System", author: "KeithR26", namespace:  "KeithR26") {
+	definition (name: "Intermatic Pool Control System", author: "Tooluser", namespace:  "Nowhereville") {
 		capability "Actuator"
 		capability "Switch"
 		capability "Polling"
