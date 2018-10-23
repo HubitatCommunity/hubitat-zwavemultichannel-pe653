@@ -1516,11 +1516,11 @@ def List off5() { executeCommands(setChanState(5, 0), true) }
 // May be called by CoRE
 def List setVSPSpeed(sp)       {delayBetweenLog(addRefreshCmds(setVSPSpeedInternal(sp))) }
 // Called by switch presses on the VSP buttons.
-def List setVSPSpeed0()        {delayBetweenLog(addRefreshCmds(setVSPSpeedInternal(0))) }
-def List setVSPSpeed1()        {delayBetweenLog(addRefreshCmds(setVSPSpeedInternal(1))) }
-def List setVSPSpeed2()        {delayBetweenLog(addRefreshCmds(setVSPSpeedInternal(2))) }
-def List setVSPSpeed3()        {delayBetweenLog(addRefreshCmds(setVSPSpeedInternal(3))) }
-def List setVSPSpeed4()        {delayBetweenLog(addRefreshCmds(setVSPSpeedInternal(4))) }
+def List setVSPSpeed0()        { executeCommands(setVSPSpeedInternal(0), true) }
+def List setVSPSpeed1()        { executeCommands(setVSPSpeedInternal(1), true) }
+def List setVSPSpeed2()        { executeCommands(setVSPSpeedInternal(2), true) }
+def List setVSPSpeed3()        { executeCommands(setVSPSpeedInternal(3), true) }
+def List setVSPSpeed4()        { executeCommands(setVSPSpeedInternal(4), true) }
 
 def List setSpaMode()          { executeCommands(setSpaModeInternal()) }
 def List setPoolMode()         { executeCommands(setPoolModeInternal()) }
