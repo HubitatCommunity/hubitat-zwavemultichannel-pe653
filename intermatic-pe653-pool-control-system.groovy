@@ -1360,17 +1360,7 @@ private def blink(List switches, int cnt) {
 // Called from anywhere that needs the UI controls updated following a Set. Inserted by 'executeCommands'
 
 def List addRefreshCmds(List cmds)  {
-	cmds.addAll(getRefreshCmds())
-	cmds
-}
-
-private List getRefreshCmds() {
-	log("DEBUG", "+++++ getRefreshCmds")
-	def cmds =[
-		new hubitat.device.HubAction("910005400102870301"),
-		new hubitat.device.HubAction("910005400101830101"),
-		// new hubitat.device.HubAction("91000541010100"),
-	]
+	cmds.addAll(refreshCommandHubitatActions())
 	cmds
 }
 
