@@ -941,14 +941,22 @@ def List updated() {
 	if (state.precision == null) {state.precision = 1}
 	if (state.schedules == null) { state.schedules = [] }
 
-	cmds = delayBetweenLog(addRefreshCmds(internalConfigure()))
-	cmds.each {key ->
-		devStr = devStr.concat("\n<<<<< updated: cmd=$key")
-		// sendHubCommand(key)
+	state.each {key, val ->
+		log.debug "state key: $key, value: $val"
 	}
-	sendHubCommand(cmds,0)
-	log("DEBUG", "----- updated sent hub commands: " + devStr)
-	return []
+
+	// cmds = delayBetweenLog(addRefreshCmds(internalConfigure()))
+	cmds = internalConfigure()
+
+	// cmds.each {key ->
+	// 	devStr = devStr.concat("\n<<<<< updated: cmd=$key")
+	// 	// sendHubCommand(key)
+	// }
+	// log("DEBUG", "----- updated sent hub commands: " + devStr)
+	// logCommandList(cmds)
+	// sendHubCommand(cmds,0)
+	// return []
+	executeCommands(cmds, true)
 }
 
 def List configure() {
@@ -975,7 +983,6 @@ private List internalConfigure() {
 	cmds << zwave.configurationV2.configurationGet(parameterNumber: 3)
 	cmds << zwave.configurationV2.configurationGet(parameterNumber: POOL_SPA_CONFIG)
 
-	logCommandList(cmds)
 	cmds
 }
 
