@@ -88,6 +88,7 @@ metadata {
 		command "off4"
 		command "on5"
 		command "off5"
+		command "recreateChildren"
 		command "setVSPSpeed", ["number"]
 		command "setVSPSpeed0"
 		command "setVSPSpeed1"
@@ -1004,8 +1005,6 @@ private void createChildDevices() {
 private Object addOrReuseChildDevice(childNo, name, List oldChildren){
 	def Object devObj = null
 	def dni = "${device.deviceNetworkId}-ep${childNo}"
-//	log("TRACE", "addOrReuseChildDevice dni=${dni} oldChildren.size=${oldChildren.size} oldChildren: ${oldChildren}")
-
 	devObj = oldChildren.find {it.deviceNetworkId == dni}
 	if ( devObj ) {
 		// log("TRACE", "found existing device=${devObj.name} dni=${devObj.deviceNetworkId}")
@@ -1351,7 +1350,7 @@ private def blink(List switches, int cnt) {
 }
 
 /** Shared Refresh commands */
-// Called from anywhere that needs the UI controls updated following a Set
+// Called from anywhere that needs the UI controls updated following a Set. Inserted by 'executeCommands'
 
 def List addRefreshCmds(List cmds)  {
 	cmds.addAll(getRefreshCmds())
@@ -1369,6 +1368,7 @@ private List getRefreshCmds() {
 }
 
 private List refreshCommandStrings() { ["910005400102870301", "910005400101830101"] }
+
 private List refreshCommandHubitatActions() { refreshCommandStrings().collect { new hubitat.device.HubAction(it) } }
 
 private List getTestCmds() {
@@ -1393,7 +1393,7 @@ private List getTestCmds() {
 	cmds
 }
 
-def on() {
+def List on() {
 	log("DEBUG", "+++++ on()")
 	delayBetweenLog([
 		zwave.basicV1.basicSet(value: 0xFF),
@@ -1401,7 +1401,7 @@ def on() {
 	])
 }
 
-def off() {
+def List off() {
 	log("DEBUG", "+++++ off()")
 	delayBetweenLog([
 		zwave.basicV1.basicSet(value: 0x00),
@@ -1487,7 +1487,7 @@ private String multichannelSwitchEvent(ch, on) {
 	"6006" + channelString + "2501" + onOff
 }
 
-private List insertLogTrace() {
+def List insertLogTrace() {
 	cal = Calendar.getInstance(location.timeZone)
 	def time = "${String.format("%02d", cal.get(Calendar.HOUR_OF_DAY))}" + ":" +
 			"${String.format("%02d", cal.get(Calendar.MINUTE))}" + ":" +
@@ -1496,9 +1496,14 @@ private List insertLogTrace() {
 	null
 }
 
-private List executeArbitraryCommand(String command) {
+def List executeArbitraryCommand(String command) {
 	log("DEBUG", "+++++ executeArbitraryCommand + ${command}")
 	executeCommands([command], true)
+}
+
+def List recreateChildren {
+	createChildDevices()
+	executeCommands([], true)
 }
 
 // Called by switch presses on the circuit buttons.
