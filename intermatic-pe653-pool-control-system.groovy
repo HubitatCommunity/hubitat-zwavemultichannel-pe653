@@ -1470,18 +1470,8 @@ private List getChanState(ch) {
 private List setChanState(ch, on) {
 	log("DEBUG", 2, "+++++ setChanState($ch, $on)")
 	def cmds =[
-		//zwave.multiInstanceV1.multiInstanceCmdEncap(instance: ch).encapsulate(zwave.switchBinaryV1.switchBinarySet(switchValue: (on ? 0xFF : 0))).format() ,
-		multichannelSwitchEvent(ch, on) // Temporarily provide encoded MultiInstanceCommandEncapsulation manually while v1.1.5 of HE firmware has it broken.
+		zwave.multiInstanceV1.multiInstanceCmdEncap(instance: ch).encapsulate(zwave.switchBinaryV1.switchBinarySet(switchValue: (on ? 0xFF : 0))).format() ,
 	]
-}
-
-// Temporarily provide encoded MultiInstanceCommandEncapsulation manually while v1.1.5 of HE firmware has it broken.
-// MultiInstanceCmdEncap command class is 6006
-// switchBinarySet command is 2501
-private String multichannelSwitchEvent(ch, on) {
-	def onOff = (on ? "FF" : "00")
-	def channelString = ch.toString().padLeft(2, "0")
-	"6006" + channelString + "2501" + onOff
 }
 
 def List insertLogTrace() {
