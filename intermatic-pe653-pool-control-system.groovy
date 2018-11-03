@@ -1133,7 +1133,7 @@ def List updated() {
 def List configure() {
 	log("DEBUG", "+++++ configure()    DTH:${VERSION}  state.Versioninfo=${state.VersionInfo}")
 	initUILabels()
-	delayBetweenLog(addRefreshCmds(internalConfigure()))
+	executeCommands(internalConfigure(), true)
 }
 
 private List internalConfigure() {
@@ -1568,7 +1568,7 @@ def List childOff(dni)  {
 
 def List childRefresh(dni)  {
 	log("DEBUG", "refresh called in parent: dni=${dni} channelNumber(dni)=${channelNumber(dni)}")
-	delayBetweenLog(addRefreshCmds([]))
+	executeCommands([], true)
 }
 
 // On or Off from a child device. Take action depending on which type of child device
@@ -1655,7 +1655,7 @@ def List off4() { executeCommands(setChanState(4, 0), true) }
 def List off5() { executeCommands(setChanState(5, 0), true) }
 
 // May be called by CoRE
-def List setVSPSpeed(sp)       {delayBetweenLog(addRefreshCmds(setVSPSpeedInternal(sp))) }
+def List setVSPSpeed(sp)       { executeCommands(setVSPSpeedInternal(sp), true) }
 // Called by switch presses on the VSP buttons.
 def List setVSPSpeed0()        { executeCommands(setVSPSpeedInternal(0), true) }
 def List setVSPSpeed1()        { executeCommands(setVSPSpeedInternal(1), true) }
