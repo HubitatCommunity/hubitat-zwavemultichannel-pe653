@@ -71,7 +71,6 @@ metadata {
 		command "quickSetPool", ["number"]
 		command "quickSetSpa", ["number"]
 		command "quickGetWaterTemp"
-		command "quickGetTestCmds"
 		command "setPoolMode"
 		command "setSpaMode"
 		command "togglePoolSpaMode"
@@ -372,9 +371,6 @@ metadata {
 						[value: 98, color: "#d04e00"],
 						[value: 110, color: "#bc2323"]
 					]
-		}
-		valueTile("airTempLabel", "device.airTempLabel", width: 1, height: 1, inactiveLabel: false, decoration: "flat") {
-			state "airTemp", label:'  AIR: Frz/Sol', action:"quickGetTestCmds", backgroundColor:"#ffffff"
 		}
 		controlTile("poolSliderControl", "device.poolSetpoint", "slider", width: 2, height: 1, inactiveLabel: false, range:"(39..104)") {
 			state "PoolSetpoint", action:"quickSetPool", backgroundColor:"#d04e00"
@@ -1543,28 +1539,6 @@ private List refreshCommandStrings() { ["910005400102870301", "91000540010183010
 
 private List refreshCommandHubitatActions() { refreshCommandStrings().collect { new hubitat.device.HubAction(it) } }
 
-private List getTestCmds() {
-	log("DEBUG", "+++++ getTestCmds")
-	def cmds =[
-		// new hubitat.device.HubAction("91000541010100"),
-		// zwave.manufacturerProprietaryV1.manufacturerProprietary(payload: "05400101830101")
-	]
-	// cmds.addAll(setChanState(getVSP_CHAN_NO(2), 0))
-	// cmds.addAll(getChanState(getVSP_CHAN_NO(1)))
-	// cmds.addAll(setVSPSpeeds(1500,2100,2800,3400,3425) )
-	// cmds.addAll(setVSPSpeeds(1400,2000,2750,3450,3450) )
-	// cmds.addAll(setSchedule(1,1,0,0,23,59) )
-	// cmds.addAll(resetSchedule(1,3) )
-	// cmds.addAll(setSchedule(2,1,07,00,19,00) )
-	// cmds.addAll(setSchedule(7,1,07,00,18,00) )
-	// cmds.addAll(resetSchedule(8,3) )
-	cmds.addAll(getSchedules(1) )
-	// state.each {key, val ->
-	//  log("DEBUG", "state key: $key, value: $val")
-	// }
-	cmds
-}
-
 def List on() {
 	log("DEBUG", "+++++ on()")
 	delayBetweenLog([
@@ -1751,7 +1725,6 @@ def List quickGetWaterTemp()   {
 	executeCommands(getWaterTemp(), true)
 }
 
-def List quickGetTestCmds()    { executeCommands(getTestCmds(), true) }
 def List setLightColor(int col){ executeCommands(setLightColorInternal(col), true) }
 //def List setColor()			   {addRefreshCmds(delayBetweenLog(cmds)) } // This seems poorly defined currently
 
