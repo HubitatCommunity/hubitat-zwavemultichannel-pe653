@@ -1050,7 +1050,7 @@ def zwaveEvent(hubitat.zwave.Command cmd) {
 
 def List poll() {
 	log("DEBUG", "+++++ poll()")
-	executeCommands([], true)
+	executeCommands([])
 }
 
 private initUILabels() {
@@ -1092,7 +1092,7 @@ def List refresh() {
 		}
 	}
 
-	executeCommands(cmds, true)
+	executeCommands(cmds)
 }
 
 def List updated() {
@@ -1126,13 +1126,13 @@ def List updated() {
 	// logCommandList(cmds)
 	// sendHubCommand(cmds,0)
 	// return []
-	executeCommands(cmds, true)
+	executeCommands(cmds)
 }
 
 def List configure() {
 	log("DEBUG", "+++++ configure()    DTH:${VERSION}  state.Versioninfo=${state.VersionInfo}")
 	initUILabels()
-	executeCommands(internalConfigure(), true)
+	executeCommands(internalConfigure())
 }
 
 private List internalConfigure() {
@@ -1229,7 +1229,7 @@ private removeChildDevices(List oldChildren){
 /** Clock */
 private List getClock() {
 	log("DEBUG", "+++++ getClock")
-	executeCommands([zwave.clockV1.clockGet()])
+	executeCommands([zwave.clockV1.clockGet()], false)
 }
 
 def List setClock() {
@@ -1239,7 +1239,7 @@ def List setClock() {
 					hour: nowCal.get(Calendar.HOUR_OF_DAY),
 					minute: nowCal.get(Calendar.MINUTE),
 					weekday: nowCal.get(Calendar.DAY_OF_WEEK))
-	executeCommands([cmds])
+	executeCommands([cmds], false)
 }
 
 /** Temperature & Thermostat */
@@ -1306,7 +1306,7 @@ def List setVSPSpeeds(Integer rpm1, Integer rpm2, Integer rpm3, Integer rpm4, In
 			cmds.addAll(setConfiguration(getVSP_RPMMAX_SCHED_PARAM(), 2, spd.intdiv(256), (spd % 256), 0, 0))
 		}
 	}
-	executeCommands(cmds, true)
+	executeCommands(cmds)
 }
 
 // Query the four VSP scheduled to determine which speed is enabled. Not currently used
@@ -1567,7 +1567,7 @@ def List childOff(dni)  {
 
 def List childRefresh(dni)  {
 	log("DEBUG", "refresh called in parent: dni=${dni} channelNumber(dni)=${channelNumber(dni)}")
-	executeCommands([], true)
+	executeCommands([])
 }
 
 // On or Off from a child device. Take action depending on which type of child device
@@ -1633,40 +1633,40 @@ def List insertLogTrace() {
 
 def List executeArbitraryCommand(String command) {
 	log("DEBUG", "+++++ executeArbitraryCommand + ${command}")
-	executeCommands([command], true)
+	executeCommands([command])
 }
 
 def List recreateChildren() {
 	createChildDevices()
-	executeCommands([], true)
+	executeCommands([])
 }
 
 // Called by switch presses on the circuit buttons.
-def List on1()  { executeCommands(setChanState(1, 0xFF), true) }
-def List on2()  { executeCommands(setChanState(2, 0xFF), true) }
-def List on3()  { executeCommands(setChanState(3, 0xFF), true) }
-def List on4()  { executeCommands(setChanState(4, 0xFF), true) }
-def List on5()  { executeCommands(setChanState(5, 0xFF), true) }
-def List off1() { executeCommands(setChanState(1, 0), true) }
-def List off2() { executeCommands(setChanState(2, 0), true) }
-def List off3() { executeCommands(setChanState(3, 0), true) }
-def List off4() { executeCommands(setChanState(4, 0), true) }
-def List off5() { executeCommands(setChanState(5, 0), true) }
+def List on1()  { executeCommands(setChanState(1, 0xFF)) }
+def List on2()  { executeCommands(setChanState(2, 0xFF)) }
+def List on3()  { executeCommands(setChanState(3, 0xFF)) }
+def List on4()  { executeCommands(setChanState(4, 0xFF)) }
+def List on5()  { executeCommands(setChanState(5, 0xFF)) }
+def List off1() { executeCommands(setChanState(1, 0)) }
+def List off2() { executeCommands(setChanState(2, 0)) }
+def List off3() { executeCommands(setChanState(3, 0)) }
+def List off4() { executeCommands(setChanState(4, 0)) }
+def List off5() { executeCommands(setChanState(5, 0)) }
 
 // May be called by CoRE
-def List setVSPSpeed(sp)       { executeCommands(setVSPSpeedInternal(sp), true) }
+def List setVSPSpeed(sp)       { executeCommands(setVSPSpeedInternal(sp)) }
 // Called by switch presses on the VSP buttons.
-def List setVSPSpeed0()        { executeCommands(setVSPSpeedInternal(0), true) }
-def List setVSPSpeed1()        { executeCommands(setVSPSpeedInternal(1), true) }
-def List setVSPSpeed2()        { executeCommands(setVSPSpeedInternal(2), true) }
-def List setVSPSpeed3()        { executeCommands(setVSPSpeedInternal(3), true) }
-def List setVSPSpeed4()        { executeCommands(setVSPSpeedInternal(4), true) }
+def List setVSPSpeed0()        { executeCommands(setVSPSpeedInternal(0)) }
+def List setVSPSpeed1()        { executeCommands(setVSPSpeedInternal(1)) }
+def List setVSPSpeed2()        { executeCommands(setVSPSpeedInternal(2)) }
+def List setVSPSpeed3()        { executeCommands(setVSPSpeedInternal(3)) }
+def List setVSPSpeed4()        { executeCommands(setVSPSpeedInternal(4)) }
 
 
-def List setMode1()            { executeCommands(setMode(1), true) }
-def List setMode2()            { executeCommands(setMode(2), true) }
-def List setMode3()            { executeCommands(setMode(3), true) }
-def List setMode4()            { executeCommands(setMode(4), true) }
+def List setMode1()            { executeCommands(setMode(1)) }
+def List setMode2()            { executeCommands(setMode(2)) }
+def List setMode3()            { executeCommands(setMode(3)) }
+def List setMode4()            { executeCommands(setMode(4)) }
 
 private List setMode(int mode) {
 	def cmds = []
@@ -1712,19 +1712,19 @@ private List setMode(int mode) {
 	cmds
 }
 
-def List setSpaMode()          { executeCommands(setSpaModeInternal()) }
-def List setPoolMode()         { executeCommands(setPoolModeInternal()) }
-def List togglePoolSpaMode()   { executeCommands(togglePoolSpaModeInternal()) }
+def List setSpaMode()          { executeCommands(setSpaModeInternal(), false) }
+def List setPoolMode()         { executeCommands(setPoolModeInternal(), false) }
+def List togglePoolSpaMode()   { executeCommands(togglePoolSpaModeInternal(), false) }
 
-def List quickSetSpa(degrees)  { executeCommands(setSpaSetpointInternal("${degrees}".toDouble()), true) }
-def List quickSetPool(degrees) { executeCommands(setPoolSetpointInternal("${degrees}".toDouble()), true) }
+def List quickSetSpa(degrees)  { executeCommands(setSpaSetpointInternal("${degrees}".toDouble())) }
+def List quickSetPool(degrees) { executeCommands(setPoolSetpointInternal("${degrees}".toDouble())) }
 
 def List quickGetWaterTemp()   {
 	log("DEBUG", "+++++ quickGetWaterTemp")
-	executeCommands(getWaterTemp(), true)
+	executeCommands(getWaterTemp())
 }
 
-def List setLightColor(int col){ executeCommands(setLightColorInternal(col), true) }
+def List setLightColor(int col){ executeCommands(setLightColorInternal(col)) }
 //def List setColor()			   {addRefreshCmds(delayBetweenLog(cmds)) } // This seems poorly defined currently
 
 // Called from Parse for responses from the device
@@ -1834,7 +1834,7 @@ private channelNumber(String dni) {
 	dni.split("-ep")[1] as Integer
 }
 
-private List executeCommands(commands, refreshControls = false) {
+private List executeCommands(commands, refreshControls = true) {
 	if (refreshControls) {
 		commands += refreshCommandStrings()
 	}
