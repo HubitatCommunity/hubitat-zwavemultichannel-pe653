@@ -734,7 +734,7 @@ private process84Event(byte [] payload) {
 	Integer temp
 
 	def swMap = ['1':1, '2':2, '3':4, '4':8, '5':16]
-	log("DEBUG", "payload for switches is ${payload[SWITCHES_84]}")
+	//log("DEBUG", "payload for switches is ${payload[SWITCHES_84]}")
 	for (sw in swMap) {
 		if (payload[SWITCHES_84] & sw.value) {
 			val = 0xFF
@@ -1016,14 +1016,14 @@ def zwaveEventMultiCmdEncap(cmd) {
 
 // Used to update our own switches state as well as the child devices
 // Two Events: One event is immediately sent to the child device and another is returned to our own UI control
-private List createMultipleEvents (Integer endpoint, Integer externalParm, String myParm) {
+private List createMultipleEvents(Integer endpoint, Integer externalParm, String myParm) {
 	def rslt = []
 	def swName  = getSWITCH_NAME(endpoint)
 	log("DEBUG", 2, "+++++ createMultipleEvents( endpoint:$endpoint, name:$swName, externalParm:$externalParm, myParm:$myParm)")
 
 	def dni = "${device.deviceNetworkId}-ep${endpoint}"
 	def devObj = getChildDevices()?.find { it.deviceNetworkId == dni }
-	log("DEBUG", "----- createMultipleEvents: devObj = ${devObj}")
+	// log("DEBUG", "----- createMultipleEvents: devObj = ${devObj}")
 	if (devObj) {
 		if (devObj.currentValue("switch") == "$myParm") {
 			// log("DEBUG", 2, "<<<<< Child Event unnecessary. name:$dni:$swName evt: \"${myParm}\" ==> dev (${devObj.currentValue("switch")})")
@@ -1048,7 +1048,6 @@ def zwaveEvent(hubitat.zwave.Command cmd) {
 
 //Commands
 
-// Called occasionally although not consistently
 def List poll() {
 	log("DEBUG", "+++++ poll()")
 	executeCommands([], true)
@@ -1733,8 +1732,6 @@ def delayResponseLog(parm, dly=DELAY, responseFlg=true) {
 	delayBetweenLog(parm, dly, responseFlg)
 }
 
-
-// Called from all commands
 def delayBetweenLog(parm, dly=DELAY, responseFlg=false) {
 	log("DEBUG", "+++++ delayBetweenLog parm[${parm.size}] dly=$dly responseFlg=${responseFlg}")
 	def lst = parm
@@ -1754,7 +1751,7 @@ def delayBetweenLog(parm, dly=DELAY, responseFlg=false) {
 			log("WARN", "  - UNEXPECTED in LIST: l -> ${l}")
 			log("ERROR", "I suspect this never occurs - l in List case.")
 		} else {
-			log("TRACE", "  - l -> ${l}") // maps come through here
+			// log("TRACE", "  - l -> ${l}") // maps come through here
 		}
 
 		if (l instanceof hubitat.device.HubAction) {
@@ -1789,9 +1786,9 @@ def delayBetweenLog(parm, dly=DELAY, responseFlg=false) {
 			log("TRACE", "  - ${index}: Map: $l")
 			// example:	createEvent(name: "$sw", value: "$myParm", isStateChange: true, displayed: true, descriptionText: "($sw set to $myParm)")
 			if ("${device.currentValue(l.name)}".equals("${l.value}")) {
-				log("DEBUG", 2, "\t\t Event unnecessary. name:${l.name}  evt: \"${l.value}\" ==> dev:(${device.currentValue(l.name)})")
+				// log("DEBUG", 2, "\t\t Event unnecessary. name:${l.name}  evt: \"${l.value}\" ==> dev:(${device.currentValue(l.name)})")
 			} else {
-				log("DEBUG", "\t\t Event necessary. name:${l.name} evt: \"${l.value}\" ==> dev:(${device.currentValue(l.name)})")
+				//log("DEBUG", "\t\t Event necessary. name:${l.name} value: \"${l.value}\" ==> dev current value:(${device.currentValue(l.name)})")
 				evts << l
 				evtStr = evtStr.concat("\n\t\t\t<<<<< Event: $l")
 			}
@@ -1838,16 +1835,12 @@ private channelNumber(String dni) {
 }
 
 private List executeCommands(commands, refreshControls = false) {
-	log("DEBUG", 2, "+++++ executeCommands")
-	logCommandList(commands)
-
 	if (refreshControls) {
 		commands += refreshCommandStrings()
 	}
 
 	commands = formatUnformattedCommands(commands)
 
-	log("DEBUG", 2, "----- executeCommands final set:")
 	def afterDelayBetween = delayBetween(commands, 1000)
 	logCommandList(afterDelayBetween)
 	afterDelayBetween
