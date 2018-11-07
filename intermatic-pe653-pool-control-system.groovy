@@ -36,8 +36,7 @@ metadata {
 		capability "Sensor"
 		capability "Switch"
 		capability "Temperature Measurement"
-		capability "Thermostat"
-		//capability "Update"
+		capability "Thermostat Heating Setpoint"
 		capability "Zw Multichannel"
 
 		attribute "operationMode", "string"
@@ -571,7 +570,7 @@ def getSupportedCmdClasses () {[
 	0x25,	//	Switch Binary
 	0x27,	//	Switch All
 	0x31,	//	Sensor Multilevel
-	0x43,	//	Thermostat setpoint
+	0x43,	//	Thermostat Setpoint
 	0x60,	//	Multi Instance
 	0x70,	//	Configuration
 	0x72,	//	Manufacturer Specific
@@ -907,7 +906,7 @@ def zwaveEvent(hubitat.zwave.commands.thermostatsetpointv1.ThermostatSetpointRep
 	// So we can respond with same format
 	state.size = cmd.size
 	state.precision = cmd.precision
-//	state.scale = cmd.scale
+	//	state.scale = cmd.scale
 	// PE653 ver3.4 has two varients: v34 that requires Celsius scale (0) and a newer (correct) V34.14 that requires Fahrenheit scale (1).
 	// Unfortunately the version report does not distinguish between the two versions.
 	// Regardless of scale, PE653 always expects the actual temperature value to be in Fahrenheit.
