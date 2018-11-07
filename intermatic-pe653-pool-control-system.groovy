@@ -30,15 +30,15 @@ def getVERSION () {"Ver 3.2.0"}		// Keep track of handler version
 metadata {
 	definition (name: "Intermatic Pool Control System", author: "Tooluser", namespace:  "Nowhereville") {
 		capability "Actuator"
-		capability "Switch"
-		capability "Polling"
 		capability "Configuration"
+		capability "Polling"
 		capability "Refresh"
-		capability "Temperature Measurement"
 		capability "Sensor"
-		capability "Zw Multichannel"
+		capability "Switch"
+		capability "Temperature Measurement"
 		capability "Thermostat"
 		//capability "Update"
+		capability "Zw Multichannel"
 
 		attribute "operationMode", "string"
 		attribute "firemanTimeout", "string"
@@ -67,45 +67,45 @@ metadata {
 		attribute "lastScheduleChg", "string"
 		attribute "VSPSpeeds", "string"
 
+		command "childOff"
+		command "childOn"
+		command "executeArbitraryCommand", ["string"]
+		command "getSchedules", ["number"]
+		command "insertLogTrace"
+		command "off1"
+		command "off2"
+		command "off3"
+		command "off4"
+		command "off5"
+		command "on1"
+		command "on2"
+		command "on3"
+		command "on4"
+		command "on5"
 		command "poll"
+		command "quickGetWaterTemp"
 		command "quickSetPool", ["number"]
 		command "quickSetSpa", ["number"]
-		command "quickGetWaterTemp"
-		command "setPoolMode"
-		command "setSpaMode"
-		command "togglePoolSpaMode"
-		command "childOn"
-		command "childOff"
-		command "on1"
-		command "off1"
-		command "on2"
-		command "off2"
-		command "on3"
-		command "off3"
-		command "on4"
-		command "off4"
-		command "on5"
-		command "off5"
 		command "recreateChildren"
+		command "resetSchedule", ["number","number"]
+		command "setClock"
+		command "setColor"
+		command "setLightColor", ["number"]
+		command "setMode1"
+		command "setMode2"
+		command "setMode3"
+		command "setMode4"
+		command "setPoolMode"
+		command "setSchedule", ["number","number","number","number","number","number"]
+		command "setSpaMode"
 		command "setVSPSpeed", ["number"]
 		command "setVSPSpeed0"
 		command "setVSPSpeed1"
 		command "setVSPSpeed2"
 		command "setVSPSpeed3"
 		command "setVSPSpeed4"
-		command "setMode1"
-		command "setMode2"
-		command "setMode3"
-		command "setMode4"
-		command "setLightColor", ["number"]
-		command "setColor"
-		command "setClock"
-		command "getSchedules", ["number"]
-		command "setSchedule", ["number","number","number","number","number","number"]
-		command "resetSchedule", ["number","number"]
 		command "setVSPSpeeds"
-		command "insertLogTrace"
-		command "executeArbitraryCommand", ["string"]
+		command "togglePoolSpaMode"
 		//command "updated"
 
 		fingerprint deviceId: "0x1001", inClusters: "0x91,0x73,0x72,0x86,0x81,0x60,0x70,0x85,0x25,0x27,0x43,0x31", outClusters: "0x82"
