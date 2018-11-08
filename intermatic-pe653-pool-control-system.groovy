@@ -1238,7 +1238,7 @@ def List setClock() {
 					hour: nowCal.get(Calendar.HOUR_OF_DAY),
 					minute: nowCal.get(Calendar.MINUTE),
 					weekday: nowCal.get(Calendar.DAY_OF_WEEK))
-	executeCommands([cmds], false)
+	executeCommands([timeSet], false)
 }
 
 /** Temperature & Thermostat */
