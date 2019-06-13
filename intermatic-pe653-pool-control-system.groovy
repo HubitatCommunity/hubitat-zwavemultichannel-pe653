@@ -671,7 +671,7 @@ def zwaveEvent(hubitat.zwave.commands.thermostatsetpointv1.ThermostatSetpointSup
 }
 
 def zwaveEventManufacturerProprietary(byte [] payload, payloadStr) {
-	log("DEBUG", "ManufacturerProprietary event, [1]:${String.format("%02X",payload[1])}  [4]:${String.format("%02X",payload[4])}  payload: ${payloadStr}")
+	log("DEBUG", "+++++ ManufacturerProprietary event, [1]:${String.format("%02X",payload[1])}  [4]:${String.format("%02X",payload[4])}  payload: ${payloadStr}")
 
 	def rslt = []
 	byte [] oldResp  = [1,2,3,4]
