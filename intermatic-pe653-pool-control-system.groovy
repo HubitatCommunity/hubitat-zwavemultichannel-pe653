@@ -703,23 +703,31 @@ def zwaveEventManufacturerProprietary(byte [] payload, payloadStr) {
 	} else {
 		log("WARN", "Unexpected ManufacturersProprietary event received !!")
 	}
-	// log("DEBUG", "respType:${respType}  oldResp: ${oldResp}")
-	if (oldResp == null) {oldResp = (byte[])[0,1,2,3,4] as byte [];log.debug "==null forced to array"}
-	for (def i=0;i<payload.length;i++) {
-		oldP += " ${String.format("%02X",oldResp[i])}"
-		newP += " ${String.format("%02X",payload[i])}"
-		oldD += " ${String.format("%03d",oldResp[i])}"
-		newD += " ${String.format("%03d",payload[i])}"
-		if (oldResp[i] != payload[i] && (
-			(respType == 84 && (i != CLOCK_MINUTE_84 && i != CLOCK_HOUR_84)) ||
-			(respType == 87 && (i != CLOCK_MINUTE_87 && i != CLOCK_HOUR_87)) ||
-			(respType == 41 && (i != 99))
-		)) {
-			diffCnt++
-			head += " ${String.format("%02d",i)} "
-		} else {
-			head += "--- "
+
+	if (oldResp == null) {
+		oldResp = (byte[])[0,1,2,3,4] as byte [];
+		log("DEBUG", 2 , "==null forced to array")
+	}
+
+	try {
+		for (def i = 0; i < payload.length; i++) {
+			oldP += " ${String.format("%02X", oldResp[i])}"
+			newP += " ${String.format("%02X", payload[i])}"
+			oldD += " ${String.format("%03d", oldResp[i])}"
+			newD += " ${String.format("%03d", payload[i])}"
+			if (oldResp[i] != payload[i] && (
+				(respType == 84 && (i != CLOCK_MINUTE_84 && i != CLOCK_HOUR_84)) ||
+					(respType == 87 && (i != CLOCK_MINUTE_87 && i != CLOCK_HOUR_87)) ||
+					(respType == 41 && (i != 99))
+			)) {
+				diffCnt++
+				head += " ${String.format("%02d", i)} "
+			} else {
+				head += "--- "
+			}
 		}
+	} catch (e) {
+		log("DEBUG", "..... Exception in zwave.proprietary() byte lengths mismatch in round ${i} payload ${payload} of length ${payload.length} exception ${e}")
 	}
 	if (diffCnt) {
 		log("debug", 2, "respType:${respType}  differences:${diffCnt}\n__ __ ${head}\nnew-:   ${newP}\nold-- :   ${oldP}")
