@@ -609,8 +609,13 @@ def parse(String description) {
 			}
 			// log("DEBUG", "command: ${command}   payloadStr: ${payloadStr}")
 		if (command.contains("9100")) {
-			payload = payloadStr.replace(" ","").decodeHex()
-			log("DEBUG", 0, ">>>>> unParsed cmd - description:$description ")
+			try {
+				payloadStr = payloadStr.split(',')[0]	// Remove any unexpected attributes following payload.
+				payload = payloadStr.replace(" ","").decodeHex()
+				log("DEBUG", 0, ">>>>> unParsed cmd - description:$description ")
+			} catch (e) {
+				log("ERROR", 0,"..... Exception in Parse() - decodeHex() ${cmd} - description:${description} exception ${e}")
+			}
 			result = zwaveEventManufacturerProprietary(payload, payloadStr)
 		} else {
 			try {
