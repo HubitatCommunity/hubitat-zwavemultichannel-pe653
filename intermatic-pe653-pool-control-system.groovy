@@ -596,43 +596,47 @@ def parse(String description) {
 	def cmd = null
 	def payloadStr = ""
 	byte[] payload = []
+
 	if (description.startsWith("Err")) {
 		log("WARN", "Error in Parse")
 		result = createEvent(descriptionText:description, isStateChange:true)
+		return delayResponseLog(result)
+	}
+
+	try {
+		def command1 = description.split('command:')[1]
+		command = command1.split(',')[0]
+		payloadStr = description.split('payload:')[1]
+		} catch (e) {
+			log("ERROR", "..... Exception in Parse() ${cmd} - description:${description} exception ${e}")
+		}
+		// log("DEBUG", "command: ${command}   payloadStr: ${payloadStr}")
+	if (command.contains("9100")) {
+		try {
+			log("DEBUG", 0, ">>>>> unParsed cmd - description:$description ")
+			payloadStr = payloadStr.split(',')[0]	// Remove any unexpected attributes following payload.
+			payload = payloadStr.replace(" ","").decodeHex()
+			log("DEBUG", 0, ">>>>> OUT unParsed cmd - description:$description ")
+		} catch (e) {
+			log("ERROR", 0,"..... Exception in Parse() - decodeHex() ${cmd} - description:${description} exception ${e}")
+		}
+		result = zwaveEventManufacturerProprietary(payload, payloadStr)
 	} else {
 		try {
-			def command1 = description.split('command:')[1]
-			command = command1.split(',')[0]
-			payloadStr = description.split('payload:')[1]
-			} catch (e) {
-				log("ERROR", "..... Exception in Parse() ${cmd} - description:${description} exception ${e}")
-			}
-			// log("DEBUG", "command: ${command}   payloadStr: ${payloadStr}")
-		if (command.contains("9100")) {
-			try {
-				payloadStr = payloadStr.split(',')[0]	// Remove any unexpected attributes following payload.
-				payload = payloadStr.replace(" ","").decodeHex()
-				log("DEBUG", 0, ">>>>> unParsed cmd - description:$description ")
-			} catch (e) {
-				log("ERROR", 0,"..... Exception in Parse() - decodeHex() ${cmd} - description:${description} exception ${e}")
-			}
-			result = zwaveEventManufacturerProprietary(payload, payloadStr)
+			// cmd = zwave.parse(description, [0x20: 1, 0x25:1, 0x27:1, 0x31:1, 0x43:1, 0x60:3, 0x70:2, 0x72:1, 0x81:1, 0x85:2, 0x86: 1, 0x73:1, 0x91:1])
+			cmd = zwave.parse(description, [0x20: 1, 0x25:1, 0x27:1, 0x31:1, 0x43:1, 0x60:1, 0x70:2, 0x72:1, 0x81:1, 0x85:2, 0x86: 1, 0x73:1, 0x91:1])
+		} catch (e) {
+			log("WARN", "..... Exception in zwave.parse() ${cmd} - description:${description} exceptioon ${e}")
+		}
+		if (cmd) {
+			log("DEBUG", 2, "----- ${cmd} - description:$description ")
+			result = zwaveEvent(cmd)
 		} else {
-			try {
-				// cmd = zwave.parse(description, [0x20: 1, 0x25:1, 0x27:1, 0x31:1, 0x43:1, 0x60:3, 0x70:2, 0x72:1, 0x81:1, 0x85:2, 0x86: 1, 0x73:1, 0x91:1])
-				cmd = zwave.parse(description, [0x20: 1, 0x25:1, 0x27:1, 0x31:1, 0x43:1, 0x60:1, 0x70:2, 0x72:1, 0x81:1, 0x85:2, 0x86: 1, 0x73:1, 0x91:1])
-			} catch (e) {
-				log("WARN", "..... Exception in zwave.parse() ${cmd} - description:${description} exceptioon ${e}")
-			}
-			if (cmd) {
-				log("DEBUG", 2, "----- ${cmd} - description:$description ")
-				result = zwaveEvent(cmd)
-			} else {
-				log("WARN", "----- Parse() parsed to NULL:  description:$description")
-				return null
-			}
+			log("WARN", "----- Parse() parsed to NULL:  description:$description")
+			return null
 		}
 	}
+
 	delayResponseLog(result)
 }
 
