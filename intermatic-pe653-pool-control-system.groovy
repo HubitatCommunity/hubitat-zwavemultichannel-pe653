@@ -1265,6 +1265,16 @@ def List setClock() {
 }
 
 /** Temperature & Thermostat */
+def List setCoolingSetpoint(Double degrees) {
+	log("debug", "+++++ setCoolingSetpoint ${degrees}")
+	executeCommands(setPoolSetpointInternal(degrees.toDouble()))
+}
+
+def List setHeatingSetpoint(Double degrees) {
+	log("debug", "+++++ setHeatingSetpoint ${degrees}")
+	executeCommands(setPoolSetpointInternal(degrees.toDouble()))
+}
+
 private List setPoolSetpointInternal(Double degrees) {
 	log("debug", "+++++ setPoolSetpointInternal() ${degrees}")
 	setPoolOrSpaSetpoint(degrees, 1)
