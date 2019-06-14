@@ -71,7 +71,6 @@ metadata {
 		command "quickSetPool", ["number"]
 		command "quickSetSpa", ["number"]
 		command "quickGetWaterTemp"
-		command "quickGetWaterTempOld"
 		command "quickGetTestCmds"
 		command "setPoolMode"
 		command "setSpaMode"
@@ -1767,10 +1766,6 @@ def List quickSetPool(degrees) { executeCommands(setPoolSetpointInternal("${degr
 def List quickGetWaterTemp()   {
 	log("DEBUG", "+++++ quickGetWaterTemp")
 	executeCommands(getWaterTemp(), true)
-}
-def List quickGetWaterTempOld() {
-	log("DEBUG", "+++++ quickGetwaterTempOld using delayBetweenLog")
-	delayBetweenLog( addRefreshCmds(getWaterTemp()))
 }
 
 def List quickGetTestCmds()    { executeCommands(getTestCmds(), true) }
