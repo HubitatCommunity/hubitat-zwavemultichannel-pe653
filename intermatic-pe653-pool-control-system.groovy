@@ -1312,7 +1312,7 @@ private List internalConfigure() {
 
 private void createChildDevices() {
 	def oldChildren = getChildDevices()
-	log("DEBUG", "Existing children: ${oldChildren}")
+	log("DEBUG", "createChildDevices() Existing children: ${oldChildren}")
 	def CHILD_SWITCH_NAMESPACE = "erocm123"
 	def CHILD_SWITCH_NAME = "Switch Child Device"
 	def CHILD_THERMOSTAT_NAMESPACE = "KeithR26"
@@ -1860,6 +1860,7 @@ def List executeArbitraryCommand(String command) {
 }
 
 def List recreateChildren() {
+	log("DEBUG", "+++++ recreateChildren()")
 	createChildDevices()
 	executeCommands([], true)
 }
