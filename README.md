@@ -1,7 +1,9 @@
 # hubitat-zwavemultichannel-pe653
-Development of a Hubitat DTH for the Z-Wave Intermatic PE953 Pool Controller
+Development of a Hubitat DTH (Device Type Handler) for the Intermatic PE953 Z-Wave Pool Controller
 
-Keith Riley is the primary original maintainer. This version is now maintained by @tooluser, Joshua Marker.
+The original author was @BigPunk6 who created the first working PE653 driver for SmartThings.
+The driver was substantially rewritten and enhanced by @KeithR26 (Keith Riley) who is the primary maintainer.
+Significant contributions by @tooluser, Joshua Marker.
 
 Please request merge access, and see the
 Hubitat community page at:
