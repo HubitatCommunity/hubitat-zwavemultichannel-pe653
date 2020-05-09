@@ -8,5 +8,7 @@ Significant contributions by @tooluser, Joshua Marker.
 Please request merge access, and see the
 Hubitat community page at:
  https://community.hubitat.com/t/z-wave-multi-channel-pe653/567/208
-
 for discussion of this project.
+
+The PE653 is produced by Intermatic:
+https://www.intermatic.com/en/pool-and-spa/electronic-controls/pe653
