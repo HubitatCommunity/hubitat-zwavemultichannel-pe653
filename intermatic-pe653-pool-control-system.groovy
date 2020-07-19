@@ -3,7 +3,7 @@
  *
  *  Original Copyright 2014 bigpunk6
  *  Updated 2016 - 2020 KeithR26
- *	Updated 2018 - 2019 Tooluser
+ *  Updated 2018 - 2019 Tooluser
  *
  *  Licensed under the Apache License, Version 2.0 (the "License"); you may not use this file except
  *  in compliance with the License. You may obtain a copy of the License at:
@@ -24,56 +24,65 @@
  *  This code was primarily written by bigpunk6 and KeithR26.
  *
  *  To convert to Hubitat:
- *  1. Replace All: "physicalgraph." with "hubitat."
- *  2. around line 1330, Comment out ST lines, comment in HE lines
+ *  1. Replace All: "physicalgraph<period>" with "hubitat<period>"
+ *  2. Change "definition" line from SmartThings to Hubitat.
  *
  *	Version History
- *	Ver		Date		Author		Changes
- *	1.00	06/15/2016	bigpunk6	Latest version from the original author
- *	2.00	07/14/2016	KeithR26	Updates to make this work with Intermatic firmware v3.4
- *						Added Pool/Spa mode and initial VSP support
- *	2.01	08/10/2016	KeithR26	Major UI redesign
- *						Added 4 switches to set VSP speeds and off
- *						Added 4 "Multi-channel" endpoints for ST VSP control
- *						Added configurable Z-Wave delay
- *						Added PE653 configuration diagnostics in Debug level = High
- *						Added Version Info in IDE and logs
- *						Allow changing icon
- *	2.02	04/26/2017	KeithR26	Fix Thermostat set for v3.4 firmware (force scale = 0)
- *									Prototype Pool Light Color Control
- *									Implement simple "Macros"
- *	2.03	05/01/2017	KeithR26	Refresh water temp when UI temp is tapped
- *	2.04	05/07/2017	KeithR26	Allow negative temperature offsets. Limit offets to +/- 5 (max supported by PE653)
- *	2.05	05/13/2017	KeithR26	Debug version for Android. Never committed to master
- *	2.06	05/13/2017	KeithR26	Update to fix Temperature display on Android
- *	3.00	07/05/2018	KeithR26	Change to "Composite" DTH since ST deprecated the Multi-channel SmartApp
- *									Improves VSP integration. No more schedules.
- *									Reorganized UI. Display Air temp, Heater on/off and Clock.
- *									Minor adjustments for Hubitat compatibility.
- *									Remove defaults to fix Android config issues.
- *	3.01	07/06/2018	KeithR26	Added second Air Temperature. Now displays both Freeze and Solar temps.
- *	3.02	07/07/2018	KeithR26	Avoid sending events and warnings if no VSP
- *	3.03	07/15/2018	KeithR26	More minor adjustments to improve Hubitat compatibility
- *	3.04	07/15/2018	KeithR26	Added setSchedule, resetSchedule, getSchedules, and setVSPSpeeds commands
- *									Added Schedule events
- *			07/22/2018	KeithR26	Due to different Intermatic firmware sub-versions of v3.4, alternate Setpoint "scale" if SetPointSet is ignored ("learn")
- *									Fix negative air and solar temperature display
- *			08/09/2018	KeithR26	Fixes to getSchedules.
- *									Fix QuickGetWaterTemp
- *									Fix update of "Set Mode" labels on the UI
- *	3.05	08/19/2018	KeithR26	Finish off Schedule functions
- *									Possible fix to set Clock
- *									Fix Light Color slider
- *	3.06	08/30/2018	KeithR26	Make temperature events visible
- *									Suppress redundant events
- *	3.07	04/10/2018	KeithR26	Hubitat fixes
- *	3.1.0	12/01/2018	Tooluser	Semantic versioning and further adaptation to the Hubitat system
- *	3.1.4a	06/19/2019	Tooluser	Standardize logging, Null protection for tempoffsets
- *	3.2.0	04/21/2019	KeithR26	More Hubitat fixes
- *  3.2.1   10/23/2019  KeithR26    Added dual Thermostat child devices
- *  4.0.0   05/05/2020  KeithR26    Official Release with Child Thermostats and merged log code
+ *      Ver       Date           Author         Changes
+ *      1.00    06/15/2016      bigpunk6        Latest version from the original author
+ *      2.00    07/14/2016      KeithR26        Updates to make this work with Intermatic firmware v3.4
+ *                                              Added Pool/Spa mode and initial VSP support
+ *      2.01    08/10/2016      KeithR26        Major UI redesign
+ *                                              Added 4 switches to set VSP speeds and off
+ *                                              Added 4 "Multi-channel" endpoints for ST VSP control
+ *                                              Added configurable Z-Wave delay
+ *                                              Added PE653 configuration diagnostics in Debug level = High
+ *                                              Added Version Info in IDE and logs
+ *                                              Allow changing icon
+ *      2.02    04/26/2017      KeithR26        Fix Thermostat set for v3.4 firmware (force scale = 0)
+ *                                              Prototype Pool Light Color Control
+ *                                              Implement simple "Macros"
+ *      2.03    05/01/2017      KeithR26        Refresh water temp when UI temp is tapped
+ *      2.04    05/07/2017      KeithR26        Allow negative temperature offsets. Limit offets to +/- 5 (max supported by PE653)
+ *      2.05    05/13/2017      KeithR26        Debug version for Android. Never committed to master
+ *      2.06    05/13/2017      KeithR26        Update to fix Temperature display on Android
+ *      3.00    07/05/2018      KeithR26        Change to "Composite" DTH since ST deprecated the Multi-channel SmartApp
+ *                                              Improves VSP integration. No more schedules.
+ *                                              Reorganized UI. Display Air temp, Heater on/off and Clock.
+ *                                              Minor adjustments for Hubitat compatibility.
+ *                                              Remove defaults to fix Android config issues.
+ *      3.01    07/06/2018      KeithR26        Added second Air Temperature. Now displays both Freeze and Solar temps.
+ *      3.02    07/07/2018      KeithR26        Avoid sending events and warnings if no VSP
+ *      3.03    07/15/2018      KeithR26        More minor adjustments to improve Hubitat compatibility
+ *      3.04    07/15/2018      KeithR26        Added setSchedule, resetSchedule, getSchedules, and setVSPSpeeds commands
+ *                                              Added Schedule events
+ *              07/22/2018      KeithR26        Due to different Intermatic firmware sub-versions of v3.4, alternate Setpoint "scale" if SetPointSet is ignored ("learn")
+ *                                              Fix negative air and solar temperature display
+ *              08/09/2018      KeithR26        Fixes to getSchedules.
+ *                                              Fix QuickGetWaterTemp
+ *                                              Fix update of "Set Mode" labels on the UI
+ *      3.05    08/19/2018      KeithR26        Finish off Schedule functions
+ *                                              Possible fix to set Clock
+ *                                              Fix Light Color slider
+ *      3.06    08/30/2018      KeithR26        Make temperature events visible
+ *                                              Suppress redundant events
+ *      3.07    04/10/2018      KeithR26        Hubitat fixes
+ *      3.1.0   12/01/2018      Tooluser        Semantic versioning and further adaptation to the Hubitat system
+ *      3.1.4a  06/19/2019      Tooluser        Standardize logging, Null protection for tempoffsets
+ *      3.2.0   04/21/2019      KeithR26        More Hubitat fixes
+ *      3.2.1   10/23/2019      KeithR26        Added dual Thermostat child devices
+ *      4.0.0   05/05/2020      KeithR26        Official Release with Child Thermostats and merged log code
+ *      4.0.1   06/06/2020      KeithR26        Fixed update of Version string (was showing old version)
+ *                                              Added P5043 expansion detection
+ *                                              Improved P4043/P4243 expnsion handling of Pool/Spa switch and Heater state.
+ *                                              Add refresh() to poll() every POLL_REFERSH_FREQ minutes
+ *                                              Added more specific log options
+ *       4.0.2  07/01/2020      KeithR26        Improve shared control by the DTH AND the PE953 remote
+ *                                              Implemented Thermostat child device on ST
+ *                                              Fixed command sending from updated()
+ *                                              Add support for Intermatic firmware v3.1 (old - most users on v3.4)
 */
-def getVERSION () {"Ver 4.0.0"}		// Keep track of handler version
+def getVERSION () {"Ver 4.0.2"}		// Keep track of handler version
 
 metadata {
 	definition (name: "Intermatic Pool Control System - Hubitat", author: "KeithR26", namespace:  "KeithR26") {
@@ -202,8 +211,11 @@ metadata {
 			title: "Air temperature offset - Sets the Offset of the air temperature for the add-on Thermometer in degrees Fahrenheit -5F to +5F", range: "-5..5", defaultValue: 0, required: true
 		input "debugLevel", "enum", title: "Debug Level", multiple: "true",
 			options:[[0:"Off"],
-					 [1:"Low"],
-					 [2:"High"]], defaultvalue: 0
+					 [1:"Low - normal"],
+					 [2:"Command formatting"],
+					 [3:"Event suppression"],
+					 [4:"Manufacturers msgs"],
+					 [5:"Child Devices"]], defaultvalue: 1
 		input "ZWdelay", "number",
 			title: "Delay between Z-Wave commands sent (milliseconds). Suggest 1000.", defaultValue: 1000, required: true
 		//Mode 1
@@ -535,6 +547,7 @@ metadata {
 		}
 		standardTile("refresh", "device.switch", width: 1, height: 1, inactiveLabel: false, decoration: "flat") {
 			state "default", label:'', action:"refresh.refresh", icon:"st.secondary.refresh"
+//			state "default", label:'', action:"updated", icon:"st.secondary.refresh"
 		}
 		standardTile("insertLogTrace", "something", width: 6, height: 1, inactiveLabel: false, decoration: "flat") {
 			state "default", label:"Insert Trace in Log", action: "insertLogTrace"
@@ -581,21 +594,39 @@ metadata {
 }
 
 // Constants for PE653 configuration parameter locations
+def getST_PLATFORM() {"hubitat.".startsWith("physical")}// Used in 1 place that needs different code by platform: ST vs HE
+                                                        // The above line is modified by the "replace All" mentioned at line 27
 def getDELAY () {ZWdelay}								// How long to delay between commands to device (configured)
 def getMIN_DELAY () {"800"}								// Minimum delay between commands to device (configured)
+def getPOLL_REFRESH_FREQ () {10}						// Every X minutes (roughly) refresh setpoints and config from PE6553
+
+int getDBG_NEVER () {0}									// log line kept around for future use but never actually logged
+int getDBG_LOW () {1}									// Baseline logging that you can always leave on (minimal)
+int getDBG_CMDS () {2}									// Shows how Lists of Commands/Events are processed prior to passing to the Hub
+int getDBG_EVNTS () {3}									// Shows why/when events are sent versus suppressed
+int getDBG_MANF () {4}									// Focus on Manufacturer Proprietary message processing
+int getDBG_CHILD () {5}									// Focus on child device creation and message processing
+int getDBG_ALWAYS () {9}								// Always logged regardless of debugLevel (Warnings/Errors)
+
 def getSWITCH_SCHED_PARAM (int sw, int sch) { (4 + (sw-1)*3 + (sch-1)) }	// Configuration schedule for switch 1-5
 def getVSP_RPM_SCHED_PARAM (int sp) { (32 + (sp-1))}	// Configuration schedule for VSP RPM Speeds 1-4
 def getVSP_RPMMAX_SCHED_PARAM () { (49) }				// VSP RPM Max speed Schedule 0x31
 def getPOOL_SPA_SCHED_PARAM (int sch) { 19 + (sch-1) }	// Pool/Spa mode Schedule 1-3 - 0x13
 def getPOOL_SPA_CONFIG () { 22 }						// Pool/Spa mode Mode - 0x16
 def getVSP_SCHED_PARAM (int sp, int sch) { (36 + (sp-1)*3 + (sch-1)) }		// VSP Speed 1-4 Schedule 1-3 - 0x24
-def getPOOL_SPA_CHAN () { 39 }							// Pool/Spa channel - 0x27
+
+def getFIRMWARE_VERSION () { state.firmwareVersion ?: "0.0" }
+//def getP5043_EXPANSION () { state.expansionVersion=="3.4" }  // This method name doesn't seem to work (6/21/20)
+def getEXPANSION_5043 () { state.expansionVersion=="3.4" }
+def getPOOL_SPA_CHAN_P5043 () { 39 }					// Pool/Spa channel - 0x27 for P5043 expansion
+def getPOOL_SPA_CHAN () { EXPANSION_5043 ? 39 : 4 }	// Pool/Spa channel - 0x27 if P5043 otherwise 0x04 (Switch 4)
 def getPOOL_SPA_EP () { 6 }								// Pool/Spa endpoint - 6
 def getVSP_SPEED (int sched) { ((sched - 35) / 3) }		// Convert from sched to speed
 def getVSP_CHAN_NO (int spd) { (16 + (spd - 1)) }		// VSP Speed 1 Channel  - 0x10 - 0x13
 def getVSP_EP (int spd) { (6 + spd) }					// VSP Endpoint 7 - 10
 def getVSP_SPEED_FROM_CHAN (int chan) { ((chan - 16) + 1) }	// Convert from channel to speed - 0x10
 def getVSP_ENABLED () { (operationMode2 >= "4") ? 1 : 0 }	// True if a Variable Speed Pump Configured
+def getHAS_HEATER () {fireman.toInteger() != 255}		// True if Heater equiped
 def getPOOL_SPA_COMBO () { (poolSpa1 == "2") ? 1 : 0 }	// True if both Pool and Spa
 def getPOOL_TEMPERATURE_EP () { 11 }					// Child Temperature Endpoint for Pool 11
 def getSPA_TEMPERATURE_EP () { 12 }						// Child Temperature Endpoint for Spa 12
@@ -605,6 +636,8 @@ def getPOOL_THERMOSTATMODE_EP () { 15 }					// Child Mode Endpoint for Pool 15
 def getSPA_THERMOSTATMODE_EP () { 16 }					// Child Mode Endpoint for Spa 16
 def getPOOL_THERMOSTATOPERATINGSTATE_EP () { 17 }		// Child State Endpoint for Pool 17
 def getSPA_THERMOSTATOPERATINGSTATE_EP () { 18 }		// Child State Endpoint for Spa 18
+def getPOOL_SETPOINTTYPE () {1}							// Setpoint Type 1 is for the Pool
+def getSPA_SETPOINTTYPE () {7}							// Setpoint Type 7 is for the Spa
 
 def getLOCAL_ATTR_NAME (int id) {
 	def swNames = ["switch1","switch2","switch3","switch4","switch5","poolSpaMode","swVSP1","swVSP2","swVSP3","swVSP4","temperature","temperature", "poolSetpoint",    "spaSetpoint",     null,             null,             "heater",                   "heater"]
@@ -652,14 +685,14 @@ def getSupportedCmdClasses () {[
 
 // Main entry point for messages from the device
 def parse(String description) {
-	log("TRACE", 2, ">>>>> Incoming: [$description]")
+	log("TRACE", DBG_NEVER, ">>>>> Incoming: [$description]")
 	def result = null
 	def command = null
 	def cmd = null
 	def payloadStr = ""
 	byte[] payload = []
 	if (description.startsWith("Err")) {
-		log("WARN", "Error in Parse")
+		log("WARN", DBG_ALWAYS, "Error in Parse")
 		result = createEvent(descriptionText:description, isStateChange:true)
 	} else {
 		try {
@@ -667,36 +700,35 @@ def parse(String description) {
 			command = command1.split(',')[0]
 			payloadStr = description.split('payload:')[1]
 			} catch (e) {
-				log("ERROR", "..... Exception in Parse() ${cmd} - description:${description} exception ${e}")
+				log("ERROR", DBG_ALWAYS, "..... Exception in Parse() ${cmd} - description:${description} exception ${e}")
 			}
-			// log("DEBUG", "command: ${command}   payloadStr: ${payloadStr}")
+			// log("DEBUG", DBG_NEVER, "command: ${command}   payloadStr: ${payloadStr}")
 		if (command.contains("9100")) {
 			// new sample:  [zw device: 04, command: 9100, payload: 05 40 02 02 84 00 10 02 03 00 02 01 4F 00 50 08 38 15 00 00 01 03 04 01 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 , isMulticast: false]
 			try {
 				payloadStr = payloadStr.split(',')[0]	// Remove any unexpected attributs following payload:
 				payload = payloadStr.replace(" ","").decodeHex()
 			} catch (e) {
-				log("ERROR", "..... Exception in Parse() - decodeHex() ${cmd} - description:${description} exception ${e}")
+				log("ERROR", DBG_ALWAYS, "..... Exception in Parse() - decodeHex() ${cmd} - description:${description} exception ${e}")
 			}
-			log("DEBUG", 0, ">>>>> unParsed cmd - description:$description ")
 			result = zwaveEventManufacturerProprietary(payload, payloadStr)
 		} else {
 			try {
 				// cmd = zwave.parse(description, [0x20: 1, 0x25:1, 0x27:1, 0x31:1, 0x43:1, 0x60:3, 0x70:2, 0x72:1, 0x81:1, 0x85:2, 0x86: 1, 0x73:1, 0x91:1])
 				cmd = zwave.parse(description, [0x20: 1, 0x25:1, 0x27:1, 0x31:1, 0x43:1, 0x60:1, 0x70:2, 0x72:1, 0x81:1, 0x85:2, 0x86: 1, 0x73:1, 0x91:1])
 			} catch (e) {
-				log("WARN", "..... Exception in zwave.parse() ${cmd} - description:${description} exceptioon ${e}")
+				log("WARN", DBG_ALWAYS, ">>>>> Exception in zwave.parse() ${cmd} - raw[${description}] exceptioon ${e}")
 			}
 			if (cmd) {
-				log("DEBUG", 2, "----- ${cmd} - description:$description ")
+				log("DEBUG", DBG_LOW, ">>>>> ${cmd} - raw[$description]")
 				result = zwaveEvent(cmd)
 			} else {
-				log("WARN", "----- Parse() parsed to NULL:  description:$description")
+				log("WARN", DBG_ALWAYS, ">>>>> Parse() parsed to NULL:  description:$description")
 				return null
 			}
 		}
 	}
-	delayResponseLog(result)
+	prepareResponseAndLog(result)
 }
 
 //Reports
@@ -719,18 +751,18 @@ def zwaveEvent(hubitat.zwave.commands.versionv1.VersionCommandClassReport cmd) {
 def zwaveEvent(hubitat.zwave.commands.clockv1.ClockReport cmd) {
 	def time1 = ""
 	time1 = "${String.format("%02d",cmd.hour)}:${String.format("%02d",cmd.minute)}"
-	log("DEBUG", "ClockReport: from PE653=${time1}")
+	log("DEBUG", "----- ClockReport: from PE653=${time1}")
 	createEvent(name: "clock", value: "${time1}", displayed: false, descriptionText: "PE653 Clock: ${time1}")
 }
 
 def zwaveEvent(hubitat.zwave.commands.thermostatsetpointv1.ThermostatSetpointSupportedReport cmd) {
-	log("DEBUG", "thermostatSetpointSupportedReport !!!")
+	log("DEBUG", "----- thermostatSetpointSupportedReport !!!")
 	def cmds = []
 	cmds
 }
 
 def zwaveEventManufacturerProprietary(byte [] payload, payloadStr) {
-	log("DEBUG", "ManufacturerProprietary event, [1]:${String.format("%02X",payload[1])}  [4]:${String.format("%02X",payload[4])}  payload: ${payloadStr}")
+	log("DEBUG", ">>>>> ManufacturerProprietary(type:${String.format("%02X",payload[4])},  payload: ${payloadStr})")
 
 	def rslt = []
 	byte [] oldResp  = [1,2,3,4]
@@ -760,12 +792,12 @@ def zwaveEventManufacturerProprietary(byte [] payload, payloadStr) {
 		state.manProp3 = payload
 		// rslt = process41Event(payload)
 	} else {
-		log("WARN", "Unexpected ManufacturersProprietary event received !!")
+		log("WARN", DBG_ALWAYS, "Unexpected ManufacturersProprietary event received !!")
 	}
 	// log("DEBUG", "respType:${respType}  oldResp: ${oldResp}")
 	if (oldResp == null) {
 		oldResp = (byte[])[0,1,2,3,4] as byte [];
-		log("DEBUG", 2 , "==null forced to array")
+		log("DEBUG" , "==null forced to array")
 	}
 
 	try {
@@ -789,24 +821,33 @@ def zwaveEventManufacturerProprietary(byte [] payload, payloadStr) {
 		log("DEBUG", "..... Exception in zwave.proprietary() byte lengths mismatch in round ${i} payload ${payload} of length ${payload.length} exception ${e}")
 	}
 	if (diffCnt) {
-		log("debug", 2, "respType:${respType}  differences:${diffCnt}\n__ __ ${head}\nnew-:   ${newP}\nold-- :   ${oldP}")
+		log("debug", DBG_MANF, "respType:${respType}  differences:${diffCnt}\n__ __ ${head}\nnew-:   ${newP}\nold-- :   ${oldP}")
 	}
 	rslt
 }
 
-def getCLOCK_MINUTE_84 ()     { 16 }			// Clock Minute
-def getCLOCK_HOUR_84 ()       { 15 }				// Clock Hour
-def getWATER_TEMP_84 ()       { 12 }				// Water Temperature
-def getAIR_TEMP_FREEZE_84 ()  { 13 }			// Air Temperature for Freeze sensing
-def getAIR_TEMP_SOLAR_84 ()   { 14 }			// Air Temperature for Solar control
-def getSWITCHES_84 ()         { 8 }					// Bit mask of 5 switches. SW1 = 01X, SW5 = 10X
-def getPOOL_SPA_MODE_84 ()    { 11 }			// Pool/Spa mode. 01x Pool mode, 00x Spa mode
-def getVSP_SPEED_84 ()        { 20 }				// VSP Speed bit mask. 01x = VSP1, 08x = VSP4
+// Ver 3.1 firmware offsets (per logs from ethelredkent)
+// Pool switch : 6
+// waterTemp : 10
+// airTempFreeze : 11
+// airTempSolar : 12
+private getADJ_84 ()              { (state.firmwareVersion == "3.1") ? -2 : 0 } 	// Determine the adjustment for old firmware
+
+private getSWITCHES_84 ()         { 8  + ADJ_84 }			// Bit mask of 5 switches. SW1 = 01X, SW5 = 10X
+private getPOOL_SPA_MODE_84 ()    { 11 + ADJ_84 }			// Pool/Spa mode. 01x Pool mode, 00x Spa mode
+private getWATER_TEMP_84 ()       { 12 + ADJ_84 }			// Water Temperature
+private getAIR_TEMP_FREEZE_84 ()  { 13 + ADJ_84 }			// Air Temperature for Freeze sensing
+private getAIR_TEMP_SOLAR_84 ()   { 14 + ADJ_84 }			// Air Temperature for Solar control
+private getCLOCK_HOUR_84 ()       { 15 + ADJ_84 }			// Clock Hour
+private getCLOCK_MINUTE_84 ()     { 16 + ADJ_84 }			// Clock Minute
+private getVSP_SPEED_84 ()        { 20 + ADJ_84 }			// VSP Speed bit mask. 01x = VSP1, 08x = VSP4
+private getVER_MAIN_MAJOR_84 ()   { 21 + ADJ_84 }			// Firmware version - PE653 - Major
+private getVER_MAIN_MINOR_84 ()   { 22 + ADJ_84 }			// Firmware version - PE653 - Minor
 
 // Received a ManufacturerProprietary message. Pull the important details and update the UI controls
 
 private process84Event(byte [] payload) {
-	log("DEBUG", 2, "+++++ process84Event payload: ${payload}")
+	log("DEBUG", DBG_MANF, "----- process84Event payload: ${payload}")
 	def rslt = []
 	def map = [:]
 	def str = ""
@@ -814,6 +855,10 @@ private process84Event(byte [] payload) {
 	def ch = 0
 	def poolSpaMode = ""
 	Integer temp
+
+	state.firmwareVersion = "${payload[VER_MAIN_MAJOR_84]}.${payload[VER_MAIN_MINOR_84]}"
+
+	log("DEBUG", DBG_LOW, "----- process84Event Firmware-PE653: ${state.firmwareVersion}  state.expansionVersion=${state.expansionVersion}  EXPANSION_5043=${(EXPANSION_5043)}  getP5043=${getEXPANSION_5043()} ")
 
 	def swMap = ['1':1, '2':2, '3':4, '4':8, '5':16]
 	for (sw in swMap) {
@@ -840,9 +885,18 @@ private process84Event(byte [] payload) {
 
 	//	Set Pool/Spa mode indicator
 	if (POOL_SPA_COMBO) {
-		poolSpaMode = ((payload[POOL_SPA_MODE_84] & 0x01) == 0) ? "on" : "off"
+        if ( EXPANSION_5043 ) {
+    		poolSpaMode = ((payload[POOL_SPA_MODE_84] & 0x01) == 0) ? "on" : "off"
+        } else {
+    		poolSpaMode = ((payload[SWITCHES_84] & 0x08)) ? "on" : "off"    // For P4xxx expansion report Sw4
+        }
 		rslt.addAll(createMultipleEvents(POOL_SPA_EP, poolSpaMode, poolSpaMode))
 	}
+
+	// If there is a heater and no P5043 expansion then it is connected to Switch 5
+    if (HAS_HEATER && !EXPANSION_5043) {
+		rslt.addAll(getHeaterEvents(payload[SWITCHES_84] & 0x10))
+	}    	
 
 	//	Update Water Temperature
 	val = "${payload[WATER_TEMP_84] >= 0 ? payload[WATER_TEMP_84] : payload[WATER_TEMP_84] + 255}"
@@ -867,41 +921,71 @@ private process84Event(byte [] payload) {
 
 // The caller must tell us what mode the system is in because in the case of an 84 event, the device has not been updated yet,
 private List getWaterTempEvents(temp, poolSpaMode) {
-	log("DEBUG", 2, "+++++ getWaterTempEvents temp=$temp  poolSpaMode=$poolSpaMode")
+	log("DEBUG", DBG_MANF, "----- getWaterTempEvents temp=$temp  poolSpaMode=$poolSpaMode")
 	def cmds = []
 
 	if (poolSpaMode.equals("on")) {
 		cmds.addAll(createMultipleEvents(SPA_TEMPERATURE_EP, temp, temp))
-		cmds.addAll(createMultipleEvents(POOL_TEMPERATURE_EP, "unknown", "unknown"))
+		cmds.addAll(createMultipleEvents(POOL_TEMPERATURE_EP, "unknown", "0"))
 		cmds.addAll(createMultipleEvents(SPA_THERMOSTATMODE_EP, null, "heat"))
 		cmds.addAll(createMultipleEvents(POOL_THERMOSTATMODE_EP, null, "off"))
 	} else {
 		cmds.addAll(createMultipleEvents(POOL_TEMPERATURE_EP, temp, temp))
-		cmds.addAll(createMultipleEvents(SPA_TEMPERATURE_EP, "unknown", "unknown"))
-		cmds.addAll(createMultipleEvents(POOL_THERMOSTATMODE_EP, null, "heat"))
+		cmds.addAll(createMultipleEvents(SPA_TEMPERATURE_EP, "unknown", "0"))
+        cmds.addAll(createMultipleEvents(POOL_THERMOSTATMODE_EP, null, "heat"))
 		cmds.addAll(createMultipleEvents(SPA_THERMOSTATMODE_EP, null, "off"))
 	}
 	cmds
 }
 
 
-private getHEATER_87 () { 15 }					// Heater. 04x = on, 00x = off
-private getCLOCK_MINUTE_87 () { 25 }			// Clock Minute
-private getCLOCK_HOUR_87 () { 24 }				// Clock Hour
+private getVER_EXP_MAJOR_87 ()   { 12 }			// Firmware version - PE653 - Major
+private getVER_EXP_MINOR_87 ()   { 13 }			// Firmware version - PE653 - Minor
+private getHEATER_87 ()          { 15 }			// Heater. 04x = on, 00x = off
+private getCLOCK_HOUR_87 ()      { 24 }			// Clock Hour
+private getCLOCK_MINUTE_87 ()    { 25 }			// Clock Minute
+
 
 // Received a ManufacturerProprietary message. Pull the important details and update the UI controls
-
 private process87Event(byte [] payload) {
-	log("DEBUG", 2, "+++++ process87Event payload: ${payload}")
+	log("DEBUG", DBG_MANF, "----- process87Event payload: ${payload}")
 	def cmds = []
-    def locHeatState = "off"
-    def extHeatState = "idle"
-    if (payload[HEATER_87] & 0x04) {
+
+	log("DEBUG", DBG_MANF, "----- process87Event Firmware-Expansion: ${payload[VER_EXP_MAJOR_87]}.${payload[VER_EXP_MINOR_87]}")
+    // Only the P5043 expansion has its own firmware version. 3 = P5043, 0 = either no expansion or a P4xxx expansion
+
+	// A firmware version is only reported from a P5043 expansion. Even so, mine occasionally reports 8.0 instead. Seems to be the first report after the heater goes from on to off. Ignore this
+	def fVer = "${payload[VER_EXP_MAJOR_87]}.${payload[VER_EXP_MINOR_87]}"
+    if (fVer.take(1) == "3") {
+		state.expansionVersion = fVer
+    } else {
+		if (EXPANSION_5043) {
+			log("WARN", DBG_ALWAYS, "ManFac 87 message reported bogus version: $fVer after previously reporting $state.expansionVersion")
+        }
+    }
+
+	// If there is a P5043 expansion then the heater is connected there and reported in the 87 message
+	if (EXPANSION_5043) {
+		cmds.addAll(getHeaterEvents( payload[HEATER_87] & 0x04))
+    }
+
+	cmds
+}
+
+// Create the events to report the Heater state
+private List getHeaterEvents(int heat) {
+	log("DEBUG", DBG_MANF, "----- getHeaterEvents heat: ${heat}")
+	def cmds = []
+    def locHeatState
+    def extHeatState
+
+    if (heat) {
         locHeatState = "on"
         extHeatState = "heating"
+    } else {
+	    locHeatState = "off"
+    	extHeatState = "idle"
     }
-//	def val = ((payload[HEATER_87] & 0x04) == 0) ? "off" : "on"
-//	cmds << createEvent(name: "heater", value: "$val", isStateChange: true, displayed: true, descriptionText: "Heater is ${val}")
 
 	if (device.currentValue("poolSpaMode").equals("on")) {
 		cmds.addAll(createMultipleEvents(SPA_THERMOSTATOPERATINGSTATE_EP, locHeatState, extHeatState))
@@ -917,7 +1001,7 @@ private process87Event(byte [] payload) {
 // ManufacturerSpecificReport(manufacturerId: 5, manufacturerName: Intermatic, productId: 1619, productTypeId: 20549)
 def zwaveEvent(hubitat.zwave.commands.manufacturerspecificv1.ManufacturerSpecificReport cmd) {
 	state.ManufacturerInfo = "ManufacturerInfo:  manufacturerId: $cmd.manufacturerId, manufacturerName: $cmd.manufacturerName, productId: $cmd.productId, productTypeId: $cmd.productTypeId"
-	log("DEBUG", "ManufacturerSpecificReport:  ${state.ManufacturerInfo}")
+	log("DEBUG", "----- ManufacturerSpecificReport:  ${state.ManufacturerInfo}")
 	createEvent(name: "ManufacturerInfo", value: state.ManufacturerInfo, displayed: true, descriptionText: state.ManufacturerInfo)
 }
 
@@ -944,11 +1028,13 @@ def zwaveEvent(hubitat.zwave.commands.configurationv2.ConfigurationReport cmd) {
 			break;
 		case POOL_SPA_CONFIG:
 			map.name = "spamode1"
-			// log("DEBUG", "..... ConfigurationReport  - got parameter=${paramNum}")
+			// log("DEBUG", "----- ConfigurationReport  - got parameter=${paramNum}")
 			// cmds << createEvent(map)
 			break;
 		default:
-			// log("WARN", "..... ConfigurationReport  - UNKNOWN parameter=${paramNum}")
+            if (ep == 0) {
+    			log("WARN", DBG_ALWAYS,"----- ConfigurationReport  - UNKNOWN parameter=${paramNum}")
+            }
 			break;
 	}
 
@@ -974,57 +1060,71 @@ def zwaveEvent(hubitat.zwave.commands.configurationv2.ConfigurationReport cmd) {
 		// log("DEBUG", "schLst=$schLst  state.schedules=${state.schedules}")
 		// log("DEBUG", "state = ${state}")
 
-//		cmds << createEvent(name: "schedules", value: util.toJson(state.schedules), isStateChange: true, displayed: true, descriptionText: "Schedule fpr ep=${ep} sch=${sch} updated to: ${lst}")
+//		cmds << createEvent(name: "schedules", value: util.toJson(state.schedules), isStateChange: true, displayed: true, descriptionText: "Schedule for ep=${ep} sch=${sch} updated to: ${lst}")
 //		cmds << createEvent(name: "lastScheduleChg", value: ep, isStateChange: true, displayed: true, descriptionText: "Schedule ${ep},${sch} changed")
-	}
+    } else {
+        log("DEBUG", "----- ConfigurationReport  - got parameter=${paramNum} - ${map.name}, value=${cmd.configurationValue}")
+    }
 	cmds
 }
 
 def zwaveEvent(hubitat.zwave.commands.sensormultilevelv1.SensorMultilevelReport cmd) {
-	log("DEBUG", "+++++ SensorMultilevelReport value=${cmd.scaledSensorValue} unit=${cmd.scale}")
+	log("DEBUG", "----- SensorMultilevelReport value=${cmd.scaledSensorValue} unit=${cmd.scale}")
 	def cmds = []
 	cmds.addAll(getWaterTempEvents("${cmd.scaledSensorValue}", device.currentValue("poolSpaMode")))
-	log("DEBUG", 2, "+++++ SensorMultilevelReport cmds=$cmds")
+	log("DEBUG", DBG_NEVER, "----- SensorMultilevelReport cmds=$cmds")
 	
 	cmds
 }
 
 def zwaveEvent(hubitat.zwave.commands.thermostatsetpointv1.ThermostatSetpointReport cmd) {
-	def setpoint
+	def cmds = []
 	def id
-	double requestedSetpoint = 0
+	def setpoint
+	def requestedSetpoint
 	switch (cmd.setpointType) {
-		case 1:
+		case POOL_SETPOINTTYPE:
 			id = POOL_SETPOINT_EP
-			setpoint = state.poolSetpointTemp
+			requestedSetpoint = state.poolSetpointTemp
+			state.remove("poolSetpointTemp")
 			break;
-		case 7:
+		case SPA_SETPOINTTYPE:
 			id = SPA_SETPOINT_EP
-			setpoint = state.spaSetpointTemp
+			requestedSetpoint = state.spaSetpointTemp
+			state.remove("spaSetpointTemp")
 			break;
 		default:
 			break;
 	}
-	log("DEBUG", "ThermostatSetpointReport: incoming state.scale=${state.scale} setpointType=${cmd.setpointType} requested state.${getLOCAL_ATTR_NAME(id)}Temp=${setpoint}  reported Setpoint=${cmd.scaledValue}")
+	log("DEBUG", "----- ThermostatSetpointReport: incoming requested state.${getLOCAL_ATTR_NAME(id)}Temp=${requestedSetpoint}  reported Setpoint=${cmd.scaledValue}  state.scale=${state.scale} setpointType=${cmd.setpointType}")
 
-	if (setpoint != null) {requestedSetpoint = setpoint}
 	// So we can respond with same format
 	state.size = cmd.size
 	state.precision = cmd.precision
-//	state.scale = cmd.scale
 	// PE653 ver3.4 has two varients: v34 that requires Celsius scale (0) and a newer (correct) V34.14 that requires Fahrenheit scale (1).
 	// Unfortunately the version report does not distinguish between the two versions.
 	// Regardless of scale, PE653 always expects the actual temperature value to be in Fahrenheit.
 	// If a setpoint Set request is ignored, then flip to the opposite scale in an attempt to adapt to the one this firmware expects.
-	if (cmd.scaledValue != requestedSetpoint) {
-		def oldScale = state.scale
-		state.scale = state.scale == 1 ? 0 : 1
-		log("WARN", "ThermostatSetpointReport: Requested Setpoint was ignored. Switching from old scale=${oldScale} to new state.scale=${state.scale}")
-	}
-	log("DEBUG", "ThermostatSetpointReport: outgoing state.scale=${state.scale}")
-	def sps = "$setpoint"
-	def sp = "${Double.parseDouble(sps).round()}"
-	createMultipleEvents(id, sp, sp)
+	if (requestedSetpoint) {
+		if (cmd.scaledValue != requestedSetpoint) {
+            def oldScale = state.scale
+            state.scale = state.scale == 1 ? 0 : 1
+            log("WARN", DBG_ALWAYS,"----- ThermostatSetpointReport: Requested Setpoint was ignored. Switching from old scale=${oldScale} to new state.scale=${state.scale} and retrying setpointSet")
+	    	setpoint = cmd.scaledValue
+            cmds.addAll(setPoolOrSpaSetpoint(requestedSetpoint, cmd.setpointType))
+//           	cmds.addAll(getThermostatSetpoint(cmd.setpointType))
+		} else {
+	    	setpoint = cmd.scaledValue
+			log("DEBUG", "----- ThermostatSetpointReport: Requested setpoint($setpoint) was accepted state.scale=${state.scale} setpointType=${cmd.setpointType}")
+        }
+	} else {
+    	setpoint = cmd.scaledValue
+		log("DEBUG", "----- ThermostatSetpointReport: Report without previous requested change (setpointSet), setpoint=${setpoint}")
+    }
+	def sp = "${Double.parseDouble("$setpoint").round()}"
+	cmds.addAll(createMultipleEvents(id, sp, sp))
+//    log("DEBUG", "cmds=$cmds")
+    cmds
 }
 
 def zwaveEvent(hubitat.zwave.commands.basicv1.BasicReport cmd) {
@@ -1036,7 +1136,7 @@ def zwaveEvent(hubitat.zwave.commands.basicv1.BasicReport cmd) {
 }
 
 def zwaveEvent(hubitat.zwave.commands.basicv1.BasicSet cmd) {
-	log("DEBUG", "+++++ BasicSet cmd=${cmd}")
+	log("DEBUG", "----- BasicSet cmd=${cmd}")
 	def result = []
 	if (cmd.value == 0) {
 		result = createEvent(name: "switch", value: "off")
@@ -1047,11 +1147,11 @@ def zwaveEvent(hubitat.zwave.commands.basicv1.BasicSet cmd) {
 }
 
 def zwaveEvent(hubitat.zwave.commands.basicv1.BasicGet cmd) {
-	log("DEBUG", "+++++ BasicGet cmd=${cmd}")
+	log("DEBUG", "----- BasicGet cmd=${cmd}")
 	def cmds = []
 	int val = device.currentValue("switch1").equals("on") ? 0xFF : 0
 	cmds << zwave.basicV1.basicReport(value: val)
-	executeCommands(cmds)
+	prepareCommandsAndLog(cmds)
 }
 
 def zwaveEvent(hubitat.zwave.commands.associationv2.AssociationReport cmd) { [] }
@@ -1060,11 +1160,11 @@ def zwaveEvent(hubitat.zwave.commands.associationv2.AssociationGroupingsReport c
 
 // Multi-channel event from the device. Version 1 of Command Class
 def zwaveEvent(hubitat.zwave.commands.multiinstancev1.MultiInstanceCmdEncap cmd) {
-	log("DEBUG", "+++++ multiinstancev1.MultiInstanceCmdEncap cmd=${cmd}")
+	log("DEBUG", "----- multiinstancev1.MultiInstanceCmdEncap cmd=${cmd}")
 	zwaveEventMultiCmdEncap(cmd)
 }
 
-/*
+/*  Parse is set to process these as Version 1 so we never get these Version 3 commands
 // Multi-channel event from the device. Version 3 of Command Class
 def zwaveEvent(hubitat.zwave.commands.multichannelv3.MultiInstanceCmdEncap cmd) {
 	log("WARN", "multichannelv3.MultiInstanceCmdEncap cmd=${cmd}")
@@ -1074,7 +1174,7 @@ def zwaveEvent(hubitat.zwave.commands.multichannelv3.MultiInstanceCmdEncap cmd) 
 
 // Multi-channel event from the device, common method.
 def zwaveEventMultiCmdEncap(cmd) {
-	log("DEBUG", "+++++ zwaveEventMultiCmdEncap cmd=${cmd}")
+	log("DEBUG", "----- zwaveEventMultiCmdEncap cmd=${cmd}")
 	def rslt = []
 	def String myStr = (cmd.parameter[0] == 0) ? "off": "on"
 	def sw = 0
@@ -1084,13 +1184,20 @@ def zwaveEventMultiCmdEncap(cmd) {
 			case 1:
 			case 2:
 			case 3:
-			case 4:
 			case 5:
 				sw = cmd.instance
 				break;
 
-			case POOL_SPA_CHAN:
-				sw = POOL_SPA_EP
+			case 4:
+                if ( !EXPANSION_5043 ) {    // Report sw4 change as Pool/Spa unless P5043
+    				sw = POOL_SPA_EP
+                } else {
+                    sw = cmd.instance
+                }
+				break;
+
+			case POOL_SPA_CHAN_P5043:
+				sw = POOL_SPA_EP            // This can only come from a P5043
 				break;
 
 			case getVSP_CHAN_NO(1):
@@ -1100,13 +1207,13 @@ def zwaveEventMultiCmdEncap(cmd) {
 				sw = (cmd.instance - getVSP_CHAN_NO(1)) + 7
 				break;
 			default:
-				log("WARN", "..... MultiInstanceCmdEncap  - UNKNOWN INSTANCE=${cmd.instance}")
+				log("WARN", DBG_ALWAYS,"..... MultiInstanceCmdEncap  - UNKNOWN INSTANCE=${cmd.instance}")
 				return []
 		}
 
 		rslt.addAll(createMultipleEvents(sw, mtStr, myStr))
 	} else {
-		log("WARN", "MultiInstanceCmdEncap: Could not de-encapsulate!!!")
+		log("WARN", DBG_ALWAYS,"MultiInstanceCmdEncap: Could not de-encapsulate!!!")
 	}
 	rslt
 }
@@ -1120,37 +1227,55 @@ private List createMultipleEvents (Integer attrID, String localVal, String extVa
 	def extEPNum  = getEXT_EP_NUM(attrID)
 	def dni = "${device.deviceNetworkId}-ep${extEPNum}"
 	def devObj = getChildDevices()?.find { it.deviceNetworkId == dni }
-
-	log("DEBUG",  2, "+++++ createMultipleEvents( localAttr:$localAttr, attrID:$attrID, extAttr:$extAttr, extEPNum:$extEPNum, localVal:$localVal, extVal:$extVal) devObj = ${devObj}")
-	if (devObj) {
-		if (devObj.currentValue(extAttr) == "$extVal") {
-			log("DEBUG", 2, "<<<<< Child Event unnecessary. name:$dni:$extAttr attr already was: \"${devObj.currentValue(extAttr)}\"  same as: \"${extVal}\"")
+    // supportedCommands=${devObj.supportedCommands}    supportedAttributes=${devObj.supportedAttributes}
+//    log("DEBUG", 1, "createMultipleEvents-----dni=$dni   extAttr=$extAttr devObj: $devObj  value: ${devObj.currentValue(extAttr)}")
+//    if (devObj && extAttr.equals("temperature")) {
+//        def allAttrs = devObj.supportedAttributes
+//    	for (def aSs : allAttrs)		{
+//            log("DEBUG", 1, "createMultipleEvents-----   name=${aSs.name} dataType=${aSs.dataType} value=${devObj.currentValue(aSs.name)} possibleValues=${aSs.possibleValues}")
+//        }
+//    }
+	log("DEBUG", DBG_EVNTS, "----- createMultipleEvents( localAttr:$localAttr, attrID:$attrID, extAttr:$extAttr, extEPNum:$extEPNum, localVal:$localVal, extVal:$extVal) devObj = ${devObj}")
+	if (devObj) { 
+        if ("${devObj.currentValue(extAttr)}" == "$extVal") {
+			log("DEBUG", DBG_EVNTS, "----- Child Event unnecessary. name:$dni:$extAttr attr already was: \"${devObj.currentValue(extAttr)}\"  same as: \"${extVal}\"")
 		} else {
-			log("DEBUG", 2, "<<<<< Child Event sent: name:$dni:$extAttr  attr was: \"${devObj.currentValue(extAttr)}\"  ==> now: \"${extVal}\"")
-			rslt << "Note:Event:\t\t\t \"${extVal}\" to child:\t ${dni}:\t${devObj}\t${extAttr}\twas: \"${devObj.currentValue(extAttr)}\""
+			log("DEBUG", DBG_EVNTS, "<<<<< Child Event sent: name:$dni:$extAttr  attr was: \"${devObj.currentValue(extAttr)}\"  ==> now: \"${extVal}\"")
+			rslt << "Note:Event:\t\t\t \"${extVal}\" to child:\t ${dni}:\t${devObj}\t${extAttr}\t(was: \"${devObj.currentValue(extAttr)}\")"
 			devObj.sendEvent(name: extAttr, value: "$extVal", isStateChange: true, displayed: true, descriptionText: "Parent event set $extAttr to $extVal")
 		}
 	} else {
-		log("WARN", "Child Device handler not found: ${dni}:\t$extAttr")
+		log("WARN", DBG_EVNTS,"Child Device handler not found: ${dni}:\t$extAttr")
 	}
 
 	if (localVal && !localVal.equals("unknown")) {
 		rslt << createEvent(name: "$localAttr", value: "$localVal", isStateChange: true, displayed: true, descriptionText: "$localAttr set to $localVal")
 	}
+//	log("DEBUG", 1, "----- createMultipleEvents-----rslt:\n$rslt")
 	rslt
 }
 
 def zwaveEvent(hubitat.zwave.Command cmd) {
-	log("WARN", "Captured unexpected zwave command $cmd")
+	log("WARN", DBG_ALWAYS, "Unexpected zwave command $cmd")
 	createEvent(descriptionText: "Unexpected command $device.displayName: $cmd", isStateChange: true)
 }
 
 //Commands
 
+//import java.util.concurrent.TimeUnit
 // Called occasionally although not consistently
 def List poll() {
-	log("DEBUG", "+++++ poll()")
-	executeCommands([], true)
+    def cmds = []
+    Date now = new Date()
+	Date then = new Date(Long.parseLong("${state.lastPoll ?: 0}"))
+    long diff = now.getTime() - then.getTime()
+	log("DEBUG", "+++++ poll()  now=$now  then=$then  state.lastPoll=$state.lastPoll  dif=$diff  ")
+    if ( (now.getTime() - then.getTime()) > ( POLL_REFRESH_FREQ * 60 * 1000)) {
+		state.lastPoll = now.getTime()
+        cmds.addAll(refreshInternal())
+    }
+
+	prepareCommandsAndLog(cmds, true)
 }
 
 private initUILabels() {
@@ -1172,33 +1297,46 @@ private initUILabels() {
 
 // Called only by an explicit push of the "Refresh" button
 def List refresh() {
-	log("DEBUG", "+++++ refresh()  DTH:${VERSION}  state.Versioninfo=${state.VersionInfo}")
+//	log("DEBUG", "+++++ refresh())
 	def cmds = []
 
-	cmds << zwave.versionV1.versionGet()
-	cmds << zwave.manufacturerSpecificV1.manufacturerSpecificGet()
+	cmds.addAll(refreshInternal())
+
+	prepareCommandsAndLog(cmds, true)
+}
+
+// Called from refresh button or a subset of Polls
+private List refreshInternal() {
+	log("DEBUG", "----- refreshInternal()  DTH:${VERSION}  state.Versioninfo=${state.VersionInfo}")
+	def cmds = []
 
 	cmds << zwave.configurationV2.configurationGet(parameterNumber: 1)
 	cmds << zwave.configurationV2.configurationGet(parameterNumber: 2)
 	cmds << zwave.configurationV2.configurationGet(parameterNumber: 3)
 	cmds << zwave.configurationV2.configurationGet(parameterNumber: POOL_SPA_CONFIG)
+	cmds.addAll(getThermostatSetpoint(POOL_SETPOINTTYPE))
+	cmds.addAll(getThermostatSetpoint(SPA_SETPOINTTYPE))
+	cmds << zwave.versionV1.versionGet()
+	cmds << zwave.manufacturerSpecificV1.manufacturerSpecificGet()
 
 	if (debugLevel > "5") {
 		getSupportedCmdClasses().each {cc ->
 			cmds << zwave.versionV1.versionCommandClassGet(requestedCommandClass: cc)
 		}
 	}
-
-	executeCommands(cmds, true)
+	cmds
 }
 
-def List updated() {
-	log("DEBUG", "+++++ updated()    DTH:${VERSION}  state.Versioninfo=${state.VersionInfo}  state.ManufacturerInfo=${state.ManufacturerInfo}")
-	def devStr = ""
+def updated() {
+	def children = getChildDevices()
+	log("DEBUG", "+++++ updated()    DTH:${VERSION}  Hub Ver:${location.hubs*.firmwareVersionString.findAll{it}} state.Versioninfo=${state.VersionInfo}  state.ManufacturerInfo=${state.ManufacturerInfo} child devices=$children")
 	initUILabels()
 	removeOldJunkStateVariables()
-
-	if (getChildDevices() == null) { createChildDevices() }
+	if (children) {
+//		log("DEBUG", "+++++ updated() child devices found = $children")
+    } else {
+    	createChildDevices()
+    }
 
 	// Initialize persistent state variables
 	state.lightCircuitsList = getLightCircuits()
@@ -1206,36 +1344,45 @@ def List updated() {
 	if (state.poolSetpointTemp == null) { state.poolSetpointTemp = 0.0d }
 	if (state.scale == null) {state.scale = 1}
 	if (state.precision == null) {state.precision = 1}
+    state.expansionVersion = "none"		// Clear any previous setting so we can start fresh if exp is removed/changed
+	
+    def stateStr = ""
 	state.each {key, val ->
-        log("DEBUG",1, "state key: $key, value: $val")
+		stateStr = stateStr.concat("\n\tstate.$key = \t$val")
     }
+    log("DEBUG", "-----State Variables:$stateStr")
 
     state.schedules = []
 
+	def devStr = ""
 	def cmds = internalConfigure()
-//	cmds.addAll(setSchedule(9,1,12,0,12,02) )
-//	cmds.addAll(getSchedulesInternal(7) )
-	cmds = executeCommands(cmds, true)
-//	log.warn "cmds=$cmds"
-    cmds.each {key ->
-        devStr = devStr.concat("\n<<<<< updated: cmd=$key")
-//		sendHubCommand(key)
+	cmds = prepareCommandsAndLog(cmds, true)
+//    log("DEBUG", "----- updated() .. cmds=$cmds")
+    // This code varies by platform.
+    // ST won't process commands returned from updated() whereas HE sendHubCommand only takes HubActions
+    if (ST_PLATFORM) {        // ST
+        cmds.each {key ->
+            devStr = devStr.concat("\n<<<<< updated(): cmd=$key")
+		    sendHubCommand(key)
+        }
+        log("DEBUG", DBG_CMDS, "----- updated() ST exit path.. devStr=$devStr")
+    	[]
+    } else {                  // HE
+        log("DEBUG", DBG_CMDS, "----- updated() HE exit path.. cmds=$cmds")
+        cmds
     }
-//	ST
-//	sendHubCommand(cmds,0)
-//	log.debug devStr
-//  return []
-//  Hubitat can return array and it is processed, ST ignores it.
-	cmds
 }
 
+
 def List configure() {
-	log("DEBUG", "+++++ configure()    DTH:${VERSION}  state.Versioninfo=${state.VersionInfo}")
+	log("DEBUG", "----- configure()    DTH:${VERSION}  state.Versioninfo=${state.VersionInfo}")
 	initUILabels()
-	executeCommands(internalConfigure(), true)
+	prepareCommandsAndLog(internalConfigure(), true)
 }
 
 private List internalConfigure() {
+	log("DEBUG", "----- internalConfigure()    operationMode1=$operationMode1 operationMode2=$operationMode2 tempOffsetwater=$tempOffsetwater tempOffsetair=$tempOffsetair fireman=$fireman poolSpa1=$poolSpa1")
+    
 	def opMode2 = operationMode2.toInteger() & 0x03
 	def int tempWater = tempOffsetwater == null ? 0 : tempOffsetwater.toInteger()
 	def int tempAir   = tempOffsetair == null ? 0 : tempOffsetair.toInteger()
@@ -1248,11 +1395,7 @@ private List internalConfigure() {
 	cmds << zwave.configurationV2.configurationSet(parameterNumber: 2,  size: 1, configurationValue: [fireman.toInteger()])
 	cmds << zwave.configurationV2.configurationSet(parameterNumber: POOL_SPA_CONFIG, size: 1, configurationValue: [poolSpa1.toInteger()])
 
-	cmds << zwave.configurationV2.configurationGet(parameterNumber: 1)
-	cmds << zwave.configurationV2.configurationGet(parameterNumber: 2)
-	cmds << zwave.configurationV2.configurationGet(parameterNumber: 3)
-	cmds << zwave.configurationV2.configurationGet(parameterNumber: POOL_SPA_CONFIG)
-
+	cmds.addAll(refreshInternal())
 	cmds
 }
 
@@ -1262,7 +1405,7 @@ private List internalConfigure() {
 
 private void createChildDevices() {
 	def oldChildren = getChildDevices()
-	log("DEBUG", "createChildDevices() Existing children: ${oldChildren}")
+	log("DEBUG", "----- createChildDevices() Existing children: ${oldChildren}")
 	def CHILD_SWITCH_NAMESPACE = "erocm123"
 	def CHILD_SWITCH_NAME = "Switch Child Device"
 	def CHILD_THERMOSTAT_NAMESPACE = "KeithR26"
@@ -1291,42 +1434,42 @@ private void createChildDevices() {
 private Object addOrReuseChildDevice(childNo, name, nameSpace, deviceName, List oldChildren){
 	def Object devObj = null
 	def dni = "${device.deviceNetworkId}-ep${childNo}"
-//	log.trace("addOrReuseChildDevice dni=${dni} oldChildren.size=${oldChildren.size} oldChildren: ${oldChildren}")
+	log("DEBUG", DBG_CHILD, "addOrReuseChildDevice dni=${dni} oldChildren.size=${oldChildren.size} oldChildren: ${oldChildren}")
 	devObj = oldChildren.find {it.deviceNetworkId == dni}
 	if ( devObj ) {
-		// log("TRACE", "found existing device=${devObj.name} dni=${devObj.deviceNetworkId}")
+		log("DEBUG", DBG_CHILD, "found existing device=${devObj.name} dni=${devObj.deviceNetworkId}")
 		oldChildren.remove(devObj)
-		// log("TRACE", "after remove dni=${dni} oldChildren.size=${oldChildren.size}")
+		log("DEBUG", DBG_CHILD, "after remove dni=${dni} oldChildren.size=${oldChildren.size}")
 	} else {
 		try {
-			log("DEBUG", "addChildDevice(namespace=\"${nameSpace}\",DTH Name=\"${deviceName}\", dni=\"${dni}\", hubId=null,"+
+			log("DEBUG", "----- addChildDevice(namespace=\"${nameSpace}\",DTH Name=\"${deviceName}\", dni=\"${dni}\", hubId=null,"+
 				  "properties=[completedSetup: true, label: \"${name}\","+
 				  "isComponent: false, componentName: \"ep${childNo}\", componentLabel: \"${name}\"]")
-			// SmartThings
-			//			addChildDevice(nameSpace, deviceName, dni, null,
-			//            				[completedSetup: true, label: name,
-			//                            isComponent: false, componentName: "ep${childNo}", componentLabel: "Switch ${childNo}"])
-			//                            isComponent: false, componentName: "ep${childNo}", componentLabel: name])
-			//Hubitat
-			addChildDevice(nameSpace,
-					deviceName,
-					dni,
-					[isComponent: false, name: "ep${childNo}", label: name])
+
+            // The addChildDevice methods are significantly different by platform
+            if (ST_PLATFORM) {		// SmartThings
+				addChildDevice(nameSpace, deviceName, dni, null,
+			            				[completedSetup: true, label: name,
+			                            isComponent: false, componentName: "ep${childNo}", componentLabel: name])
+            } else {                // Hubitat
+    			addChildDevice(nameSpace, deviceName, dni,
+                    					[isComponent: false, name: "ep${childNo}", label: name])
+            }
 		} catch (e) {
-			log("DEBUG", "addChildDevice failed: ${e}")
+			log("WARN", DBG_ALWAYS, "addChildDevice failed: ${e}")
 		}
 	}
 }
 
 private removeChildDevices(List oldChildren){
-	log("DEBUG", "RemoveChildDevices(before) count=${oldChildren.size} children: ${oldChildren}")
+	log("DEBUG", "----- RemoveChildDevices(before) count=${oldChildren.size} children: ${oldChildren}")
 	try {
 		oldChildren.each {child ->
-			log("DEBUG", "remove child name=${child.name} displayName=${child.displayName} label=${child.label} dni=${child.deviceNetworkId} id=${child.id}")
+			log("DEBUG", DBG_CHILD, "remove child name=${child.name} displayName=${child.displayName} label=${child.label} dni=${child.deviceNetworkId} id=${child.id}")
 			deleteChildDevice(child.deviceNetworkId)
 		}
 	} catch (e) {
-		log("WARN", "Error deleting ${child}, either it didn't exist or probably locked into a SmartApps: ${e}")
+		log("WARN", DBG_ALWAYS, "Error deleting ${child}, either it didn't exist or probably locked into a SmartApps: ${e}")
 	}
 }
 
@@ -1340,66 +1483,61 @@ private removeChildDevices(List oldChildren){
 /** Clock */
 private List getClock() {
 	log("DEBUG", "+++++ getClock")
-	executeCommands([zwave.clockV1.clockGet()])
+	prepareCommandsAndLog([zwave.clockV1.clockGet()])
 }
 
 def List setClock() {
 	log("DEBUG",  "+++++ setClock()")
 	def nowCal = Calendar.getInstance(location.timeZone)
-	timeSet = zwave.clockV1.clockSet(
+	def cmds = [ zwave.clockV1.clockSet(
 					hour: nowCal.get(Calendar.HOUR_OF_DAY),
 					minute: nowCal.get(Calendar.MINUTE),
-					weekday: nowCal.get(Calendar.DAY_OF_WEEK))
-	executeCommands([cmds])
+					weekday: nowCal.get(Calendar.DAY_OF_WEEK)) ]
+	prepareCommandsAndLog(cmds)
 }
 
 /** Temperature & Thermostat */
 private List setPoolSetpointInternal(Double degrees) {
-	log("debug", "+++++ setPoolSetpointInternal() ${degrees}")
-	setPoolOrSpaSetpoint(degrees, 1)
+	log("DEBUG", "+++++ setPoolSetpointInternal() ${degrees}")
+	setPoolOrSpaSetpoint(degrees, POOL_SETPOINTTYPE)
 }
 
 private List setSpaSetpointInternal(Double degrees) {
-	log("debug", "+++++ setSpaSetpointInternal() ${degrees}")
-	setPoolOrSpaSetpoint(degrees, 7)
+	log("DEBUG", "+++++ setSpaSetpointInternal() ${degrees}")
+	setPoolOrSpaSetpoint(degrees, SPA_SETPOINTTYPE)
 }
 
 private List setPoolOrSpaSetpoint(Double degrees, Integer setpointType) {
 	//	Z-Wave standard values for thermostatSetpointSet
 	//	precision:		0=no decimal digits, 1=1 decimal digit, 2=2 decimal digits
-	//	scale:			0=Celsius, 1=Farenheit
+	//	scale:			0=Celsius, 1=Farenheit (but: Cannot send scale = 1 to v3.4 PE653 or it will ignore the request)
 	//	size:			1=8 bit, 2=16 bit, 4=32 bit
 	//	setpointType:	1=Heating (pool), 7=Furnace (spa)
 	def cmds = []
-	def deviceScale = state.scale != null ? state.scale : 1
-	def deviceScaleString = deviceScale == 2 ? "C" : "F"
-	def locationScale = getTemperatureScale()
-	def p = (state.precision == null) ? 1 : state.precision
-	log("debug", "setPoolOrSpaSetpointInternal degrees=${degrees} setpointType=${setpointType} incoming state.scale=${state.scale}  deviceScale=${deviceScale}")
+	def deviceScale = (state.scale != null) ? state.scale : 1
+//	def presn = state.precision ?: state.precision
+	def presn = 0		// Force precision to zero decimal places
+	log("DEBUG", "----- setPoolOrSpaSetpointInternal degrees=${degrees} incoming state.scale=${state.scale}  deviceScale=${deviceScale} setpointType=${setpointType}")
 
-	def convertedDegrees
-	//    if (locationScale == "C" && deviceScaleString == "F") {
-	//    	convertedDegrees = celsiusToFahrenheit(degrees)
-	//    } else if (locationScale == "F" && deviceScaleString == "C") {
-	//    	convertedDegrees = fahrenheitToCelsius(degrees)
-	//    } else {
-	convertedDegrees = degrees
-	//    }
-	p = 0
-	if (setpointType == 1) {
+	// Remember the requested setpoint so we can validate it actually changed
+	if (setpointType == POOL_SETPOINTTYPE) {
 		state.poolSetpointTemp = degrees
-	} else if (setpointType == 7) {
+	} else if (setpointType == SPA_SETPOINTTYPE) {
 		state.spaSetpointTemp = degrees
 	}
-	//    deviceScale = 0			// Cannot send scale = 1 to v3.4 PE653 or it will ignore the request
-	//    deviceScale = deviceScale ? 0 : 1	// Invert deviceScale to be able to test v34.14 firmware
-	cmds << zwave.thermostatSetpointV1.thermostatSetpointSet(setpointType: setpointType, scale: deviceScale, precision: p, size: 1, scaledValue: convertedDegrees)
-	cmds << zwave.thermostatSetpointV1.thermostatSetpointGet(setpointType: setpointType)
+	cmds << zwave.thermostatSetpointV1.thermostatSetpointSet(setpointType: setpointType, scale: deviceScale, precision: presn, size: 1, scaledValue: degrees)
+	cmds.addAll(getThermostatSetpoint(setpointType))
 	cmds
 }
 
+// Return the zwave command to retrieve the setpoint
+private List getThermostatSetpoint(setpointType) {
+	def cmds = [zwave.thermostatSetpointV1.thermostatSetpointGet(setpointType: setpointType)]
+    cmds
+}
+
 private List getWaterTemp() {
-	log("debug", "+++++ getWaterTemp()")
+	log("DEBUG", "+++++ getWaterTemp()")
 	[zwave.sensorMultilevelV1.sensorMultilevelGet()]
 }
 
@@ -1417,10 +1555,10 @@ def List setVSPSpeeds(Integer rpm1, Integer rpm2, Integer rpm3, Integer rpm4, In
 			cmds.addAll(setConfiguration(getVSP_RPMMAX_SCHED_PARAM(), 2, spd.intdiv(256), (spd % 256), 0, 0))
 		}
 	}
-	executeCommands(cmds, true)
+	prepareCommandsAndLog(cmds, true)
 }
 
-// Query the four VSP scheduled to determine which speed is enabled. Not currently used
+// Query the four VSP schedules to determine which speed is enabled. Not currently used
 private List getVSPSpeed() {
 	def cmds = []
 	log("DEBUG", "+++++ getVSPSpeed()")
@@ -1459,7 +1597,7 @@ private List setVSPSpeedInternal(Integer speed) {
 /** Configuration */
 // Send a configuration request
 private List getConfiguration(Integer parmNo) {
-	log("DEBUG", "+++++ getConfiguration()  parmNo=${parmNo}")
+	log("DEBUG", "----- getConfiguration()  parmNo=${parmNo}")
 	def cmds = []
 	cmds << zwave.configurationV2.configurationGet(parameterNumber: parmNo)
 	cmds
@@ -1467,7 +1605,7 @@ private List getConfiguration(Integer parmNo) {
 
 // Send a configuration command with a variable number of bytes
 private List setConfiguration(Integer parmNo, Integer siz, Integer byte0, Integer byte1, Integer byte2, Integer byte3) {
-	log("DEBUG", "+++++ setConfiguration()  parmNo=${parmNo} size=${siz}  byte0=${byte0} byte1=${byte1}  byte2=${byte2} byte3=${byte3}")
+	log("DEBUG", "----- setConfiguration()  parmNo=${parmNo} size=${siz}  byte0=${byte0} byte1=${byte1}  byte2=${byte2} byte3=${byte3}")
 	def cmds = []
 	def ints = [byte0,byte1,byte2,byte3]
 	def parmList = []
@@ -1483,40 +1621,46 @@ private List setConfiguration(Integer parmNo, Integer siz, Integer byte0, Intege
 
 /** Scheduling */
 // Set one schedule based on the schedule number and its start and end time
-List setSchedule(Integer endpoint, Integer schedNo, Integer startHour, Integer startMinute, Integer endHour, Integer endMinute) {
+List setSchedule(endpoint, schedNo, startHour, startMinute, endHour, endMinute) {
 	def cmds = []
-	def cnfNo = getSCHED_PARAM(endpoint, schedNo)
+    int ep = "$endpoint".toInteger()
+	int sch = "$schedNo".toInteger()
+    int cnfNo = getSCHED_PARAM(ep, sch)
 	log("DEBUG", "+++++ setSchedule()  endpoint=${endpoint} schedNo=${schedNo} cnfNo=${cnfNo} start time=${startHour}:${startMinute}  end time=${endHour}:${endMinute}")
 	if (cnfNo) {
-		int startTim = startHour * 60 + startMinute
-		int endTim = endHour * 60 + endMinute
+        int startTim = "$startHour".toInteger() * 60 + "$startMinute".toInteger()
+        int endTim = "$endHour".toInteger() * 60 + "$endMinute".toInteger()
 		cmds.addAll(setConfiguration(cnfNo, 4, (startTim % 256), startTim.intdiv(256), (endTim % 256), endTim.intdiv(256)))
+		cmds.addAll(getConfiguration(cnfNo))
 	}
-	executeCommands(cmds)
+	prepareCommandsAndLog(cmds)
 }
 
 // Reset one schedule based on the schedule number
-List resetSchedule(Integer endpoint, Integer schedNo) {
+List resetSchedule(endpoint, schedNo) {
 	def cmds = []
-	def cnfNo = getSCHED_PARAM(endpoint, schedNo)
+    int ep = "$endpoint".toInteger()
+	int sch = "$schedNo".toInteger()
+    int cnfNo = getSCHED_PARAM(ep, sch)
 	log("DEBUG", "+++++ resetSchedule()  endpoint=${endpoint} schedNo=${schedNo} cnfNo=${cnfNo}")
 	if (cnfNo) {
-		cmds.addAll(setConfiguration(getSCHED_PARAM(endpoint, schedNo), 4, 0xFF, 0xFF, 0xFF, 0xFF))
+		cmds.addAll(setConfiguration(cnfNo, 4, 0xFF, 0xFF, 0xFF, 0xFF))
+		cmds.addAll(getConfiguration(cnfNo))
 	}
-	executeCommands(cmds)
+	prepareCommandsAndLog(cmds)
 }
 
 // Request all schedules for an endpoint
-List getSchedules(Integer endpoint) {
-	log("DEBUG", "+++++ getSchedules()  endpoint=${endpoint} cnfNo=${cnfNo}")
-	executeCommands(getSchedulesInternal(endpoint))
+List getSchedules(endpoint) {
+	log("DEBUG", "+++++ getSchedules()  endpoint=${endpoint}")
+	prepareCommandsAndLog(getSchedulesInternal("$endpoint".toInteger()))
 }
 
 // Request all schedules for an endpoint. Used by internal and external functions
-private List getSchedulesInternal(Integer endpoint) {
+private List getSchedulesInternal(endpoint) {
 	def cmds = []
-	def cnfNo = getSCHED_PARAM(endpoint, 1)
-	log("DEBUG", "+++++ getSchedulesInternal()  endpoint=${endpoint} cnfNo=${cnfNo}")
+	int cnfNo = getSCHED_PARAM(endpoint, 1)
+	log("DEBUG", "----- getSchedulesInternal()  endpoint=${endpoint} cnfNo=${cnfNo}")
 	if (cnfNo) {
 		cmds.addAll(getConfiguration(getSCHED_PARAM(endpoint,1)))
 		cmds.addAll(getConfiguration(getSCHED_PARAM(endpoint,2)))
@@ -1527,7 +1671,7 @@ private List getSchedulesInternal(Integer endpoint) {
 
 // General purpose function to set a schedule to "Always off" or "Always on"
 private List setSched(int paramNum, Integer val) {
-	log("DEBUG", "+++++ setSched(paramNum:${paramNum}, val:$val)")
+	log("DEBUG", "----- setSched(paramNum:${paramNum}, val:$val)")
 	def cmds = []
 	if (val == 0) {
 		cmds << zwave.configurationV2.configurationSet(configurationValue: [0xFF, 0xFF, 0xFF, 0xFF], size: 4, parameterNumber: paramNum)
@@ -1612,7 +1756,7 @@ def List getLightCircuits() {
 
 // Alternately turn a switch off then on a fixed number of times. Used to control the color of Pentair pool lights.
 private def blink(List switches, int cnt) {
-	log("TRACE", "+++++ blink switches=${switches} cnt=${cnt}")
+	log("DEBUG", "+++++ blink switches=${switches} cnt=${cnt}")
 	def cmds = []
 	def dly = MIN_DELAY
 	for (int i=1; i<=cnt; i++) {
@@ -1631,12 +1775,12 @@ private def blink(List switches, int cnt) {
 		}
 		dly = "${DELAY}"
 	}
-	log("TRACE", 1, "blink() cmds=${cmds}")
+	log("TRACE", "blink() cmds=${cmds}")
 	cmds
 }
 
 /** Shared Refresh commands */
-// Called from anywhere that needs the UI controls updated following a Set. Inserted by 'executeCommands'
+// Called from anywhere that needs the UI controls updated following a Set. Inserted by 'prepareCommandsAndLog'
 
 def List addRefreshCmds(List cmds)  {
 	cmds.addAll(getRefreshCmds())
@@ -1648,6 +1792,8 @@ private List getRefreshCmds() {
 	def cmds =[
 		new hubitat.device.HubAction("910005400102870301"),
 		new hubitat.device.HubAction("910005400101830101"),
+//def str = "910005400101830101"
+//		Eval.me("new hubitat.device.HubAction(${str}"),
 //		new hubitat.device.HubAction("91000541010100"),
 	]
 	cmds
@@ -1661,23 +1807,36 @@ private List getTestCmds() {
 	]
 	// cmds.addAll(setChanState(getVSP_CHAN_NO(2), 0))
 	// cmds.addAll(getChanState(getVSP_CHAN_NO(1)))
-	// cmds.addAll(setVSPSpeeds(1500,2100,2800,3400,3425) )
 	// cmds.addAll(setVSPSpeeds(1400,2000,2750,3450,3450) )
+
+	 cmds.addAll(setVSPSpeeds(1400,1500,2500,3400,3425) )
+	 cmds.addAll(setSchedule(1, 1, 0, 0, 23, 59) )
+	 cmds.addAll(setSchedule(2, 1, 6, 55, 23, 59) )
+	 cmds.addAll(setSchedule(3, 1, 18, 00, 22, 00) )
+	 cmds.addAll(setSchedule(7, 1, 7, 0, 18, 0) )
+	 cmds.addAll(setClock() )
+    
 	// cmds.addAll(setSchedule(1,1,0,0,23,59) )
 	// cmds.addAll(resetSchedule(1,3) )
 	// cmds.addAll(setSchedule(2,1,07,00,19,00) )
 	// cmds.addAll(setSchedule(7,1,07,00,18,00) )
 	// cmds.addAll(resetSchedule(8,3) )
-	cmds.addAll(getSchedulesInternal(1) )
-	// state.each {key, val ->
-	//  log("DEBUG", "state key: $key, value: $val")
-	// }
+	// cmds.addAll(getSchedulesInternal(1) )
+    cmds.addAll(getThermostatSetpoint(POOL_SETPOINTTYPE))
+//    cmds.addAll(getThermostatSetpoint(SPA_SETPOINTTYPE))
+
+	state.scale = 1  // Temp to test thermostat scale error recovery
+    def stateStr = ""
+	state.each {key, val ->
+		stateStr = stateStr.concat("\n\tstate.$key = \t$val")
+    }
+    log("DEBUG", "State Variables:$stateStr")
 	cmds
 }
 
 def List on() {
 	log("DEBUG", "+++++ on()")
-	executeCommands([
+	prepareCommandsAndLog([
 		zwave.basicV1.basicSet(value: 0xFF),
 		zwave.basicV1.basicGet()
 	])
@@ -1685,7 +1844,7 @@ def List on() {
 
 def List off() {
 	log("DEBUG", "+++++ off()")
-	executeCommands([
+	prepareCommandsAndLog([
 		zwave.basicV1.basicSet(value: 0x00),
 		zwave.basicV1.basicGet()
 	])
@@ -1694,42 +1853,45 @@ def List off() {
 /** Child switch device calls come in here */
 def List childOn(dni)  {
 	log("DEBUG", "childOn called in parent: dni=${dni} channelNumber(dni)=${channelNumber(dni)}")
-	executeCommands(cmdFromChild(channelNumber(dni), 0xFF), true)
+	prepareCommandsAndLog(cmdFromChild(channelNumber(dni), 0xFF), true)
 //	this."on${channelNumber(dni)}"()
 }
 
 def List childOff(dni)  {
 	log("DEBUG", "childOff called in parent: dni=${dni} channelNumber(dni)=${channelNumber(dni)}")
-	executeCommands(cmdFromChild(channelNumber(dni), 0), true)
+	prepareCommandsAndLog(cmdFromChild(channelNumber(dni), 0), true)
 //	this."off${channelNumber(dni)}"()
 }
 
 def List childRefresh(dni)  {
 	log("DEBUG", "refresh called in parent: dni=${dni} channelNumber(dni)=${channelNumber(dni)}")
-	executeCommands([], true)
+	prepareCommandsAndLog([], true)
 }
 
 /** Child Thermostat device calls come in here */
 def List childSetHeatingSetpoint(dni, temp)  {
 	log("DEBUG", "childSetHeatingSetpoint called in parent: temp=${temp} dni=${dni} channelNumber(dni)=${channelNumber(dni)}")
 	def rslt = []
-	switch (channelNumber(dni)) {
-		case POOL_TEMPERATURE_EP:
-			rslt.addAll(setPoolSetpointInternal("${temp}".toDouble()))
-			break
-		case SPA_TEMPERATURE_EP:
-			rslt.addAll(setSpaSetpointInternal("${temp}".toDouble()))
-			break
-	}			
-	executeCommands(rslt, true) 
+    if (temp) {
+        switch (channelNumber(dni)) {
+    		case POOL_TEMPERATURE_EP:
+	    		rslt.addAll(setPoolSetpointInternal("${temp}".toDouble()))
+		    	break
+    		case SPA_TEMPERATURE_EP:
+	    		rslt.addAll(setSpaSetpointInternal("${temp}".toDouble()))
+		    	break
+        }
+    } else {
+    	log("WARN", DBG_ALWAYS,"childSetHeatingSetpoint called with NULL temperature")
+    }
+	prepareCommandsAndLog(rslt, true) 
 }
 
 // On or Off from a child device. Take action depending on which type of child device
+// Called from childOn and childOff which are the entry points from the child switch device
 private List cmdFromChild(int childNo, int val) {
 	def rslt = []
-	log("DEBUG", 2, "+++++ cmdFromChild: childNo:$childNo  val:$val")
-// Called from childOn and childOff which are the entry points from the child switch device
-//	log("WARN", "Is this function part of an external protocol? It is not called internally.")
+	log("DEBUG", DBG_CHILD, "+++++ cmdFromChild: childNo:$childNo  val:$val")
 
 	switch (childNo) {
 		case 1:
@@ -1761,7 +1923,8 @@ private List cmdFromChild(int childNo, int val) {
 	rslt
 }
 
-//Request Switch State
+// Request Switch State
+// Has callers but none currently active
 private List getChanState(ch) {
 	log("DEBUG", "+++++ getChanState($ch)")
 	def cmds =[
@@ -1771,7 +1934,7 @@ private List getChanState(ch) {
 
 // Set switch instance on/off
 private List setChanState(ch, on) {
-	log("DEBUG", 2, "+++++ setChanState($ch, $on)")
+//	log("DEBUG", DBG_NEVER, "----- setChanState($ch, $on)")
 	def cmds =[
 		zwave.multiInstanceV1.multiInstanceCmdEncap(instance: ch).encapsulate(zwave.switchBinaryV1.switchBinarySet(switchValue: (on ? 0xFF : 0))),
 	]
@@ -1788,41 +1951,41 @@ def List insertLogTrace() {
 
 def List executeArbitraryCommand(String command) {
 	log("DEBUG", "+++++ executeArbitraryCommand + ${command}")
-	executeCommands([command], true)
+	prepareCommandsAndLog([command], true)
 }
 
 def List recreateChildren() {
 	log("DEBUG", "+++++ recreateChildren()")
 	createChildDevices()
-	executeCommands([], true)
+	prepareCommandsAndLog([], true)
 }
 
 // Called by switch presses on the circuit buttons.
-def List on1()  { executeCommands(setChanState(1, 0xFF), true) }
-def List on2()  { executeCommands(setChanState(2, 0xFF), true) }
-def List on3()  { executeCommands(setChanState(3, 0xFF), true) }
-def List on4()  { executeCommands(setChanState(4, 0xFF), true) }
-def List on5()  { executeCommands(setChanState(5, 0xFF), true) }
-def List off1() { executeCommands(setChanState(1, 0), true) }
-def List off2() { executeCommands(setChanState(2, 0), true) }
-def List off3() { executeCommands(setChanState(3, 0), true) }
-def List off4() { executeCommands(setChanState(4, 0), true) }
-def List off5() { executeCommands(setChanState(5, 0), true) }
+def List on1()  { prepareCommandsAndLog(setChanState(1, 0xFF), true) }
+def List on2()  { prepareCommandsAndLog(setChanState(2, 0xFF), true) }
+def List on3()  { prepareCommandsAndLog(setChanState(3, 0xFF), true) }
+def List on4()  { prepareCommandsAndLog(setChanState(4, 0xFF), true) }
+def List on5()  { prepareCommandsAndLog(setChanState(5, 0xFF), true) }
+def List off1() { prepareCommandsAndLog(setChanState(1, 0), true) }
+def List off2() { prepareCommandsAndLog(setChanState(2, 0), true) }
+def List off3() { prepareCommandsAndLog(setChanState(3, 0), true) }
+def List off4() { prepareCommandsAndLog(setChanState(4, 0), true) }
+def List off5() { prepareCommandsAndLog(setChanState(5, 0), true) }
 
 // May be called by CoRE
-def List setVSPSpeed(sp)       { executeCommands(setVSPSpeedInternal(sp), true) }
+def List setVSPSpeed(sp)       { prepareCommandsAndLog(setVSPSpeedInternal(sp), true) }
 // Called by switch presses on the VSP buttons.
-def List setVSPSpeed0()        { executeCommands(setVSPSpeedInternal(0), true) }
-def List setVSPSpeed1()        { executeCommands(setVSPSpeedInternal(1), true) }
-def List setVSPSpeed2()        { executeCommands(setVSPSpeedInternal(2), true) }
-def List setVSPSpeed3()        { executeCommands(setVSPSpeedInternal(3), true) }
-def List setVSPSpeed4()        { executeCommands(setVSPSpeedInternal(4), true) }
+def List setVSPSpeed0()        { prepareCommandsAndLog(setVSPSpeedInternal(0), true) }
+def List setVSPSpeed1()        { prepareCommandsAndLog(setVSPSpeedInternal(1), true) }
+def List setVSPSpeed2()        { prepareCommandsAndLog(setVSPSpeedInternal(2), true) }
+def List setVSPSpeed3()        { prepareCommandsAndLog(setVSPSpeedInternal(3), true) }
+def List setVSPSpeed4()        { prepareCommandsAndLog(setVSPSpeedInternal(4), true) }
 
 
-def List setMode1()            { executeCommands(setMode(1), true) }
-def List setMode2()            { executeCommands(setMode(2), true) }
-def List setMode3()            { executeCommands(setMode(3), true) }
-def List setMode4()            { executeCommands(setMode(4), true) }
+def List setMode1()            { prepareCommandsAndLog(setMode(1), true) }
+def List setMode2()            { prepareCommandsAndLog(setMode(2), true) }
+def List setMode3()            { prepareCommandsAndLog(setMode(3), true) }
+def List setMode4()            { prepareCommandsAndLog(setMode(4), true) }
 
 private List setMode(int mode) {
 	def cmds = []
@@ -1866,188 +2029,286 @@ private List setMode(int mode) {
 	cmds
 }
 
-def List setSpaMode()          { executeCommands(setSpaModeInternal()) }
-def List setPoolMode()         { executeCommands(setPoolModeInternal()) }
-def List togglePoolSpaMode()   { executeCommands(togglePoolSpaModeInternal()) }
+def List setSpaMode()          { prepareCommandsAndLog(setSpaModeInternal(), true) }
+def List setPoolMode()         { prepareCommandsAndLog(setPoolModeInternal(), true) }
+def List togglePoolSpaMode()   { prepareCommandsAndLog(togglePoolSpaModeInternal()) }
 
-def List quickSetSpa(degrees)  { executeCommands(setSpaSetpointInternal("${degrees}".toDouble()), true) }
-def List quickSetPool(degrees) { executeCommands(setPoolSetpointInternal("${degrees}".toDouble()), true) }
+def List quickSetSpa(degrees)  { prepareCommandsAndLog(setSpaSetpointInternal("${degrees}".toDouble()), true) }
+def List quickSetPool(degrees) { prepareCommandsAndLog(setPoolSetpointInternal("${degrees}".toDouble()), true) }
 
 def List quickGetWaterTemp()   {
 	log("DEBUG", "+++++ quickGetWaterTemp")
-	executeCommands(getWaterTemp(), true)
+	prepareCommandsAndLog(getWaterTemp(), true)
 }
 
-def List quickGetTestCmds()    { executeCommands(getTestCmds(), true) }
-def List setLightColor(col)	   { executeCommands(setLightColorInternal(col), true) }
-def List setColor()			   { executeCommands(getColorChgCmds(), true) } // This seems poorly defined currently
+def List quickGetTestCmds()	{ prepareCommandsAndLog(getTestCmds(), true) }
+def List setLightColor(col)	{ prepareCommandsAndLog(setLightColorInternal(col), true) }
+def List setColor()		{ prepareCommandsAndLog(getColorChgCmds(), true) } // This seems poorly defined currently
+
+// methods to format and log all commands and responses
 
 // Called from Parse for responses from the device
-def delayResponseLog(parm, dly=DELAY, responseFlg=true) {
-	delayBetweenLog(parm, dly, responseFlg)
+private List prepareResponseAndLog(parm, dly=DELAY, responseFlg=true) {
+//	log("DEBUG", DBG_CMDS, "+++++ prepareResponseAndLog")
+	formatAndLog(parm, dly, responseFlg)
 }
 
+private List prepareCommandsAndLog(commands, refreshControls = false) {
+//	log("DEBUG", DBG_CMDS, "+++++ prepareCommandsAndLog")
 
-// Called from all commands
-def delayBetweenLog(parm, dly=DELAY, responseFlg=false) {
-	log("DEBUG", 1, "+++++ delayBetweenLog parm[${parm.size}] dly=$dly responseFlg=${responseFlg}")
+	if (refreshControls) {
+		commands.addAll(getRefreshCmds())
+	}
+	formatAndLog(commands)
+}
+
+/*
+// Shared method to format, add delays and log all Events and commands issued from the DTH
+def formatAndLog(parm, dly=DELAY, responseFlg=false) {
+//	log("DEBUG", DBG_CMDS, "+++++ formatAndLog parm[${parm.size}] dly=$dly responseFlg=${responseFlg}")
 	def lst = parm
 	def cmds =[]
 	def evts =[]
 	def devStr = ""
 	def evtStr = ""
+    def trcStr = ""
 	def fmt = ""
+    def dlyFmt
+    int dlyCnt = 0
+    if (responseFlg) {
+        dlyFmt = response("delay $dly")
+    } else {
+        dlyFmt = "delay $dly"
+    }
+    
 	if (!(parm in List)) {
 		lst = [parm]
 	}
+    trcStr = "Commands(${lst.size}):\n"
 	lst.eachWithIndex {l, index ->
-		log("TRACE",2, "cmd${index}: $l")
-		// These "should" never happen, but I have accidentily introduced these scenarios during debugging so catches them.
-		if (l instanceof List) {
-			log("ERROR", "  - UNEXPECTED instanceOf List: l -> ${l}")
-		} else if (l in List) {
-			log("ERROR", "  - UNEXPECTED in LIST: l -> ${l}")
-		} else {
-			log("TRACE", 2, "  - l -> ${l}") // maps come through here
-		}
-
-		if (l instanceof hubitat.device.HubAction) {
-//			log("TRACE", "  - ${index}: instanceof hubitat.device.HubAction")
+		trcStr = trcStr.concat("~~~ cmd[${index}]:")
+		if (l instanceof List || l in LIst) {
+			// These "should" never happen, but I have accidentily introduced these scenarios during debugging so this catches them.
+			log("ERROR", DBG_ALWAYS,"  - UNEXPECTED instanceOf List: cmd[${index}] -> ${l}")
+			trcStr = trcStr.concat("LIST (addAll): $l")
+			cmds << l
+       } else if (l instanceof String || l instanceof GString) {
+			if (l.take(5) == "Note:") {
+				trcStr = trcStr.concat("Event (already sent): $l")
+				evtStr = evtStr.concat("\n\t<<<<<\t\t ${l.drop(5)}")
+			} else {
+				cmds << l
+				trcStr = trcStr.concat("String: $l")
+				devStr = devStr.concat("String: ${l}")
+			}
+		} else if (l instanceof Map) { // Maps always represent "events"
+			// example:	createEvent(name: "$sw", value: "$myParm", isStateChange: true, displayed: true, descriptionText: "($sw set to $myParm)")
+			if ("${device.currentValue(l.name)}".equals("${l.value}")) {
+				trcStr = trcStr.concat("Event (chg): attr: $l.name value: $l.value")
+				log("DEBUG", DBG_EVNTS, "\t\t Event unnecessary. name:${l.name}  evt: \"${l.value}\" ==> dev:(${device.currentValue(l.name)})")
+			} else {
+				trcStr = trcStr.concat("Event (none): attr: $l.name value: $l.value")
+				log("DEBUG", DBG_EVNTS, "\t\t Event necessary. name:${l.name} evt: \"${l.value}\" ==> dev:(${device.currentValue(l.name)})")
+				evts << l
+                if ( !l.name.equals("clock") ) {        // Don't bother logging clock updates
+                    evtStr = evtStr.concat("\n\t<<<<<\t\t Event:\t\t\t $l")
+                }
+			}
+		} else if (l instanceof hubitat.device.HubAction) {
+			trcStr = trcStr.concat("HubAction: $l")
 			if (cmds) {
-				def c = cmds.last()			//check if there is already a delay prior to this
-				if (!(c instanceof String || c instanceof GString) || c.take(6) != "delay ") {
-					cmds << "delay $dly"
+				if ("${cmds.last()}".take(6) != "delay ") {
+                	dlyCnt++
+					cmds << dlyFmt
 					devStr = devStr.concat(", delay $dly")
 				}
 			}
 			if (responseFlg) {
 				fmt = response(l)
+//				log("TRACE", "  HubAction response command=$l response(l)=$fmt")
 			} else {
 				fmt = "$l"
 			}
 			cmds << fmt
 			devStr = devStr.concat("\n\t<<<<<\t\t HubAction:\t\t $l")
-        } else if (l instanceof String || l instanceof GString) {
-			if (l.take(5) == "Note:") {
-				evtStr = evtStr.concat("\n\t<<<<<\t\t ${l.drop(5)}")
-			} else {
-				cmds << l
-				devStr = devStr.concat(", ${l}")
-			}
-		} else if (l instanceof List) {
-			log("ERROR", "  - ${index}: LIST: $l, adding commands")
-			cmds << l
-		} else if (l instanceof Map) { // All responses from device come in as maps.
-				log("TRACE", 2, "  - ${index}: Map: $l")
-			// example:	createEvent(name: "$sw", value: "$myParm", isStateChange: true, displayed: true, descriptionText: "($sw set to $myParm)")
-			if ("${device.currentValue(l.name)}".equals("${l.value}")) {
-				log("DEBUG", 2, "\t\t Event unnecessary. name:${l.name}  evt: \"${l.value}\" ==> dev:(${device.currentValue(l.name)})")
-			} else {
-				log("DEBUG", 2, "\t\t Event necessary. name:${l.name} evt: \"${l.value}\" ==> dev:(${device.currentValue(l.name)})")
-				evts << l
-				evtStr = evtStr.concat("\n\t<<<<<\t\t Event:\t\t\t $l")
-			}
 		} else {
-			if (responseFlg) {
-				fmt = response(l)
-			} else {
-				fmt = l.format()
-			}
-//			log("TRACE", "  - ${index}: else: HubAction: $l, format()=$fmt")
-
+			trcStr = trcStr.concat("else: $l")
 			if (cmds) {
-				def c = cmds.last()			//check if there is already a delay prior to this
-				if (!(c instanceof String || c instanceof GString) || c.take(6) != "delay ") {
-					cmds << "delay $dly"
+// TODO may not work with response formatted delay
+//				log("DEBUG", DBG_CMDS, "+++++ formatAndLog parm[${parm.size}] dly=$dly responseFlg=${responseFlg}")
+				if ("${cmds.last()}".take(6) != "delay ") {
+                	dlyCnt++
+					cmds << dlyFmt
 					devStr = devStr.concat(", delay $dly")
 				}
 			}
+			if (responseFlg) {
+				fmt = response(l)
+//				log("TRACE", "  response command=$l response(l)=$fmt")
+			} else {
+				fmt = l.format()
+			}
+//			log("TRACE", "  - ${index}: else: $l, format()=$fmt")
 			devStr = devStr.concat("\n\t<<<<<\t\t Cmd to Device:\t $l  --> $fmt")
 			cmds << fmt
 		}
+		trcStr = trcStr.concat("\n")
 	}
 	evts.addAll(cmds)
-
+    
+    trcStr = "Command Trace:\n"
+	evts.eachWithIndex {l, index ->
+    	trcStr = trcStr.concat("cmd[$index]: ")
+		if (l instanceof String || l instanceof GString) { trcStr = trcStr.concat("String: $l") }
+		else if (l in hubitat.device.HubAction) { trcStr = trcStr.concat("response: $l") }
+		else if (l instanceof Map) { trcStr = trcStr.concat("Map: $l") }
+        else {trcStr = trcStr.concat("unknown: $l")}
+    	trcStr = trcStr.concat("\n")
+	}
+	log("TRACE", DBG_CMDS, trcStr)
+    
 	if (evts) {
-		log("DEBUG", "<<<<< rspFlg=${responseFlg} dly:$dly/${DELAY}${evtStr}${devStr}")
+        log("DEBUG", "<<<<< rspFlg=${responseFlg} dly:$dly/${DELAY} ${cmds.size()-dlyCnt} Commands, ${dlyCnt} Delays, ${evts.size()-cmds.size()} Events${evtStr}${devStr}")
 		evts
 	} else {
-		log("DEBUG", 2, "<<<<< rspFlg=${responseFlg} dly:$dly/${DELAY} No Commands or Events")
+		log("DEBUG", "----- rspFlg=${responseFlg} dly:$dly/${DELAY} No Commands or Events")
+		null
+	}
+}
+*/
+
+// Shared method to format, add delays and log all Events and commands issued from the DTH
+def formatAndLog(parm, dly=DELAY, responseFlg=false) {
+//	log("DEBUG", DBG_CMDS, "+++++ formatAndLog parm[${parm.size}] dly=$dly responseFlg=${responseFlg}")
+	def lst = parm
+	def cmds =[]
+	def evts =[]
+	def devStr = ""
+	def evtStr = ""
+    def trcStr = ""
+	def fmt = ""
+    def dlyFmt
+    int dlyCnt = 0
+    if (responseFlg) {
+        dlyFmt = response("delay $dly")
+    } else {
+        dlyFmt = "delay $dly"
+    }
+    
+	if (!(parm in List)) {
+		lst = [parm]
+	}
+    trcStr = "Commands(${lst.size}):\n"
+	lst.eachWithIndex {l, index ->
+		trcStr = trcStr.concat("~~~ cmd[${index}]:")
+		if (l instanceof List || l in LIst) {
+			// These "should" never happen, but I have accidentily introduced these scenarios during debugging so this catches them.
+			log("ERROR", DBG_ALWAYS,"  - UNEXPECTED instanceOf List: cmd[${index}] -> ${l}")
+			trcStr = trcStr.concat("LIST (addAll): $l")
+			cmds << l
+       } else if (l instanceof String || l instanceof GString) {
+			if (l.take(5) == "Note:") {
+				trcStr = trcStr.concat("Event (already sent): $l")
+				evtStr = evtStr.concat("\n\t<<<<<\t\t ${l.drop(5)}")
+			} else {
+				cmds << l
+				trcStr = trcStr.concat("String: $l")
+				devStr = devStr.concat("String: ${l}")
+			}
+		} else if (l instanceof Map) { // Maps always represent "events"
+			// example:	createEvent(name: "$sw", value: "$myParm", isStateChange: true, displayed: true, descriptionText: "($sw set to $myParm)")
+			if ("${device.currentValue(l.name)}".equals("${l.value}")) {
+				trcStr = trcStr.concat("Event (chg): attr: $l.name value: $l.value")
+				log("DEBUG", DBG_EVNTS, "\t\t Event unnecessary. name:${l.name}  evt: \"${l.value}\" ==> dev:(${device.currentValue(l.name)})")
+			} else {
+				trcStr = trcStr.concat("Event (none): attr: $l.name value: $l.value")
+				log("DEBUG", DBG_EVNTS, "\t\t Event necessary. name:${l.name} evt: \"${l.value}\" ==> dev:(${device.currentValue(l.name)})")
+                if ( !l.name.equals("clock") ) {        // Don't bother logging clock updates
+//                    evtStr = evtStr.concat("\n\t<<<<<\t\t Event:\t\t\t $l")
+                    evtStr = evtStr.concat("\n\t<<<<<\t\t Event:\t\t\t \"${l.value}\" to ${l.name}\t(was: \"${device.currentValue(l.name)}\")")
+                }
+				evts << l
+                sendEvent(l)
+			}
+		} else if (l instanceof hubitat.device.HubAction) {
+			trcStr = trcStr.concat("HubAction: $l")
+			if (cmds) {
+				if ("${cmds.last()}".take(6) != "delay ") {
+                	dlyCnt++
+					cmds << dlyFmt
+					devStr = devStr.concat(", delay $dly")
+				}
+			}
+			if (responseFlg) {
+				fmt = response(l)
+//				log("TRACE", "  HubAction response command=$l response(l)=$fmt")
+			} else {
+				fmt = "$l"     //HE
+//				fmt = l        //ST
+			}
+			cmds << fmt
+			devStr = devStr.concat("\n\t<<<<<\t\t HubAction:\t\t $l")
+		} else {
+			trcStr = trcStr.concat("else: $l")
+			if (cmds) {
+//				log("DEBUG", DBG_CMDS, "+++++ formatAndLog parm[${parm.size}] dly=$dly responseFlg=${responseFlg}")
+				if ("${cmds.last()}".take(6) != "delay ") {
+                	dlyCnt++
+					cmds << dlyFmt
+					devStr = devStr.concat(", delay $dly")
+				}
+			}
+			if (responseFlg) {
+				fmt = response(l)
+//				log("TRACE", "  response command=$l response(l)=$fmt")
+			} else {
+				fmt = l.format()
+//				fmt = l
+			}
+//			log("TRACE", "  - ${index}: else: $l, format()=$fmt")
+			devStr = devStr.concat("\n\t<<<<<\t\t Cmd to Device:\t $l  --> $fmt")
+			cmds << fmt
+		}
+		trcStr = trcStr.concat("\n")
+	}
+//	evts.addAll(cmds)
+    
+    trcStr = "Command Trace:\n"
+	cmds.eachWithIndex {l, index ->
+    	trcStr = trcStr.concat("cmd[$index]: ")
+		if (l instanceof String || l instanceof GString) { trcStr = trcStr.concat("String: $l") }
+		else if (l in hubitat.device.HubAction) { trcStr = trcStr.concat("response: $l") }
+		else if (l instanceof Map) { trcStr = trcStr.concat("Map: $l") }
+        else {trcStr = trcStr.concat("unknown: $l")}
+    	trcStr = trcStr.concat("\n")
+	}
+	log("TRACE", DBG_CMDS, trcStr)
+    
+	if (cmds || evts) {
+        log("DEBUG", "<<<<< rspFlg=${responseFlg} dly:$dly/${DELAY} ${cmds.size()-dlyCnt} Commands, ${dlyCnt} Delays, ${evts.size()} Events${evtStr}${devStr}")
+		cmds
+	} else {
+		log("DEBUG", "----- rspFlg=${responseFlg} No Commands or Events")
 		null
 	}
 }
 
 // Utility functions
 private channelNumber(String dni) {
-	log("DEBUG", 2, "channelNumber:  dni:$dni   [-1] ${dni.split("-ep")[-1]}   [0] ${dni.split("-ep")[0]}   [1] ${dni.split("-ep")[1]}")
+	log("DEBUG", DBG_NEVER, "channelNumber:  dni:$dni   [-1] ${dni.split("-ep")[-1]}   [0] ${dni.split("-ep")[0]}   [1] ${dni.split("-ep")[1]}")
 	dni.split("-ep")[1] as Integer
 }
 
-private List executeCommands(commands, refreshControls = false) {
-//	log("DEBUG", 1, "+++++ executeCommands")
-
-	if (refreshControls) {
-		commands.addAll(getRefreshCmds())
-	}
-	delayBetweenLog(commands)
-}
-
-
-private List executeCommandsOld(commands, refreshControls = false) {
-	log("DEBUG", 2, "+++++ executeCommands")
-	logCommandList(commands)
-
-	if (refreshControls) {
-		commands += refreshCommandStrings()
-	}
-
-	commands = formatUnformattedCommands(commands)
-
-	log("DEBUG", 2, "----- executeCommands final set:")
-	def afterDelayBetween = delayBetween(commands, 1000)
-	logCommandList(afterDelayBetween)
-	afterDelayBetween
-}
-
-private List formatUnformattedCommands(commands) {
-	formattedCommands = []
-	commands.each { command ->
-		if (command instanceof String || command instanceof GString) {
-			formattedCommands << command
-		} else {
-			formattedCommands << command.format()
-		}
-	}
-	formattedCommands
-}
-
-private log(String type, Integer level = 1, String message) {
-	if (level == 0) { return }
-	if ( ! (debugLevel.any { element -> (element as int) >= (level as int)})) { return }
-	if ( ! ["ERROR", "WARN", "INFO", "DEBUG", "TRACE"].contains(type.toUpperCase())) { return }
+// All log messages are emitted here.
+private log(String type, Integer level = DBG_LOW, String message) {
+	if (level == DBG_NEVER) { return }
+    
+	// Log the message if the incoming level matches any numeric digit in debugLevel, or if level = 9 (ALWAYS) or if level = 1(LOW) and any higher level enabled in debugLevel
+	if ( ! (debugLevel.any { element -> (element as int) == (level as int)} || (level == DBG_LOW && debugLevel.any { element -> (element as int) >= DBG_LOW}) || level == DBG_ALWAYS)) { return }
+	if ( ! ["ERROR", "WARN", "INFO", "DEBUG", "TRACE"].contains(type.toUpperCase())) { type = "ERROR" }
 
 	def logType = type.toLowerCase()
 	log."$logType"(message)
-}
-
-private logCommandList(commands) {
-	def eventsList = ""
-	def formattedCommand = ""
-	commands.eachWithIndex { cmd, index ->
-		formattedCommand = "\t" +
-						index.toString().padRight(3) +
-						"[ " +
-						cmd.toString().padRight(20) +
-						"] - "
-
-		if (! (cmd instanceof String || cmd instanceof GString || cmd instanceof hubitat.device.HubAction || cmd instanceof java.util.LinkedHashMap)) {
-			formattedCommand += cmd.format().padRight(16)
-		} else {
-			formattedCommand += "String Command".padRight(16)
-		}
-		eventsList = eventsList.concat("\t${formattedCommand}\n")
-	}
-	log("DEBUG", 2, " Commands: \n${eventsList}")
 }
 
 private removeOldJunkStateVariables() {
@@ -2069,5 +2330,7 @@ private removeOldJunkStateVariables() {
 	state.remove("manProp3")
 	state.remove("nextParm")
 	state.remove("oldLabel")
+	state.remove("poolSetpoint")
 	state.remove("pumpSpeed")
+	state.remove("spaSetpoint")
 }
